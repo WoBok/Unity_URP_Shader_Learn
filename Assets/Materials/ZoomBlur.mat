@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ZoomBlur
-  m_Shader: {fileID: 4800000, guid: 89501159bb595814ebcd58ae5f41008d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7991761c892c01b44bd8425b1f0d41e9, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -89,6 +89,10 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _FocusDetail: 5
+    - _FocusScreenPositionX: 424.9
+    - _FocusScreenPositionY: 22.2
+    - _FoucsPower: 47.23
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -97,6 +101,7 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _ReferenceResolutionX: 1334
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

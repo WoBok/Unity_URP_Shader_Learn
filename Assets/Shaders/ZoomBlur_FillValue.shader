@@ -1,6 +1,11 @@
-Shader "Renderer Feature/ZoomBlur" {
+Shader "Renderer Feature/ZoomBlur_FillValue" {
     Properties {
         _MainTex ("Texture", 2D) = "white" { }
+        _FocusScreenPositionX ("FocusScreenPositionX", float) = 0
+        _FocusScreenPositionY ("FocusScreenPositionY", float) = 0
+        _ReferenceResolutionX ("ReferenceResolutionX", int) = 1334
+        _FoucsPower ("FoucsPower", float) = 45
+        _FocusDetail ("FocusDetail", int) = 5
     }
     SubShader {
         Tags { "RenderPipeline" = "UniversalPipeline" }
@@ -25,6 +30,8 @@ Shader "Renderer Feature/ZoomBlur" {
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float _FocusScreenPositionX;
+            float _FocusScreenPositionY;
             float2 _FocusScreenPosition;
             int _ReferenceResolutionX;
             float _FoucsPower;
@@ -38,6 +45,7 @@ Shader "Renderer Feature/ZoomBlur" {
             }
 
             fixed4 frag(v2f i) : SV_Target {
+                _FocusScreenPosition = float2(_FocusScreenPositionX, _FocusScreenPositionY);
                 float2 screenPoint = _ScreenParams.xy / 2 + _FocusScreenPosition;
                 float2 uv = i.uv;
                 float2 mousePos = (screenPoint.xy / _ScreenParams.xy);

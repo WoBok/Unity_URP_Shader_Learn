@@ -20,7 +20,7 @@ public class ZoomBlurRenderFeature : ScriptableRendererFeature
         public CZoomBlurRenderPass(RenderPassEvent renderPassEvent)
         {
             this.renderPassEvent = renderPassEvent;
-            var shader = Shader.Find("PostEffect/ZoomBlur");
+            var shader = Shader.Find("Renderer Feature/ZoomBlur");
             if (shader == null)
             {
                 Debug.LogError("Shader not found.");
