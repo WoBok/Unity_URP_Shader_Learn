@@ -1,6 +1,6 @@
+#if UNITY_EDITOR
 using System.IO;
 using System.Text.RegularExpressions;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -153,3 +153,5 @@ public class CreateGameObject : EditorWindow
         }
     }
 }
+
+#endif
