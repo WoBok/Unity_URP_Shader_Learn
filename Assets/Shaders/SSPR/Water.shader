@@ -2,8 +2,11 @@ Shader "Water/Water" {
     Properties {
         _DiffuseColor ("DiffuseColor", COLOR) = (1, 1, 1, 1)
         _NormalTex ("NormalTex", 2D) = "white" { }
+        _ReflectionNormalTex ("ReflectionNormalTex", 2D) = "white" { }
         _WaveParams ("WavaParam", vector) = (0.04, 0.02, -0.02, -0.04)
+        _ReflectionParams ("ReflectionParams", vector) = (0.02, 0.01, -0.01, -0.02)
         _NormalScale ("NormalScale", Range(0, 1)) = 0.3
+        _ReflectionNormalScale("ReflectionNormalScale",Range(0,1))=0.2
         _LightDir ("LightDir", vector) = (0, 1, 0, 0)
         _WaterSpecular ("WaterSpecular", Range(0, 1)) = 0.8
         _WaterSmoothness ("WaterSmoothness", Range(0, 1)) = 0.8
@@ -42,14 +45,20 @@ Shader "Water/Water" {
                 half4 TW1 : TEXCOORD3;
                 half4 TW2 : TEXCOORD4;
                 half4 screenPos : TEXCOORD5;
+                half3 worldNormal : NORMAL;
+                half2 uvRefection : TEXCOORD6;
             };
             
             CBUFFER_START(UnityPerMaterial)
             half4 _DiffuseColor;
             sampler2D _NormalTex;
             half4 _NormalTex_ST;
+            sampler2D _ReflectionNormalTex;
+            half4 _ReflectionNormalTex_ST;
             half4 _WaveParams;
+            half4 _ReflectionParams;
             half _NormalScale;
+            half _ReflectionNormalScale;
             half4 _LightDir;
             half _WaterSpecular;
             half _WaterSmoothness;
@@ -71,6 +80,7 @@ Shader "Water/Water" {
                 OUT.worldPos = mul(unity_ObjectToWorld, IN.vertex).xyz;
 
                 OUT.uv = IN.uv.xy * _NormalTex_ST.xy + _NormalTex_ST.zw;
+                OUT.uvRefection=IN.uv.xy * _ReflectionNormalTex_ST.xy + _ReflectionNormalTex_ST.zw;
 
                 half3 worldNormal = normalize(mul(IN.normal, (float3x3)unity_WorldToObject));
                 half3 worldTangent = normalize(mul((float3x3)unity_ObjectToWorld, IN.tangent));
@@ -83,6 +93,9 @@ Shader "Water/Water" {
 
                 OUT.screenPos = ComputeScreenPos(OUT.vertex);
 
+                OUT.worldNormal = worldNormal;
+
+
                 return OUT;
             }
 
@@ -93,6 +106,18 @@ Shader "Water/Water" {
                 half3 worldNormal = BlendNormals(UnpackNormal(tex2D(_NormalTex, panner1)), UnpackNormal(tex2D(_NormalTex, panner2)));
                 worldNormal = lerp(half3(0, 0, 1), worldNormal, _NormalScale);
                 worldNormal = normalize(half3(dot(IN.TW0.xyz, worldNormal), dot(IN.TW1.xyz, worldNormal), dot(IN.TW2, worldNormal)));
+
+                //half2 panner3 = (_Time.y * _ReflectionParams.xy + IN.uvRefection);
+                //half2 panner4 = (_Time.y * _ReflectionParams.zw + IN.uvRefection);
+                //half3 refectionNormal = BlendNormals(UnpackNormal(tex2D(_ReflectionNormalTex, panner3)), UnpackNormal(tex2D(_ReflectionNormalTex, panner4)));
+                //refectionNormal = lerp(half3(0, 0, 1), refectionNormal, _NormalScale);
+                //refectionNormal = normalize(half3(dot(IN.TW0.xyz, refectionNormal), dot(IN.TW1.xyz, refectionNormal), dot(IN.TW2, refectionNormal)));
+
+                half2 panner3 = (_Time.y * _ReflectionParams.xy + IN.uvRefection);
+                half3 bump = UnpackNormal(tex2D(_ReflectionNormalTex,panner3));
+                bump*=_ReflectionNormalScale;
+                bump.z=sqrt(1.0-saturate(dot(bump.xy,bump.xy)));
+                bump=normalize(half3(dot(IN.TW0.xyz, bump), dot(IN.TW1.xyz, bump), dot(IN.TW2, bump)));
 
                 half3 viewDir = normalize(_WorldSpaceCameraPos.xyz - IN.worldPos);
                 half NdotV = saturate(dot(worldNormal, viewDir));
@@ -108,7 +133,7 @@ Shader "Water/Water" {
                 //================================================================
                 ReflectionInput reflectionData;
                 reflectionData.posWS = IN.worldPos;
-                reflectionData.normalWS=worldNormal;
+                reflectionData.normalWS =bump;// refectionNormal;//IN.worldNormal;
                 reflectionData.screenPos = IN.screenPos;
                 reflectionData.roughness = _Roughness;
                 reflectionData.SSPR_Usage = 1;

@@ -20,7 +20,8 @@ struct ReflectionInput
 half3 GetResultReflection(ReflectionInput data) 
 { 
     //sample scene's reflection probe
-    half3 viewWS = (data.posWS - _WorldSpaceCameraPos.xyz);
+    half3 viewWS = (_WorldSpaceCameraPos.xyz-data.posWS);
+    //half3 viewWS = (data.posWS-_WorldSpaceCameraPos.xyz);
     viewWS = normalize(viewWS);
 
     //half3 reflectDirWS = viewWS * half3(1,-1,1);//reflect at horizontal plane
