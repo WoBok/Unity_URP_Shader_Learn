@@ -53,12 +53,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseTex:
-        m_Texture: {fileID: 2800000, guid: 36c7a54f724f23c41967de237bb181b0, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
         m_Texture: {fileID: 2800000, guid: 31c3007ee674b0a4ea0af511fb618f78, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -108,29 +108,30 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Reflection: 0.578
+    - _Reflection: 1
     - _RimPower: 8
-    - _Roughness: 0.276
+    - _Roughness: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
     - _WaterSmoothness: 0.381
-    - _WaterSpecular: 0.5
+    - _WaterSpecular: 0.527
     - _WaterWave: 0.02
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DeepColor: {r: 0, g: 0.38431373, b: 0.5019608, a: 1}
+    - _DeepColor: {r: 1, g: 1, b: 1, a: 1}
     - _DetailColor: {r: 0.65882355, g: 0.65882355, b: 0.65882355, a: 1}
+    - _DiffuseColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamOffset: {r: -0.01, g: 0.01, b: 2, a: 0.02}
     - _LightDir: {r: -0.32, g: 0.72, b: 0.83, a: 0}
-    - _ShalowColor: {r: 0.15686275, g: 0.99215686, b: 1, a: 1}
+    - _ShalowColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _WaveParams: {r: 0.04, g: 0.02, b: -0.02, a: -0.04}

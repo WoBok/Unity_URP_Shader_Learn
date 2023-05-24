@@ -17,7 +17,7 @@ public class MobileSSPRRendererFeature : ScriptableRendererFeature
         public float HorizontalReflectionPlaneHeightWS = 0.01f; //default higher than ground a bit, to avoid ZFighting if user placed a ground plane at y=0
         [Range(0.01f, 1f)]
         public float FadeOutScreenBorderWidthVerticle = 0.25f;
-        [Range(0.01f, 1f)]
+        [Range(0f, 1f)]
         public float FadeOutScreenBorderWidthHorizontal = 0.35f;
         [Range(0, 8f)]
         public float ScreenLRStretchIntensity = 4;
@@ -110,11 +110,6 @@ public class MobileSSPRRendererFeature : ScriptableRendererFeature
             //let user decide if we still don't know the correct answer
             return !settings.ShouldRemoveFlickerFinalControl;
         }
-        // This method is called before executing the render pass.
-        // It can be used to configure render targets and their clear state. Also to create temporary render target textures.
-        // When empty this render pass will render to the active camera render target.
-        // You should never call CommandBuffer.SetRenderTarget. Instead call <c>ConfigureTarget</c> and <c>ConfigureClear</c>.
-        // The render pipeline will ensure target setup and clearing happens in an performance manner.
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
         {
             RenderTextureDescriptor rtd = new RenderTextureDescriptor(GetRTWidth(), GetRTHeight(), RenderTextureFormat.Default, 0, 0);

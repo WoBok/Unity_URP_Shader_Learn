@@ -11,21 +11,23 @@ sampler LinearClampSampler;
 
 struct ReflectionInput
 {
-    float3 posWS;
-    float4 screenPos;
-    float roughness;
-    float SSPR_Usage;
+    half3 posWS;
+    half3 normalWS;
+    half4 screenPos;
+    half roughness;
+    half SSPR_Usage;
 };
 half3 GetResultReflection(ReflectionInput data) 
 { 
     //sample scene's reflection probe
-    half3 viewWS = (data.posWS - _WorldSpaceCameraPos);
+    half3 viewWS = (data.posWS - _WorldSpaceCameraPos.xyz);
     viewWS = normalize(viewWS);
 
-    half3 reflectDirWS = viewWS * half3(1,-1,1);//reflect at horizontal plane
+    //half3 reflectDirWS = viewWS * half3(1,-1,1);//reflect at horizontal plane
+    half3 reflectDirWS =reflect(-viewWS,data.normalWS);//reflect at horizontal plane
 
     //call this function in Lighting.hlsl-> half3 GlossyEnvironmentReflection(half3 reflectVector, half perceptualRoughness, half occlusion)
-    half3 reflectionProbeResult = GlossyEnvironmentReflection(reflectDirWS,data.roughness,1);               
+    half3 reflectionProbeResult = GlossyEnvironmentReflection(reflectDirWS,data.roughness,half(1.0));               
     half4 SSPRResult = 0;
 #if _MobileSSPR    
     half2 screenUV = data.screenPos.xy/data.screenPos.w;

@@ -97,13 +97,13 @@ MonoBehaviour:
   Settings:
     ShouldRenderSSPR: 1
     HorizontalReflectionPlaneHeightWS: 0.01
-    FadeOutScreenBorderWidthVerticle: 0.25
-    FadeOutScreenBorderWidthHorizontal: 0.35
-    ScreenLRStretchIntensity: 4
-    ScreenLRStretchThreshold: 0.7
+    FadeOutScreenBorderWidthVerticle: 0.01
+    FadeOutScreenBorderWidthHorizontal: 0.158
+    ScreenLRStretchIntensity: 0
+    ScreenLRStretchThreshold: 1
     TintColor: {r: 1, g: 1, b: 1, a: 1}
     RT_height: 512
-    UseHDR: 1
+    UseHDR: 0
     ApplyFillHoleFix: 1
     ShouldRemoveFlickerFinalControl: 1
     EnablePerPlatformAutoSafeGuard: 1

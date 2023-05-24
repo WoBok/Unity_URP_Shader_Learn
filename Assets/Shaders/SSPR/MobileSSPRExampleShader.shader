@@ -101,6 +101,7 @@ Shader "MobileSSPR/ExampleShader"
                 half3 finalRGB = lerp(baseColor,resultReflection,reflectionArea);
 
                 return half4(finalRGB,1);
+                return half4(finalRGB,1);
             }
 
             ENDHLSL

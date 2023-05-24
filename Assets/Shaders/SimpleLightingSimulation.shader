@@ -8,12 +8,12 @@ Shader "Light/Simple Lighting Simulation" {
         _LightColor ("Light Color", Color) = (1, 1, 1, 1)
         _FinalColorIntensity ("Final Color Intensity", Range(1, 10)) = 2
         _Alpah ("Alpha", Range(0, 1)) = 1
-        _LightX ("LightX", Range(-1, 1)) = 0
-        _LightY ("LightY", Range(-1, 1)) = 0
-        _LightZ ("LightZ", Range(-1, 1)) = 0
-        [HideInInspector] _SrcBlend ("SrcBlend", float) = 1
-        [HideInInspector]_DstBlend ("DstBlend", float) = 0
-        [HideInInspector]_ZWrite ("ZWrite", float) = 1
+        _LightX ("LightX", Range(-1, 1)) = 0.3
+        _LightY ("LightY", Range(-1, 1)) = 0.1
+        _LightZ ("LightZ", Range(-1, 1)) = -0.1
+        _SrcBlend ("SrcBlend", float) = 1
+       _DstBlend ("DstBlend", float) = 0
+        _ZWrite ("ZWrite", float) = 1
     }
 
     SubShader {
