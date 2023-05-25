@@ -6,7 +6,7 @@ Shader "Water/Water" {
         _WaveParams ("WavaParam", vector) = (0.04, 0.02, -0.02, -0.04)
         _ReflectionParams ("ReflectionParams", vector) = (0.02, 0.01, -0.01, -0.02)
         _NormalScale ("NormalScale", Range(0, 1)) = 0.3
-        _ReflectionNormalScale("ReflectionNormalScale",Range(0,1))=0.2
+        _ReflectionNormalScale ("ReflectionNormalScale", Range(0, 1)) = 0.2
         _LightDir ("LightDir", vector) = (0, 1, 0, 0)
         _WaterSpecular ("WaterSpecular", Range(0, 1)) = 0.8
         _WaterSmoothness ("WaterSmoothness", Range(0, 1)) = 0.8
@@ -27,8 +27,9 @@ Shader "Water/Water" {
             #pragma fragment frag
             #pragma multi_compile _ _MobileSSPR
             
-            #include "MobileSSPRInclude.hlsl"
+            //#include "MobileSSPRInclude.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
             struct Attributes {
                 half4 vertex : POSITION;
@@ -48,12 +49,14 @@ Shader "Water/Water" {
                 half3 worldNormal : NORMAL;
                 half2 uvRefection : TEXCOORD6;
             };
-            
+
+            TEXTURE2D(_MobileSSPR_ColorRT);
+            sampler LinearClampSampler;
+            sampler2D _NormalTex;
+            sampler2D _ReflectionNormalTex;
             CBUFFER_START(UnityPerMaterial)
             half4 _DiffuseColor;
-            sampler2D _NormalTex;
             half4 _NormalTex_ST;
-            sampler2D _ReflectionNormalTex;
             half4 _ReflectionNormalTex_ST;
             half4 _WaveParams;
             half4 _ReflectionParams;
@@ -80,7 +83,7 @@ Shader "Water/Water" {
                 OUT.worldPos = mul(unity_ObjectToWorld, IN.vertex).xyz;
 
                 OUT.uv = IN.uv.xy * _NormalTex_ST.xy + _NormalTex_ST.zw;
-                OUT.uvRefection=IN.uv.xy * _ReflectionNormalTex_ST.xy + _ReflectionNormalTex_ST.zw;
+                OUT.uvRefection = IN.uv.xy * _ReflectionNormalTex_ST.xy + _ReflectionNormalTex_ST.zw;
 
                 half3 worldNormal = normalize(mul(IN.normal, (float3x3)unity_WorldToObject));
                 half3 worldTangent = normalize(mul((float3x3)unity_ObjectToWorld, IN.tangent));
@@ -107,17 +110,17 @@ Shader "Water/Water" {
                 worldNormal = lerp(half3(0, 0, 1), worldNormal, _NormalScale);
                 worldNormal = normalize(half3(dot(IN.TW0.xyz, worldNormal), dot(IN.TW1.xyz, worldNormal), dot(IN.TW2, worldNormal)));
 
-                //half2 panner3 = (_Time.y * _ReflectionParams.xy + IN.uvRefection);
-                //half2 panner4 = (_Time.y * _ReflectionParams.zw + IN.uvRefection);
-                //half3 refectionNormal = BlendNormals(UnpackNormal(tex2D(_ReflectionNormalTex, panner3)), UnpackNormal(tex2D(_ReflectionNormalTex, panner4)));
-                //refectionNormal = lerp(half3(0, 0, 1), refectionNormal, _NormalScale);
-                //refectionNormal = normalize(half3(dot(IN.TW0.xyz, refectionNormal), dot(IN.TW1.xyz, refectionNormal), dot(IN.TW2, refectionNormal)));
-
                 half2 panner3 = (_Time.y * _ReflectionParams.xy + IN.uvRefection);
-                half3 bump = UnpackNormal(tex2D(_ReflectionNormalTex,panner3));
-                bump*=_ReflectionNormalScale;
-                bump.z=sqrt(1.0-saturate(dot(bump.xy,bump.xy)));
-                bump=normalize(half3(dot(IN.TW0.xyz, bump), dot(IN.TW1.xyz, bump), dot(IN.TW2, bump)));
+                half2 panner4 = (_Time.y * _ReflectionParams.zw + IN.uvRefection);
+                half3 refectionNormal = BlendNormals(UnpackNormal(tex2D(_ReflectionNormalTex, panner3)), UnpackNormal(tex2D(_ReflectionNormalTex, panner4)));
+                refectionNormal =lerp(half3(0,0, 1), refectionNormal, _NormalScale);
+                refectionNormal = normalize(half3(dot(IN.TW0.xyz, refectionNormal), dot(IN.TW1.xyz, refectionNormal), dot(IN.TW2, refectionNormal)));
+
+                //half2 panner3 = (_Time.y * _ReflectionParams.xy + IN.uvRefection);
+                //half3 bump = UnpackNormal(tex2D(_ReflectionNormalTex,panner3));
+                //bump*=_ReflectionNormalScale;
+                //bump.z=sqrt(1.0-saturate(dot(bump.xy,bump.xy)));
+                //bump=normalize(half3(dot(IN.TW0.xyz, bump), dot(IN.TW1.xyz, bump), dot(IN.TW2, bump)));
 
                 half3 viewDir = normalize(_WorldSpaceCameraPos.xyz - IN.worldPos);
                 half NdotV = saturate(dot(worldNormal, viewDir));
@@ -130,18 +133,28 @@ Shader "Water/Water" {
                 half3 color = diffuse + specular + rim;
 
                 //获得反射
+                //获得反射
                 //================================================================
-                ReflectionInput reflectionData;
-                reflectionData.posWS = IN.worldPos;
-                reflectionData.normalWS =bump;// refectionNormal;//IN.worldNormal;
-                reflectionData.screenPos = IN.screenPos;
-                reflectionData.roughness = _Roughness;
-                reflectionData.SSPR_Usage = 1;
-                half3 resultReflection = GetResultReflection(reflectionData);
+                //ReflectionInput reflectionData;
+                //reflectionData.posWS = IN.worldPos;
+                //reflectionData.normalWS = IN.worldNormal;// refectionNormal;//bump;
+                //reflectionData.screenPos = IN.screenPos;
+                //reflectionData.roughness = _Roughness;
+                //reflectionData.SSPR_Usage = 1;
+                //half3 resultReflection = GetResultReflection(reflectionData);
                 //resultReflection += specular;
                 //================================================================
 
-                return half4(resultReflection * color, 1) ;
+                viewDir = normalize(viewDir);
+                half3 reflectDirWS = reflect(-viewDir, refectionNormal);
+                half3 reflectionProbeResult = GlossyEnvironmentReflection(reflectDirWS, _Roughness, 1);
+                half2 screenUV = IN.screenPos.xy / IN.screenPos.w;
+                half4 SSPRResult = SAMPLE_TEXTURE2D(_MobileSSPR_ColorRT, LinearClampSampler, screenUV);
+                SSPRResult.rgb*=2;
+                half3 finalReflection = lerp(reflectionProbeResult, SSPRResult.rgb, SSPRResult.a);
+                finalReflection*=2;
+                return half4(finalReflection * color, 1) ;//reflectionProbeResult
+
             }
             ENDHLSL
         }
