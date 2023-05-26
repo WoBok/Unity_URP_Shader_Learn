@@ -30,8 +30,8 @@ Shader "Light/UnLit" {
                 float2 lightmapUV : TEXCOORD1;
             };
             
-            CBUFFER_START(UnityPerMaterial)
             sampler2D _MainTex;
+            CBUFFER_START(UnityPerMaterial)
             float4 _MainTex_ST;
             CBUFFER_END
 
