@@ -230,7 +230,7 @@
       "url": "https://packages.unity.cn"
     },
     "com.unity.xr.picoxr": {
-      "version": "file:E:/PackageFrame/Packages/PICO Unity Integration SDK v214",
+      "version": "file:D:/Darwin Vinci/Learn/Unity Projects/PICO Unity Integration SDK_215",
       "depth": 0,
       "source": "local",
       "dependencies": {
