@@ -21,7 +21,7 @@ MonoBehaviour:
     ScreenLRStretchIntensity: 0
     ScreenLRStretchThreshold: 1
     TintColor: {r: 1, g: 1, b: 1, a: 1}
-    RT_height: 1024
+    RT_height: 512
     UseHDR: 0
     ApplyFillHoleFix: 1
     ShouldRemoveFlickerFinalControl: 1
