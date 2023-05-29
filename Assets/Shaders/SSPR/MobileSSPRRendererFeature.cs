@@ -1,6 +1,7 @@
 //see README here: https://github.com/ColinLeung-NiloCat/UnityURP-MobileScreenSpacePlanarReflection
 
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using static UnityEngine.XR.XRDisplaySubsystem;
@@ -270,6 +271,7 @@ public class MobileSSPRRendererFeature : ScriptableRendererFeature
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
         renderer.EnqueuePass(m_ScriptablePass);
+        RenderObjects
     }
 }
 
