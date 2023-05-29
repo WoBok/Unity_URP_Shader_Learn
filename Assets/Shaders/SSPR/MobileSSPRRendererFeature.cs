@@ -271,7 +271,6 @@ public class MobileSSPRRendererFeature : ScriptableRendererFeature
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
         renderer.EnqueuePass(m_ScriptablePass);
-        RenderObjects
     }
 }
 
