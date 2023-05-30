@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaad5c85f2c809042933d794a0ae6d8c, type: 3}
   m_Name: MobileSSPRRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   Settings:
     ShouldRenderSSPR: 1
     HorizontalReflectionPlaneHeightWS: 0.01
