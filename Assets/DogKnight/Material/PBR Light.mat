@@ -63,12 +63,12 @@ Material:
     m_Floats:
     - _Alpah: 1
     - _Alpha: 1
-    - _Balala: 6.9
+    - _Balala: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DiffuseBackIntensity: 2
-    - _DiffuseFrontIntensity: 1.25
+    - _DiffuseBackIntensity: 0.61
+    - _DiffuseFrontIntensity: 1.16
     - _DstBlend: 0
     - _Gloss: 2
     - _GlossMapScale: 1
@@ -87,10 +87,10 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _BackLightColor: {r: 0.24619699, g: 1, b: 0, a: 1}
+    - _BackLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FrontLightColor: {r: 1, g: 0, b: 0, a: 1}
+    - _FrontLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _Specular: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecularColor: {r: 1, g: 0.3066038, b: 0.3066038, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

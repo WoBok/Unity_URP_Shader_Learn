@@ -30,7 +30,7 @@ public class ZoomBlurRenderFeature : ScriptableRendererFeature
         }
         public void Setup(in RenderTargetIdentifier currentTarget)
         {
-            this.currentTarget = currentTarget;
+            this.currentTarget = currentTarget; 
         }
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
