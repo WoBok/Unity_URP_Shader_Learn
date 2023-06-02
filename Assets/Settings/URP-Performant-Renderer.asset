@@ -18,6 +18,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 64
     overrideMaterial: {fileID: 2100000, guid: 27789004407a84f4795fa02784b8590b, type: 2}
+    resolutionRatio: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

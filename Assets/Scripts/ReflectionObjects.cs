@@ -11,11 +11,14 @@ public class ReflectionObjects : ScriptableRendererFeature
     {
         public LayerMask LayerMask = 0;
         public Material overrideMaterial = null;
+        [Range(0, 1)]
+        public float resolutionRatio = 1;
     }
     class ReflectionObjectsRenderPass : ScriptableRenderPass
     {
         FilteringSettings m_FilteringSettings;
         public Material overrideMaterial { get; set; }
+        public float resolutionRatio;
         static ShaderTagId shaderTagId = new ShaderTagId("UniversalForward");
         static readonly int reflectionTexture_pid = Shader.PropertyToID("_ReflectionRT");
         static readonly int originalTexture_pid = Shader.PropertyToID("originalTexture");
@@ -31,32 +34,27 @@ public class ReflectionObjects : ScriptableRendererFeature
         }
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
-            cmd.GetTemporaryRT(reflectionTexture_pid, Screen.width, Screen.height);
+            cmd.GetTemporaryRT(reflectionTexture_pid, (int)(Screen.width * resolutionRatio),(int) (Screen.height * resolutionRatio));
             ConfigureTarget(reflectionTexture_pid);
         }
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            CommandBuffer cmd = CommandBufferPool.Get("Render Reflection Object");
 
-            ConfigureTarget(reflectionTexture_pid);
+            CommandBuffer cmd = CommandBufferPool.Get("Render Reflection Object");
+            cmd.ClearRenderTarget(true, true, Color.clear);
+            context.ExecuteCommandBuffer(cmd);
+            CommandBufferPool.Release(cmd);
 
             SortingCriteria sortingCriteria = renderingData.cameraData.defaultOpaqueSortFlags;
             DrawingSettings drawingSettings = CreateDrawingSettings(shaderTagId, ref renderingData, sortingCriteria);
             drawingSettings.overrideMaterial = overrideMaterial;
-            drawingSettings.overrideMaterialPassIndex = 0;
             context.DrawRenderers(renderingData.cullResults, ref drawingSettings, ref m_FilteringSettings);
-
-            cmd.SetGlobalTexture(reflectionTexture_pid, reflectionTexture_identifier);
-
-            context.ExecuteCommandBuffer(cmd);
-            CommandBufferPool.Release(cmd);
         }
 
         public override void OnCameraCleanup(CommandBuffer cmd)
         {
             ConfigureTarget(currentTarget);
             cmd.ReleaseTemporaryRT(reflectionTexture_pid);
-            // cmd.ReleaseTemporaryRT(originalTexture_pid);
         }
     }
 
@@ -67,6 +65,7 @@ public class ReflectionObjects : ScriptableRendererFeature
     {
         m_ScriptablePass = new ReflectionObjectsRenderPass(settings.LayerMask);
         m_ScriptablePass.overrideMaterial = settings.overrideMaterial;
+        m_ScriptablePass.resolutionRatio = settings.resolutionRatio;
         m_ScriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
     }
 
