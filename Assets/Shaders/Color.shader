@@ -33,6 +33,9 @@ Shader "Light/Color" {
             sampler2D _MainTex;
             CBUFFER_START(UnityPerMaterial)
             float4 _MainTex_ST;
+            float c_r=1;
+            float c_g=1;
+            float c_b=1;
             CBUFFER_END
 
             Varyings vert(Attributes IN) {
@@ -51,8 +54,8 @@ Shader "Light/Color" {
             half4 frag(Varyings IN) : SV_Target {
 
                 half3 albedo = tex2D(_MainTex, IN.uv).rgb;
-                half3 color = lerp(albedo, half4(1, 0, 0, 1), 0.5);
-                return half4(color, 1);
+                //half3 color = lerp(albedo, half4(1, 0, 0, 1), 0.5);
+                return half4(albedo.r*c_r,albedo.g*c_g,albedo.b*c_b, 1);
             }
             ENDHLSL
         }
