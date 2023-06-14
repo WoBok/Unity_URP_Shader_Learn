@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8056414386889738132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a3a2b247a626940aa234e8babca817, type: 3}
+  m_Name: ZoomBlurRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,8 +28,12 @@ MonoBehaviour:
   debugShaders:
     debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7,
       type: 3}
-  m_RendererFeatures: []
-  m_RendererFeatureMap: 
+  m_RendererFeatures:
+  - {fileID: 6687683892319644266}
+  - {fileID: 861291388626769935}
+  - {fileID: -8056414386889738132}
+  - {fileID: 4760275725939717582}
+  m_RendererFeatureMap: 6a6ad033116dcf5c0f983363f4ebf30b6c3817c2ccdd3190ce358d3d8de50f42
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -35,10 +52,10 @@ MonoBehaviour:
       type: 3}
     objectMotionVector: {fileID: 4800000, guid: 7b3ede40266cd49a395def176e1bc486,
       type: 3}
-  m_AssetVersion: 2
+  m_AssetVersion: 1
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 63
   m_TransparentLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -52,8 +69,83 @@ MonoBehaviour:
   m_ShadowTransparentReceive: 1
   m_RenderingMode: 0
   m_DepthPrimingMode: 0
-  m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_ClusteredRendering: 0
   m_TileSize: 32
   m_IntermediateTextureMode: 1
+--- !u!114 &861291388626769935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aed38418a923764aa37aed73b18d764, type: 3}
+  m_Name: ReflectionObjects
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings:
+    LayerMask:
+      serializedVersion: 2
+      m_Bits: 64
+    overrideMaterial: {fileID: 2100000, guid: 27789004407a84f4795fa02784b8590b, type: 2}
+    resolutionRatio: 1
+--- !u!114 &4760275725939717582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1e1028bb15de142b154c96e6d3c91c, type: 3}
+  m_Name: ReflectionObjects2
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    LayerMask:
+      serializedVersion: 2
+      m_Bits: 64
+    resolutionRatio: 1
+--- !u!114 &6687683892319644266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
+  m_Name: RenderObjects
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings:
+    passTag: RenderObjects
+    Event: 300
+    filterSettings:
+      RenderQueueType: 0
+      LayerMask:
+        serializedVersion: 2
+        m_Bits: 0
+      PassNames: []
+    overrideMaterial: {fileID: 0}
+    overrideMaterialPassIndex: 0
+    overrideDepthState: 0
+    depthCompareFunction: 4
+    enableWrite: 1
+    stencilSettings:
+      overrideStencilState: 0
+      stencilReference: 0
+      stencilCompareFunction: 8
+      passOperation: 0
+      failOperation: 0
+      zFailOperation: 0
+    cameraSettings:
+      overrideCamera: 0
+      restoreCamera: 1
+      offset: {x: 0, y: 0, z: 0, w: 0}
+      cameraFieldOfView: 60

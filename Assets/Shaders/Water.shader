@@ -125,8 +125,8 @@ Shader "Water/Water_Cube" {
                 half3 v = normalize( IN.worldPos-_WorldSpaceCameraPos.xyz );
                 v = normalize(v);
                 half3 reflectDirWS = reflect(-v, IN.worldNormal);
-                //half3 reflectionProbeResult = GlossyEnvironmentReflection(reflectDirWS, _Roughness, 1);
-                half3 reflectionProbeResult =texCUBE(_Cubemap,reflectDirWS).rgb;
+                half3 reflectionProbeResult = GlossyEnvironmentReflection(reflectDirWS, _Roughness, 1);
+                //half3 reflectionProbeResult =texCUBE(_Cubemap,reflectDirWS).rgb;
                 return half4(reflectionProbeResult , 1) ;
 
             }

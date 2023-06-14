@@ -1,19 +1,15 @@
 Shader "Transparent/Transparent Reflection" {
     Properties {
         _MainTex ("Texture", 2D) = "white" { }
-        _Alpha ("Alpha", float) = 1
     }
     SubShader {
-        Tags { "RenderPipeline" = "UniversalRenderPipeline" "RenderType" = "Transparent" "IgnoreProjector" = "True" "Queue" = "Transparent" }
+        Tags { "RenderPipeline" = "UniversalRenderPipeline" }
         Pass {
             Tags { "LightMode" = "UniversalForward" }
-            Blend SrcAlpha OneMinusSrcAlpha
-            ZWrite On
             Cull Front
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
@@ -30,7 +26,6 @@ Shader "Transparent/Transparent Reflection" {
             CBUFFER_START(UnityPerMaterial)
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float _Alpha;
             CBUFFER_END
 
             v2f vert(appdata v) {
@@ -44,7 +39,6 @@ Shader "Transparent/Transparent Reflection" {
 
             half4 frag(v2f i) : SV_Target {
                 half4 col = tex2D(_MainTex, i.uv);
-                col.a = _Alpha;
                 return col;
             }
             ENDHLSL

@@ -86,22 +86,21 @@ Shader "MobileSSPR/ExampleShader"
                 //================================================================================================
                 //GetResultReflection from SSPR
 
-                ReflectionInput reflectionData;
-                reflectionData.posWS = IN.posWS;
-                reflectionData.screenPos = IN.screenPos;
-                reflectionData.roughness = _Roughness;
-                reflectionData.SSPR_Usage = _BaseColor.a;
+                //ReflectionInput reflectionData;
+                //reflectionData.posWS = IN.posWS;
+                //reflectionData.screenPos = IN.screenPos;
+                //reflectionData.roughness = _Roughness;
+                //reflectionData.SSPR_Usage = _BaseColor.a;
 
-                half3 resultReflection = GetResultReflection(reflectionData);
-                //================================================================================================
+                //half3 resultReflection = GetResultReflection(reflectionData);
+                ////================================================================================================
 
-                //decide show reflection area
-                half reflectionArea = SAMPLE_TEXTURE2D(_ReflectionAreaTex,sampler_ReflectionAreaTex, IN.uv);
+                ////decide show reflection area
+                //half reflectionArea = SAMPLE_TEXTURE2D(_ReflectionAreaTex,sampler_ReflectionAreaTex, IN.uv);
 
-                half3 finalRGB = lerp(baseColor,resultReflection,reflectionArea);
+                //half3 finalRGB = lerp(baseColor,resultReflection,reflectionArea);
 
-                return half4(finalRGB,1);
-                return half4(finalRGB,1);
+                return half4(baseColor,1);
             }
 
             ENDHLSL
