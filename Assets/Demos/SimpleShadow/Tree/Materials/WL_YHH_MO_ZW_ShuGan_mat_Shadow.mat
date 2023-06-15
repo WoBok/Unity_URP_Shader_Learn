@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8999067554545654617
+--- !u!114 &-3344305661320204917
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,10 +20,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SimpleShadow
-  m_Shader: {fileID: 4800000, guid: 602caed825271334dab0fa700fddeff5, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_Name: WL_YHH_MO_ZW_ShuGan_mat_Shadow
+  m_Shader: {fileID: 4800000, guid: e6f5e81872b52614dafd381e06968113, type: 3}
+  m_ValidKeywords:
+  - SHADOWSWITCH_ON
+  m_InvalidKeywords:
+  - ALPAHCLIPPING_ON
+  - DIFFUSE1_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -34,8 +37,8 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 7520c565328fd8440adc0e2c4e6b2477, type: 3}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
@@ -58,7 +61,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 7520c565328fd8440adc0e2c4e6b2477, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -91,7 +94,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - A: 0
+    - AC: 0
+    - AlpahClipping: 1
+    - AlphaClipping: 0
+    - Diffuse1: 1
+    - DiffuseSwitch: 0
+    - ShadowSwitch: 1
+    - SpecularSwitch: 0
+    - _Alpah: 1
     - _AlphaClip: 0
+    - _AlphaClipThreshold: 1
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -100,8 +113,11 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DiffuseBackIntensity: 0.3
+    - _DiffuseFrontIntensity: 0.7
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _Gloss: 0.5
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -110,19 +126,24 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _ShadowAlphaClipThreshold: 1
     - _ShadowFalloff: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _SpecularIntensity: 5
     - _SrcBlend: 1
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - _BackLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightDirection: {r: -2.06, g: -1, b: -1, a: 0}
-    - _ShadowColor: {r: 0, g: 0, b: 0, a: 0.3882353}
+    - _FrontLightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LightDirection: {r: 0.3, g: 0.1, b: -0.1, a: 0.01}
+    - _ShadowColor: {r: 0.101960786, g: 0.14117648, b: 0.21568628, a: 0.70980394}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
