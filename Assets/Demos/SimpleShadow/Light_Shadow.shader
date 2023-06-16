@@ -183,7 +183,7 @@ Shader "Light/Light and Shadow" {
             float3 ShadowProjectPos(float4 vertPos) {
                 float3 shadowPos;
                 float3 worldPos = mul(unity_ObjectToWorld, vertPos).xyz;
-                float3 lightDirection = normalize(_LightDirection);
+                float3 lightDirection = normalize(_LightDirection.xyz);
                 shadowPos.y = min(worldPos.y, _LightDirection.w);
                 shadowPos.xz = worldPos.xz - lightDirection.xz * max(0, worldPos.y - _LightDirection.w);
                 return shadowPos;
@@ -198,10 +198,11 @@ Shader "Light/Light and Shadow" {
                     float falloff = 1 - saturate(distance(shadowPos, center) * _ShadowFalloff);
                     o.color = _ShadowColor;
                     o.color.a *= falloff;
-                    o.uv = v.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw;
                 #else
-                    o.vertex = TransformObjectToHClip(v.vertex);
+                    o.vertex = TransformObjectToHClip(v.vertex.xyz);
+                    o.color=half4(0,0,0,0);
                 #endif
+                    o.uv = v.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw;
                 return o;
             }
 
