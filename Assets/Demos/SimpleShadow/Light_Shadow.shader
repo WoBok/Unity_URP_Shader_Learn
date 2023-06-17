@@ -11,7 +11,7 @@ Shader "Light/Light and Shadow" {
         [Header(Specular)]
         [Toggle]SpecularSwitch ("Specular Switch", int) = 1
         _SpecularColor ("Specular Color", Color) = (1, 1, 1, 1)
-        _SpecularIntensity ("SpecularIntensity", Range(1, 10)) = 5
+        _SpecularIntensity ("SpecularIntensity", Range(0, 10)) = 5
         _Gloss ("Gloss", Range(0, 2)) = 0.5
         [Header(Alpha)]
         _Alpah ("Alpha", Range(0, 1)) = 1
@@ -36,13 +36,15 @@ Shader "Light/Light and Shadow" {
 
             Blend[_SrcBlend][_DstBlend]
             ZWrite[_ZWrite]
+
             HLSLPROGRAM
+
             #pragma vertex vert
             #pragma fragment frag
 
-            #pragma shader_feature ALPHACLIPPING_ON
             #pragma shader_feature DIFFUSESWITCH_ON
             #pragma shader_feature SPECULARSWITCH_ON
+            #pragma shader_feature ALPHACLIPPING_ON
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
@@ -62,18 +64,18 @@ Shader "Light/Light and Shadow" {
             CBUFFER_START(UnityPerMaterial)
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float _DiffuseFrontIntensity;
-            float _Gloss;
-            float _SpecularIntensity;
+            float4 _LightDirection;
             half4 _FrontLightColor;
             half4 _BackLightColor;
-            half4 _SpecularColor;
+            float _DiffuseFrontIntensity;
             float _DiffuseBackIntensity;
+            half4 _SpecularColor;
+            float _SpecularIntensity;
+            float _Gloss;
             half _Alpah;
             float _AlphaClipThreshold;
-            float4 _LightDirection;
-            float _ShadowFalloff;
             float4 _ShadowColor;
+            float _ShadowFalloff;
             float _ShadowAlphaClipThreshold;
             CBUFFER_END
 
@@ -83,9 +85,17 @@ Shader "Light/Light and Shadow" {
                 
                 OUT.vertex = TransformObjectToHClip(IN.vertex.xyz);
                 
-                OUT.worldNormal = mul(IN.normal, (float3x3)unity_WorldToObject);
-
-                OUT.worldPos = mul(unity_ObjectToWorld, IN.vertex).xyz;
+                #if defined(DIFFUSESWITCH_ON) || defined(SPECULARSWITCH_ON)
+                    OUT.worldNormal = mul(IN.normal, (float3x3)unity_WorldToObject);
+                    #if defined(SPECULARSWITCH_ON)
+                        OUT.worldPos = mul(unity_ObjectToWorld, IN.vertex).xyz;
+                    #else
+                        OUT.worldPos = half3(0, 0, 0);
+                    #endif
+                #else
+                    OUT.worldNormal = half3(0, 0, 0);
+                    OUT.worldPos = half3(0, 0, 0);
+                #endif
 
                 OUT.uv = IN.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 
@@ -98,16 +108,20 @@ Shader "Light/Light and Shadow" {
 
                 float3 worldNormal = normalize(IN.worldNormal);
                 float3 worldLightDir = normalize(_LightDirection.xyz);
-                
-                float halfLambert = dot(worldNormal, worldLightDir) * 0.5 + 0.5;
-                half3 diffuse = _FrontLightColor.rgb * albedo.rgb * halfLambert * _DiffuseFrontIntensity;
-                float oneMinusHalfLambert = 1 - halfLambert;
-                diffuse += _BackLightColor.rgb * albedo.rgb * oneMinusHalfLambert * _DiffuseBackIntensity;
 
-                float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - IN.worldPos.xyz);
-                float3 halfDir = normalize(worldLightDir + viewDir);
-                half3 specular = _SpecularColor.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss * 256) * _SpecularIntensity;
-                
+                #if defined(DIFFUSESWITCH_ON)
+                    float halfLambert = dot(worldNormal, worldLightDir) * 0.5 + 0.5;
+                    half3 diffuse = _FrontLightColor.rgb * albedo.rgb * halfLambert * _DiffuseFrontIntensity;
+                    float oneMinusHalfLambert = 1 - halfLambert;
+                    diffuse += _BackLightColor.rgb * albedo.rgb * oneMinusHalfLambert * _DiffuseBackIntensity;
+                #endif
+
+                #if defined(SPECULARSWITCH_ON)
+                    float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - IN.worldPos.xyz);
+                    float3 halfDir = normalize(worldLightDir + viewDir);
+                    half3 specular = _SpecularColor.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss * 256) * _SpecularIntensity;
+                #endif
+
                 half3 color = albedo.rgb;
                 #if defined(DIFFUSESWITCH_ON)
                     color = diffuse;
@@ -200,9 +214,9 @@ Shader "Light/Light and Shadow" {
                     o.color.a *= falloff;
                 #else
                     o.vertex = TransformObjectToHClip(v.vertex.xyz);
-                    o.color=half4(0,0,0,0);
+                    o.color = half4(0, 0, 0, 0);
                 #endif
-                    o.uv = v.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                o.uv = v.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw;
                 return o;
             }
 
