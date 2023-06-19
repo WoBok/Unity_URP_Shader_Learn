@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Water_Lake_01
-  m_Shader: {fileID: 4800000, guid: d12f4c665b1339f4a94166bdf4a0526e, type: 3}
+  m_Name: Water
+  m_Shader: {fileID: 4800000, guid: ccd81e97f67ee624fb50af3451cfdfb0, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 0
@@ -81,7 +81,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RipplesNormal:
-        m_Texture: {fileID: 2800000, guid: dbd4ec369c1cd1e44ab32ef4ea6c7f5d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 18234d0dd8e148248a2b11f182e2519a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RipplesNormal2:
@@ -141,7 +141,7 @@ Material:
     - _CausticSpeed: 2.07
     - _ColourNoiseScale1: 0.019
     - _Cutoff: 0.5
-    - _Depth: 3.11
+    - _Depth: 1.44
     - _DetailNormalMapScale: 1
     - _Distortion: 0.112
     - _Distortion1: 0.292
@@ -159,7 +159,7 @@ Material:
     - _FoamSize1: 0.019
     - _FoamSmoothness: 1.09
     - _FoamSmoothness1: 0
-    - _FoamSpread: 3.4
+    - _FoamSpread: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -167,22 +167,23 @@ Material:
     - _GlowFalloff: 0.747
     - _Metallic: 0
     - _Mode: 0
-    - _NormalScale: 0.201
-    - _NormalTiling: 0.38
+    - _NormalScale: 0.23
+    - _NormalTiling: 0.19
     - _NormalTiling2: 0.1
     - _ODM: 0.02
     - _OcclusionStrength: 1
-    - _Opacity: 1
+    - _Opacity: 0.815
     - _OpacityFalloff: 3.78
-    - _OpacityMin: 0.165
-    - _OverallFalloff: 0.4
+    - _OpacityMin: 0.797
+    - _OverallFalloff: 0.56
     - _Parallax: 0.02
-    - _ReflectionPower: 0.208
-    - _RippleSpeed: 0.026
+    - _ReflectionIntensity: 1
+    - _ReflectionPower: 0.566
+    - _RippleSpeed: 0.084
     - _ShallowFalloff: 0.03
-    - _Smoothness: 5.81
+    - _Smoothness: 3.11
     - _SmoothnessTextureChannel: 0
-    - _Specular: 1
+    - _Specular: 0.884
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Tiling: 0.36
@@ -255,8 +256,9 @@ Material:
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamColor1: {r: 0.5215687, g: 0.8980392, b: 0.8470588, a: 0}
     - _FoamEmitColour: {r: 0.7735849, g: 0.018244924, b: 0.018244924, a: 0}
+    - _ReflectionColor: {r: 1, g: 1, b: 1, a: 0}
     - _ShallowColour: {r: 0.47450984, g: 0.5411765, b: 0.27450982, a: 0}
-    - _VeryDeepColour: {r: 0.14901961, g: 0.20784315, b: 0.121568635, a: 0}
+    - _VeryDeepColour: {r: 0.011764706, g: 0.13333334, b: 0.2, a: 0}
     - _WaterDeepColor: {r: 0.1254902, g: 0.34117648, b: 0.15583292, a: 0}
     - _WaterDeepColor1: {r: 0.04705882, g: 0.3098039, b: 0.1960784, a: 0}
     - _WaterReallyDeepColor: {r: 0.1459713, g: 0.20784314, b: 0.11764706, a: 1}
