@@ -178,7 +178,8 @@ Material:
     - _OverallFalloff: 0.56
     - _Parallax: 0.02
     - _ReflectionIntensity: 1
-    - _ReflectionPower: 0.566
+    - _ReflectionPower: 0.341
+    - _ReflectionfOffset: 0.035
     - _RippleSpeed: 0.084
     - _ShallowFalloff: 0.03
     - _Smoothness: 3.11

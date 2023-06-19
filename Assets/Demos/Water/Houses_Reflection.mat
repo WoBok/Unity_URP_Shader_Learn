@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Houses_Reflection
-  m_Shader: {fileID: 4800000, guid: 4c604e8bccbeda446adaa976a9426bb2, type: 3}
+  m_Shader: {fileID: 4800000, guid: e4365c1cc7057604b856f86ebdf5cabc, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _EMISSION
@@ -92,7 +92,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - AlphaClipping: 0
     - _AlphaClip: 0
+    - _AlphaClipThreshold: 1
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
@@ -101,8 +103,8 @@ Material:
     - _Distance: 72.5
     - _DstBlend: 0
     - _EmissionScaleUI: 0
-    - _FadeIntensity: 0.074
-    - _FadeRange: 0.102
+    - _FadeIntensity: 0.135
+    - _FadeRange: 0.096
     - _GlossMapScale: 1
     - _Glossiness: 0.086
     - _GlossinessSource: 0
@@ -125,7 +127,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _UVSec: 0
-    - _VisibleRange: 70.03
+    - _VisibleRange: 1896.1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

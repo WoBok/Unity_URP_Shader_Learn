@@ -1,4 +1,4 @@
-Shader "Water/Water" {
+Shader "Water/Water_Custom" {
     Properties {
         _DiffuseColor ("DiffuseColor", COLOR) = (1, 1, 1, 1)
         _NormalTex ("NormalTex", 2D) = "white" { }

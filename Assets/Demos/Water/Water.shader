@@ -1,4 +1,4 @@
-Shader "SyntyStudios/Water" {
+Shader "Water/Water" {
     Properties {
         _Opacity ("Opacity", Range(0, 1)) = 1
         _OpacityFalloff ("Opacity Falloff", Float) = 1
@@ -22,8 +22,9 @@ Shader "SyntyStudios/Water" {
         _NormalTiling2 ("Normal Tiling 2", Float) = 0.2
         _NormalScale ("Normal Scale", Range(0, 1)) = 0.669
         _RippleSpeed ("Ripple Speed", Range(0, 1)) = 0.092
-        _ReflectionIntensity ("Reflection Intensity", Range(0, 1)) = 0.3
+         [Header(Reflection)]_ReflectionIntensity ("Reflection Intensity", Range(0, 1)) = 0.3
         _ReflectionColor ("Reflection Color", Color) = (0, 0, 0, 0)
+        _ReflectionfOffset ("Reflection Offset", Range(0,1)) = 0
     }
 
     SubShader {
@@ -91,6 +92,7 @@ Shader "SyntyStudios/Water" {
             float _Opacity;
             float _ReflectionIntensity;
             half4 _ReflectionColor;
+            float _ReflectionfOffset;
             CBUFFER_END
             sampler2D _RipplesNormal;
             sampler2D _RipplesNormal2;
@@ -198,7 +200,7 @@ Shader "SyntyStudios/Water" {
                 float temp_output_235_0 = (temp_output_99_0 + _ShallowFalloff);
                 float4 lerpResult115 = lerp(_ShallowColour, _DeepColour, temp_output_235_0);
                 float4 lerpResult177 = lerp(_DeepColour, _VeryDeepColour, saturate((temp_output_99_0 - 1.0)));
-                float4 temp_output_175_0 = (temp_output_235_0 < 1.0 ?        lerpResult115 : lerpResult177);
+                float4 temp_output_175_0 = (temp_output_235_0 < 1.0 ?             lerpResult115 : lerpResult177);
                 float4 grabScreenPos = ASE_ComputeGrabScreenPos(ScreenPos);
                 float4 grabScreenPosNorm = grabScreenPos / grabScreenPos.w;
                 float4 Refraction107 = float4(SHADERGRAPH_SAMPLE_SCENE_COLOR(((grabScreenPosNorm).xy)), 1.0);
@@ -261,8 +263,8 @@ Shader "SyntyStudios/Water" {
                     Occlusion,
                     Emission,
                     Alpha);
-
-                half4 reflectionCol = tex2D(_ReflectionRT, (IN.screenPos.xy / IN.screenPos.w) + float2(0,Normal.y));
+                float2 uv = (IN.screenPos.xy / IN.screenPos.w) - float2(0, Normal.y+_ReflectionfOffset);
+                half4 reflectionCol = tex2D(_ReflectionRT, uv);
                 half3 finalCol = color + reflectionCol.xyz * _ReflectionIntensity * reflectionCol.a * _ReflectionColor;
 
                 return half4(finalCol, color.a);
