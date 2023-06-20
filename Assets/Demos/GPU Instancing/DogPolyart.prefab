@@ -586,8 +586,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2066896392038131396}
-  - component: {fileID: 5548856192479667732}
-  - component: {fileID: 9055975612571316388}
+  - component: {fileID: 2066896392024962670}
   m_Layer: 0
   m_Name: polySurface1
   m_TagString: Untagged
@@ -610,8 +609,8 @@ Transform:
   m_Father: {fileID: 2066896392038131574}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &5548856192479667732
-MeshRenderer:
+--- !u!137 &2066896392024962670
+SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -625,7 +624,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -642,7 +641,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -651,15 +650,86 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &9055975612571316388
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066896392038628068}
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4300004, guid: a58d63122b09e9144938cd6a1ece4824, type: 3}
+  m_Bones:
+  - {fileID: 2066896392038131498}
+  - {fileID: 2066896392038131568}
+  - {fileID: 2066896392038131490}
+  - {fileID: 2066896392038131488}
+  - {fileID: 2066896392038131494}
+  - {fileID: 2066896392038131582}
+  - {fileID: 2066896392038131560}
+  - {fileID: 2066896392038131580}
+  - {fileID: 2066896392038131570}
+  - {fileID: 2066896392038131462}
+  - {fileID: 2066896392038131482}
+  - {fileID: 2066896392038131524}
+  - {fileID: 2066896392038131544}
+  - {fileID: 2066896392038131548}
+  - {fileID: 2066896392038131572}
+  - {fileID: 2066896392038131464}
+  - {fileID: 2066896392038131468}
+  - {fileID: 2066896392038131460}
+  - {fileID: 2066896392038131480}
+  - {fileID: 2066896392038131546}
+  - {fileID: 2066896392038131550}
+  - {fileID: 2066896392038131538}
+  - {fileID: 2066896392038131466}
+  - {fileID: 2066896392038131470}
+  - {fileID: 2066896392038131458}
+  - {fileID: 2066896392038131520}
+  - {fileID: 2066896392038131394}
+  - {fileID: 2066896392038131578}
+  - {fileID: 2066896392038131540}
+  - {fileID: 2066896392038131510}
+  - {fileID: 2066896392038131402}
+  - {fileID: 2066896392038131406}
+  - {fileID: 2066896392038131566}
+  - {fileID: 2066896392038131554}
+  - {fileID: 2066896392038131558}
+  - {fileID: 2066896392038131486}
+  - {fileID: 2066896392038131474}
+  - {fileID: 2066896392038131478}
+  - {fileID: 2066896392038131502}
+  - {fileID: 2066896392038131526}
+  - {fileID: 2066896392038131392}
+  - {fileID: 2066896392038131576}
+  - {fileID: 2066896392038131562}
+  - {fileID: 2066896392038131508}
+  - {fileID: 2066896392038131400}
+  - {fileID: 2066896392038131404}
+  - {fileID: 2066896392038131564}
+  - {fileID: 2066896392038131552}
+  - {fileID: 2066896392038131556}
+  - {fileID: 2066896392038131484}
+  - {fileID: 2066896392038131472}
+  - {fileID: 2066896392038131476}
+  - {fileID: 2066896392038131500}
+  - {fileID: 2066896392038131506}
+  - {fileID: 2066896392038131532}
+  - {fileID: 2066896392038131536}
+  - {fileID: 2066896392038131530}
+  - {fileID: 2066896392038131516}
+  - {fileID: 2066896392038131518}
+  - {fileID: 2066896392038131512}
+  - {fileID: 2066896392038131514}
+  - {fileID: 2066896392038131492}
+  - {fileID: 2066896392038131496}
+  - {fileID: 2066896392038131398}
+  - {fileID: 2066896392038131504}
+  - {fileID: 2066896392038131522}
+  - {fileID: 2066896392038131542}
+  - {fileID: 2066896392038131528}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 2066896392038131498}
+  m_AABB:
+    m_Center: {x: 0.00000008940697, y: 0.17928879, z: 0.7022597}
+    m_Extent: {x: 0.87674475, y: 0.61002564, z: 0.75376505}
+  m_DirtyAABB: 0
 --- !u!1 &2066896392038628070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,7 +1261,7 @@ GameObject:
   - component: {fileID: 2066896392038131574}
   - component: {fileID: 2066896392029128874}
   m_Layer: 0
-  m_Name: CustomPrefab
+  m_Name: DogPolyart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1222,7 +1292,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2066896392038628118}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: a58d63122b09e9144938cd6a1ece4824, type: 3}
   m_Controller: {fileID: 9100000, guid: b60dc9aa529b314489f628aa3b57c470, type: 2}
   m_CullingMode: 1

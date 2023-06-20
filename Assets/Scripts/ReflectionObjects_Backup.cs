@@ -4,27 +4,25 @@ using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class ReflectionObjects2 : ScriptableRendererFeature
+public class ReflectionObjects_Backup : ScriptableRendererFeature
 {
     [Serializable]
-    public class ReflectionObjectSettings2
+    public class ReflectionObjectSettings
     {
         public LayerMask LayerMask = 0;
-        //public Material overrideMaterial = null;
+        public Material overrideMaterial = null;
         [Range(0.1f, 1f)]
         public float resolutionRatio = 1;
     }
-    class ReflectionObjectsRenderPass2 : ScriptableRenderPass
+    class ReflectionObjectsRenderPass : ScriptableRenderPass
     {
         FilteringSettings m_FilteringSettings;
-        //public Material overrideMaterial { get; set; }
+        public Material overrideMaterial { get; set; }
         public float resolutionRatio;
         static ShaderTagId shaderTagId = new ShaderTagId("UniversalForward");
         static readonly int reflectionTexture_pid = Shader.PropertyToID("_ReflectionRT");
-        static readonly int originalTexture_pid = Shader.PropertyToID("originalTexture");
-        RenderTargetIdentifier reflectionTexture_identifier = new RenderTargetIdentifier(reflectionTexture_pid);
         RenderTargetIdentifier currentTarget;
-        public ReflectionObjectsRenderPass2(LayerMask layerMask)
+        public ReflectionObjectsRenderPass(LayerMask layerMask)
         {
             m_FilteringSettings = new FilteringSettings(RenderQueueRange.all, layerMask);
         }
@@ -47,7 +45,7 @@ public class ReflectionObjects2 : ScriptableRendererFeature
 
             SortingCriteria sortingCriteria = renderingData.cameraData.defaultOpaqueSortFlags;
             DrawingSettings drawingSettings = CreateDrawingSettings(shaderTagId, ref renderingData, sortingCriteria);
-            //drawingSettings.overrideMaterial = overrideMaterial;
+            drawingSettings.overrideMaterial = overrideMaterial;
             context.DrawRenderers(renderingData.cullResults, ref drawingSettings, ref m_FilteringSettings);
         }
 
@@ -58,13 +56,13 @@ public class ReflectionObjects2 : ScriptableRendererFeature
         }
     }
 
-    ReflectionObjectsRenderPass2 m_ScriptablePass;
-    public ReflectionObjectSettings2 settings = new ReflectionObjectSettings2();
+    ReflectionObjectsRenderPass m_ScriptablePass;
+    public ReflectionObjectSettings settings = new ReflectionObjectSettings();
 
     public override void Create()
     {
-        m_ScriptablePass = new ReflectionObjectsRenderPass2(settings.LayerMask);
-        //m_ScriptablePass.overrideMaterial = settings.overrideMaterial;
+        m_ScriptablePass = new ReflectionObjectsRenderPass(settings.LayerMask);
+        m_ScriptablePass.overrideMaterial = settings.overrideMaterial;
         m_ScriptablePass.resolutionRatio = settings.resolutionRatio;
         m_ScriptablePass.renderPassEvent = RenderPassEvent.BeforeRenderingOpaques;
     }

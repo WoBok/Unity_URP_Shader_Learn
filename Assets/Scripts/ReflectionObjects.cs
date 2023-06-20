@@ -10,14 +10,12 @@ public class ReflectionObjects : ScriptableRendererFeature
     public class ReflectionObjectSettings
     {
         public LayerMask LayerMask = 0;
-        public Material overrideMaterial = null;
         [Range(0.1f, 1f)]
         public float resolutionRatio = 1;
     }
     class ReflectionObjectsRenderPass : ScriptableRenderPass
     {
         FilteringSettings m_FilteringSettings;
-        public Material overrideMaterial { get; set; }
         public float resolutionRatio;
         static ShaderTagId shaderTagId = new ShaderTagId("UniversalForward");
         static readonly int reflectionTexture_pid = Shader.PropertyToID("_ReflectionRT");
@@ -32,7 +30,7 @@ public class ReflectionObjects : ScriptableRendererFeature
         }
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
-            cmd.GetTemporaryRT(reflectionTexture_pid, (int)(Screen.width * resolutionRatio),(int) (Screen.height * resolutionRatio));
+            cmd.GetTemporaryRT(reflectionTexture_pid, (int)(Screen.width * resolutionRatio), (int)(Screen.height * resolutionRatio));
             ConfigureTarget(reflectionTexture_pid);
         }
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
@@ -45,7 +43,6 @@ public class ReflectionObjects : ScriptableRendererFeature
 
             SortingCriteria sortingCriteria = renderingData.cameraData.defaultOpaqueSortFlags;
             DrawingSettings drawingSettings = CreateDrawingSettings(shaderTagId, ref renderingData, sortingCriteria);
-            drawingSettings.overrideMaterial = overrideMaterial;
             context.DrawRenderers(renderingData.cullResults, ref drawingSettings, ref m_FilteringSettings);
         }
 
@@ -62,7 +59,6 @@ public class ReflectionObjects : ScriptableRendererFeature
     public override void Create()
     {
         m_ScriptablePass = new ReflectionObjectsRenderPass(settings.LayerMask);
-        m_ScriptablePass.overrideMaterial = settings.overrideMaterial;
         m_ScriptablePass.resolutionRatio = settings.resolutionRatio;
         m_ScriptablePass.renderPassEvent = RenderPassEvent.BeforeRenderingOpaques;
     }

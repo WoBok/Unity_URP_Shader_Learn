@@ -36,6 +36,8 @@ Shader "URP Shader/GPU Instancing" {
             UNITY_DEFINE_INSTANCED_PROP(float4, _BaseColor)
             UNITY_DEFINE_INSTANCED_PROP(float, _PositionDelta)
             UNITY_DEFINE_INSTANCED_PROP(float, _Speed)
+            UNITY_DEFINE_INSTANCED_PROP(float, _Hight)
+            UNITY_DEFINE_INSTANCED_PROP(float, _RotateSpeed)
             UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
             Varyings Vertex(Attributes input) {
@@ -47,12 +49,22 @@ Shader "URP Shader/GPU Instancing" {
 
                 float positionDelta = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _PositionDelta);
                 float speed = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Speed);
-                input.positionOS.x += sin(_Time.x * speed + positionDelta);
-                input.positionOS.y += sin(_Time.y * speed + positionDelta);
-                input.positionOS.z += sin(_Time.z * speed + positionDelta);
+                float hight = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Hight);
+                input.positionOS.x += hight * sin(_Time.x * speed + positionDelta);
+                input.positionOS.y += hight * sin(_Time.y * speed + positionDelta);
+                input.positionOS.z += hight * sin(_Time.z * speed + positionDelta);
 
-                output.positionCS = mul(UNITY_MATRIX_MVP, input.positionOS);
-                
+                //output.positionCS = mul(UNITY_MATRIX_MVP, input.positionOS);
+                float rotateSpeed = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _RotateSpeed);
+                float3 positionWS = TransformObjectToWorld(input.positionOS);
+                float radius = distance(positionWS, float3(0, positionWS.y, 0));
+                float angle = acos(positionWS.x / radius) * 2;
+                float x = radius * cos(_Time.y * rotateSpeed + angle);
+                float z = radius * sin(_Time.y * rotateSpeed + angle);
+                positionWS = float3(x, positionWS.y, z);
+
+                output.positionCS = TransformWorldToHClip(positionWS);
+
                 output.normalWS = normalize(mul(input.normalOS, (float3x3)unity_WorldToObject));
 
                 output.uv = input.texcoord.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
