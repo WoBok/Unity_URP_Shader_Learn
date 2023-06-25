@@ -17,7 +17,7 @@ public class DoCreateShaderScritpAsset : EndNameEditAction
         if (File.Exists(resourceFile))
         {
             string fileName = Path.GetFileNameWithoutExtension(pathName);
-            fileName.Replace('_', ' ');
+            fileName = fileName.Replace('_', ' ');
             string templateText = File.ReadAllText(resourceFile);
             templateText = templateText.Replace("#PATH#", $"URP Shader/{fileName}");
             string templateContent = SetLineEndings(templateText, EditorSettings.lineEndingsForNewScripts);

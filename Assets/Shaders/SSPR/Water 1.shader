@@ -27,7 +27,7 @@ Shader "Water/Water1" {
             #pragma fragment frag
             #pragma multi_compile _ _MobileSSPR
             
-            //#include "MobileSSPRInclude.hlsl"
+            #include "MobileSSPRInclude.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
@@ -50,8 +50,8 @@ Shader "Water/Water1" {
                 half2 uvRefection : TEXCOORD6;
             };
 
-            TEXTURE2D(_MobileSSPR_ColorRT);
-            sampler LinearClampSampler;
+            //TEXTURE2D(_MobileSSPR_ColorRT);
+            //sampler LinearClampSampler;
             sampler2D _NormalTex;
             //sampler2D _ReflectionNormalTex;
             CBUFFER_START(UnityPerMaterial)
@@ -135,14 +135,14 @@ Shader "Water/Water1" {
                 //获得反射
                 //获得反射
                 //================================================================
-                //ReflectionInput reflectionData;
-                //reflectionData.posWS = IN.worldPos;
+                ReflectionInput reflectionData;
+                reflectionData.posWS = IN.worldPos;
                 //reflectionData.normalWS = IN.worldNormal;// refectionNormal;//bump;
-                //reflectionData.screenPos = IN.screenPos;
-                //reflectionData.roughness = _Roughness;
-                //reflectionData.SSPR_Usage = 1;
-                //half3 resultReflection = GetResultReflection(reflectionData);
-                //resultReflection += specular;
+                reflectionData.screenPos = IN.screenPos;
+                reflectionData.roughness = _Roughness;
+                reflectionData.SSPR_Usage = 1;
+                half3 resultReflection = GetResultReflection(reflectionData);
+                resultReflection += specular;
                 //================================================================
 
                 viewDir = normalize(viewDir);

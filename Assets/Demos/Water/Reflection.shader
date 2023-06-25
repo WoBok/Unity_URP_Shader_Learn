@@ -1,6 +1,7 @@
 Shader "Water/Reflection" {
     Properties {
         _MainTex ("Texture", 2D) = "white" { }
+        _ReflectionColor ("Reflection Color", Color) = (1, 1, 1, 1)
         _VisibleRange ("Visible Range", float) = 1
         _FadeRange ("Fade Range", Range(0, 0.5)) = 0
         _FadeIntensity ("Fade Intensity", Range(0, 1)) = 0
@@ -12,7 +13,6 @@ Shader "Water/Reflection" {
         Pass {
             Tags { "LightMode" = "UniversalForward" }
             Cull Front
-
             HLSLPROGRAM
 
             #pragma vertex vert
@@ -35,7 +35,7 @@ Shader "Water/Reflection" {
             CBUFFER_START(UnityPerMaterial)
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            half4 _Color;
+            half4 _ReflectionColor;
             float _VisibleRange;
             float _FadeRange;
             float _FadeIntensity;
@@ -64,6 +64,7 @@ Shader "Water/Reflection" {
                 #if defined(ALPHACLIPPING_ON)
                     clip(col.a - _AlphaClipThreshold);
                 #endif
+                col.rgb *= _ReflectionColor.rgb;
                 col.a *= i.uv.z;
                 return col;
             }

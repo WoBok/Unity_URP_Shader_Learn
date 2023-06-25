@@ -15,14 +15,21 @@ public class ReflectionObjects : ScriptableRendererFeature
     }
     class ReflectionObjectsRenderPass : ScriptableRenderPass
     {
+        DrawingSettings m_DrawingSettings;
         FilteringSettings m_FilteringSettings;
+        //RenderStateBlock m_RenderStateBlock;
+        SortingCriteria m_SortingCriteria;
+
         public float resolutionRatio;
         static ShaderTagId shaderTagId = new ShaderTagId("UniversalForward");
         static readonly int reflectionTexture_pid = Shader.PropertyToID("_ReflectionRT");
         RenderTargetIdentifier currentTarget;
+
         public ReflectionObjectsRenderPass(LayerMask layerMask)
         {
             m_FilteringSettings = new FilteringSettings(RenderQueueRange.all, layerMask);
+            m_SortingCriteria = SortingCriteria.CommonTransparent;
+            //m_RenderStateBlock = new RenderStateBlock() { mask = RenderStateMask.Depth, depthState = new DepthState(true, CompareFunction.Equal) };
         }
         public void Setup(in RenderTargetIdentifier currentTarget)
         {
@@ -41,9 +48,9 @@ public class ReflectionObjects : ScriptableRendererFeature
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
 
-            SortingCriteria sortingCriteria = renderingData.cameraData.defaultOpaqueSortFlags;
-            DrawingSettings drawingSettings = CreateDrawingSettings(shaderTagId, ref renderingData, sortingCriteria);
-            context.DrawRenderers(renderingData.cullResults, ref drawingSettings, ref m_FilteringSettings);
+            //m_SortingCriteria = renderingData.cameraData.defaultOpaqueSortFlags;
+            m_DrawingSettings = CreateDrawingSettings(shaderTagId, ref renderingData, m_SortingCriteria);
+            context.DrawRenderers(renderingData.cullResults, ref m_DrawingSettings, ref m_FilteringSettings/*,ref m_RenderStateBlock*/);
         }
 
         public override void OnCameraCleanup(CommandBuffer cmd)

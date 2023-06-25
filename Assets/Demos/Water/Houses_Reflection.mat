@@ -103,8 +103,8 @@ Material:
     - _Distance: 72.5
     - _DstBlend: 0
     - _EmissionScaleUI: 0
-    - _FadeIntensity: 0.135
-    - _FadeRange: 0.096
+    - _FadeIntensity: 0.06
+    - _FadeRange: 0.101
     - _GlossMapScale: 1
     - _Glossiness: 0.086
     - _GlossinessSource: 0
@@ -127,7 +127,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _UVSec: 0
-    - _VisibleRange: 1896.1
+    - _VisibleRange: 10000
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

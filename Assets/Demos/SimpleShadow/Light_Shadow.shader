@@ -1,6 +1,7 @@
 Shader "Light/Light and Shadow" {
     Properties {
         _MainTex ("MainTex", 2D) = "white" { }
+        [Space(15)]
         _LightDirection ("LightDirection", vector) = (0.3, 0.1, -0.1, 0)
         [Header(Diffuse)]
         [Toggle]DiffuseSwitch ("Diffuse Switch", int) = 1
@@ -13,19 +14,19 @@ Shader "Light/Light and Shadow" {
         _SpecularColor ("Specular Color", Color) = (1, 1, 1, 1)
         _SpecularIntensity ("SpecularIntensity", Range(0, 10)) = 5
         _Gloss ("Gloss", Range(0, 2)) = 0.5
-        [Header(Alpha)]
-        _Alpah ("Alpha", Range(0, 1)) = 1
-        [Toggle]AlphaClipping ("Alpah Clipping", int) = 0
-        _AlphaClipThreshold ("Alpha Clip Threshold", Range(0, 1)) = 1
         [Header(Shadow)]
         [Toggle]ShadowSwitch ("Shadow Switch", int) = 1
         _ShadowColor ("Shadow Color", Color) = (0, 0, 0, 0.5)
         _ShadowFalloff ("Shadow Fall Off", float) = 0
         _ShadowAlphaClipThreshold ("Shadow Alpha Clip Threshold", Range(0, 1)) = 1
+        [Header(Alpha)]
+        _Alpah ("Alpha", Range(0, 1)) = 1
+        [Toggle]AlphaClipping ("Alpah Clipping", int) = 0
+        _AlphaClipThreshold ("Alpha Clip Threshold", Range(0, 1)) = 1
         [Header(Other Settings)]
-        _SrcBlend ("SrcBlend   [1  5]", float) = 1
-        _DstBlend ("DstBlend   [0  10]", float) = 0
-        _ZWrite ("ZWrite        [1  0]", float) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]_SrcBlend ("SrcBlend   [One  SrcAlpha]", float) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]_DstBlend ("DstBlend   [Zero  OneMinusSrcAlpha]", float) = 0
+        [Enum(On,1,Off,0)]_ZWrite ("ZWrite        [On  Off]", float) = 1
     }
 
     SubShader {
@@ -168,18 +169,18 @@ Shader "Light/Light and Shadow" {
             CBUFFER_START(UnityPerMaterial)
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float _DiffuseFrontIntensity;
-            float _Gloss;
-            float _SpecularIntensity;
+            float4 _LightDirection;
             half4 _FrontLightColor;
             half4 _BackLightColor;
-            half4 _SpecularColor;
+            float _DiffuseFrontIntensity;
             float _DiffuseBackIntensity;
+            half4 _SpecularColor;
+            float _SpecularIntensity;
+            float _Gloss;
             half _Alpah;
             float _AlphaClipThreshold;
-            float4 _LightDirection;
-            float _ShadowFalloff;
             float4 _ShadowColor;
+            float _ShadowFalloff;
             float _ShadowAlphaClipThreshold;
             CBUFFER_END
 
@@ -223,7 +224,7 @@ Shader "Light/Light and Shadow" {
             half4 frag(v2f i) : SV_Target {
                 #if defined(SHADOWSWITCH_ON)
                     #if defined(ALPHACLIPPING_ON)
-                        half4 alphaTest = tex2D(_MainTex, i.uv).a;
+                        half alphaTest = tex2D(_MainTex, i.uv).a;
                         clip(alphaTest - _ShadowAlphaClipThreshold);
                         i.color.a *= alphaTest;
                     #endif

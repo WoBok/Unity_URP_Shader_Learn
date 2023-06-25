@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
-  m_Shader: {fileID: 4800000, guid: ccd81e97f67ee624fb50af3451cfdfb0, type: 3}
+  m_Shader: {fileID: 4800000, guid: b71c6813818ac6046bdf49e4cd8c7bcb, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 0
@@ -47,6 +47,10 @@ Material:
     - _FoamMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FoamTex:
+        m_Texture: {fileID: 2800000, guid: 46256ef03838b6a4d9e4354c2ddf1c27, type: 3}
+        m_Scale: {x: 500, y: 500}
         m_Offset: {x: 0, y: 0}
     - _Foam_Texture:
         m_Texture: {fileID: 2800000, guid: d4430fc22ad254342b31674479402ae4, type: 3}
@@ -97,8 +101,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _WaterNormal:
-        m_Texture: {fileID: 2800000, guid: 7dafeb7e3c899c049b30a8b6bc0c00d5, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: fec0ccc4c50eaaa4cac8f9d71870563e, type: 3}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _WaterNormal1:
         m_Texture: {fileID: 2800000, guid: 943fbf4e2ff77624595e60ac401208bf, type: 3}
@@ -128,6 +132,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 16d574e53541bba44a84052fa38778df, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Z:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -149,17 +157,19 @@ Material:
     - _DistortionTiling: 0.33
     - _DstBlend: 0
     - _Float4: 0.37
-    - _FoamDepth: 1.05
+    - _FoamDepth: 10
     - _FoamDepth1: 0
+    - _FoamFactor: 4.94
     - _FoamFalloff: -56.77
     - _FoamFalloff1: 0
     - _FoamGlowMultiplier: 17.41
-    - _FoamShoreline: 1
+    - _FoamShoreline: 0
     - _FoamSize: 5.32
     - _FoamSize1: 0.019
     - _FoamSmoothness: 1.09
     - _FoamSmoothness1: 0
-    - _FoamSpread: 1
+    - _FoamSpread: 46.3
+    - _FoamWave: 9.81
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -168,7 +178,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _NormalScale: 0.23
-    - _NormalTiling: 0.19
+    - _NormalTiling: 1
     - _NormalTiling2: 0.1
     - _ODM: 0.02
     - _OcclusionStrength: 1
@@ -177,9 +187,10 @@ Material:
     - _OpacityMin: 0.797
     - _OverallFalloff: 0.56
     - _Parallax: 0.02
-    - _ReflectionIntensity: 1
+    - _ReflectionIntensity: 0.434
     - _ReflectionPower: 0.341
-    - _ReflectionfOffset: 0.035
+    - _ReflectionfOffset: 0
+    - _ReflectionfWave: 1
     - _RippleSpeed: 0.084
     - _ShallowFalloff: 0.03
     - _Smoothness: 3.11
@@ -254,9 +265,11 @@ Material:
     - _DeepColour: {r: 0.14117648, g: 0.3372549, b: 0.16470589, a: 0}
     - _DepthGlowColour: {r: 0.8490566, g: 0.23591222, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FoamColor: {r: 1, g: 0, b: 0, a: 1}
     - _FoamColor1: {r: 0.5215687, g: 0.8980392, b: 0.8470588, a: 0}
     - _FoamEmitColour: {r: 0.7735849, g: 0.018244924, b: 0.018244924, a: 0}
+    - _FoamOffset: {r: -0.001, g: 0.001, b: 2, a: 0.02}
+    - _Foam_Color: {r: 1, g: 1, b: 1, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 0}
     - _ShallowColour: {r: 0.47450984, g: 0.5411765, b: 0.27450982, a: 0}
     - _VeryDeepColour: {r: 0.011764706, g: 0.13333334, b: 0.2, a: 0}
@@ -265,4 +278,5 @@ Material:
     - _WaterReallyDeepColor: {r: 0.1459713, g: 0.20784314, b: 0.11764706, a: 1}
     - _WaterShallowColor: {r: 0.47192374, g: 0.541, b: 0.26138204, a: 1}
     - _WaterShallowColor1: {r: 0.9607843, g: 0.7882353, b: 0.5764706, a: 0}
+    - _WaveParams: {r: -0.001, g: -0.01, b: -0.01, a: -0.001}
   m_BuildTextureStacks: []

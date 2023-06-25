@@ -1,4 +1,4 @@
-Shader "Water/Water" {
+Shader "Water/Water_Foam" {
     Properties {
         _Opacity ("Opacity", Range(0, 1)) = 1
         _OpacityFalloff ("Opacity Falloff", Float) = 1
@@ -25,6 +25,16 @@ Shader "Water/Water" {
         [Header(Reflection)]_ReflectionIntensity ("Reflection Intensity", Range(0, 1)) = 0.5
         _ReflectionColor ("Reflection Color", Color) = (1, 1, 1, 1)
         _ReflectionfWave ("Reflection Wave", Range(0, 1)) = 0
+
+        _FoamTex ("_FoamTex", 2D) = "white" { }
+        _Foam_Color ("Foam Color", Color) = (1, 1, 1, 1)
+        _FoamDepth ("Foam Range", Range(-2, 10)) = 0.5
+        _FoamFactor ("Foam Factor", Range(0, 10)) = 0.2
+        _FoamOffset ("XY:Foam Speed,Z:Foam Intensity,W:Foam Wave", vector) = (-0.01, 0.01, 2, 0.01)
+
+        _WaterNormal ("_WaterNormal", 2D) = "bump" { }
+        _WaveParams ("_WaveParams", vector) = (-0.04, -0.02, -0.02, -0.04)
+        _FoamWave("FoamWave",float)=1
     }
 
     SubShader {
@@ -62,6 +72,7 @@ Shader "Water/Water" {
                 float4 clipPos : SV_POSITION;
                 float4 lightmapUVOrVertexSH : TEXCOORD0;
                 half4 fogFactorAndVertexLight : TEXCOORD1;
+                float4 uv : TEXCOORD2;
                 float4 tSpace0 : TEXCOORD3;
                 float4 tSpace1 : TEXCOORD4;
                 float4 tSpace2 : TEXCOORD5;
@@ -93,10 +104,21 @@ Shader "Water/Water" {
             float _ReflectionIntensity;
             half4 _ReflectionColor;
             float _ReflectionfWave;
+
+            float4 _FoamTex_ST;
+            half4 _Foam_Color;
+            half _FoamDepth;
+            half _FoamFactor;
+            half4 _FoamOffset;
+            float _FoamWave;
+            uniform float4 _WaterNormal_ST;
+            uniform half4 _WaveParams;
             CBUFFER_END
             sampler2D _RipplesNormal;
             sampler2D _RipplesNormal2;
-            sampler2D _ReflectionRT;
+            //sampler2D _ReflectionRT;
+             sampler2D _FoamTex;
+             sampler2D _WaterNormal;
 
             inline float4 ASE_ComputeGrabScreenPos(float4 pos) {
                 float scale = 1.0;
@@ -184,6 +206,10 @@ Shader "Water/Water" {
                 
                 o.clipPos = positionCS;
                 o.screenPos = ComputeScreenPos(positionCS);
+
+                o.uv.xy = TRANSFORM_TEX(v.texcoord1, _FoamTex);
+                o.uv.zw = TRANSFORM_TEX(v.texcoord1, _WaterNormal);
+
                 return o;
             }
 
@@ -192,7 +218,7 @@ Shader "Water/Water" {
                 float3 WorldPosition = float3(IN.tSpace0.w, IN.tSpace1.w, IN.tSpace2.w);
                 float3 WorldViewDirection = _WorldSpaceCameraPos.xyz - WorldPosition;
                 float4 ScreenPos = IN.screenPos;
-                WorldViewDirection = SafeNormalize(WorldViewDirection);
+                WorldViewDirection = normalize(WorldViewDirection);
                 float4 screenPosNorm = ScreenPos / ScreenPos.w;
                 float screenDepth170 = LinearEyeDepth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(screenPosNorm.xy), _ZBufferParams);
                 float distanceDepth170 = abs((screenDepth170 - LinearEyeDepth(screenPosNorm.z, _ZBufferParams)) / (_Depth));
@@ -200,7 +226,7 @@ Shader "Water/Water" {
                 float temp_output_235_0 = (temp_output_99_0 + _ShallowFalloff);
                 float4 lerpResult115 = lerp(_ShallowColour, _DeepColour, temp_output_235_0);
                 float4 lerpResult177 = lerp(_DeepColour, _VeryDeepColour, saturate((temp_output_99_0 - 1.0)));
-                float4 temp_output_175_0 = (temp_output_235_0 < 1.0 ?                   lerpResult115 : lerpResult177);
+                float4 temp_output_175_0 = (temp_output_235_0 < 1.0 ?                              lerpResult115 : lerpResult177);
                 float4 grabScreenPos = ASE_ComputeGrabScreenPos(ScreenPos);
                 float4 grabScreenPosNorm = grabScreenPos / grabScreenPos.w;
                 float4 Refraction107 = float4(SHADERGRAPH_SAMPLE_SCENE_COLOR(((grabScreenPosNorm).xy)), 1.0);
@@ -268,11 +294,34 @@ Shader "Water/Water" {
                     Alpha);
 
                 float3 reflectionWave = BlendNormal(UnpackNormal(tex2DNormal1), UnpackNormal(tex2DNormal2)) * _ReflectionfWave;
-                float2 uv = (IN.screenPos.xy / IN.screenPos.w) - float2(0, reflectionWave.y);
-                half4 reflectionCol = tex2D(_ReflectionRT, uv);
-                half3 finalCol = color + reflectionCol.xyz * _ReflectionIntensity * reflectionCol.a * _ReflectionColor;
+                //float2 uv = (IN.screenPos.xy / IN.screenPos.w) - float2(0, reflectionWave.y);
+                //half4 reflectionCol = tex2D(_ReflectionRT, uv);
+                half3 finalCol = color; //+ reflectionCol.xyz * _ReflectionIntensity * reflectionCol.a * _ReflectionColor;
+
+
+
+                half2 panner1 = (_Time.y * _WaveParams.xy + IN.uv.zw);
+                half2 panner2 = (_Time.y * _WaveParams.zw + IN.uv.zw);
+                half3 worldNormal = BlendNormal(UnpackNormal(tex2D(_WaterNormal, panner1)), UnpackNormal(tex2D(_WaterNormal, panner2)));
+                half3 foamwave=reflectionWave*_FoamWave;
+                half3 water = tex2D(_FoamTex, IN.uv.xy / _FoamTex_ST.xy);
+                half3 foam1 = tex2D(_FoamTex, IN.uv.xy + foamwave.xy * _FoamOffset.w);
+                half3 foam2 = tex2D(_FoamTex, _Time.y * _FoamOffset.xy + IN.uv.xy + foamwave.xy * _FoamOffset.w);
+                float4 screenPos = float4(IN.screenPos.xyz, IN.screenPos.w);
+                // half eyeDepth = LinearEyeDepth(UNITY_SAMPLE_DEPTH(tex2D(_CameraDepthTexture, screenPos.xy/screenPos.w)));
+                half eyeDepth = LinearEyeDepth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(screenPosNorm.xy), _ZBufferParams);
+                half eyeDepthSubScreenPos = abs(eyeDepth - screenPos.w);
+                half depthMask = 1 - eyeDepthSubScreenPos + _FoamDepth;
+                float temp_output = (saturate((foam1.g + foam2.g) * depthMask  - _FoamFactor));
+                finalCol = lerp(finalCol, _Foam_Color * _FoamOffset.z, temp_output);
+
+                color.a*=saturate(eyeDepthSubScreenPos);
 
                 return half4(finalCol, color.a);
+
+                //half4 foam111 = tex2D(_FoamTex, IN.uv.xy );
+                //return foam111;
+
             }
 
             ENDHLSL

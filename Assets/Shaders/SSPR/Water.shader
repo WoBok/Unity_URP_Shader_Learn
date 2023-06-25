@@ -27,7 +27,7 @@ Shader "Water/Water_Custom" {
             #pragma fragment frag
             #pragma multi_compile _ _MobileSSPR
             
-            //#include "MobileSSPRInclude.hlsl"
+            #include "MobileSSPRInclude.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
@@ -50,8 +50,8 @@ Shader "Water/Water_Custom" {
                 half2 uvRefection : TEXCOORD6;
             };
 
-            TEXTURE2D(_MobileSSPR_ColorRT);
-            sampler LinearClampSampler;
+            //TEXTURE2D(_MobileSSPR_ColorRT);
+            //sampler LinearClampSampler;
             sampler2D _NormalTex;
             sampler2D _ReflectionNormalTex;
             CBUFFER_START(UnityPerMaterial)
@@ -135,25 +135,26 @@ Shader "Water/Water_Custom" {
                 //获得反射
                 //获得反射
                 //================================================================
-                //ReflectionInput reflectionData;
-                //reflectionData.posWS = IN.worldPos;
-                //reflectionData.normalWS = IN.worldNormal;// refectionNormal;//bump;
-                //reflectionData.screenPos = IN.screenPos;
-                //reflectionData.roughness = _Roughness;
-                //reflectionData.SSPR_Usage = 1;
-                //half3 resultReflection = GetResultReflection(reflectionData);
-                //resultReflection += specular;
+                ReflectionInput reflectionData;
+                reflectionData.posWS = IN.worldPos;
+                reflectionData.normalWS = refectionNormal;//IN.worldNormal;// refectionNormal;//bump;
+                reflectionData.screenPos = IN.screenPos;
+                //reflectionData.screenSpaceNoise=float2(0,0);
+                reflectionData.roughness = _Roughness;
+                reflectionData.SSPR_Usage = 1;
+                half3 resultReflection = GetResultReflection(reflectionData);
+                resultReflection += specular;
                 //================================================================
 
-                viewDir = normalize(viewDir);
-                half3 reflectDirWS = reflect(-viewDir, refectionNormal);
-                half3 reflectionProbeResult = GlossyEnvironmentReflection(reflectDirWS, _Roughness, 1);
-                half2 screenUV = IN.screenPos.xy / IN.screenPos.w;
-                half4 SSPRResult = SAMPLE_TEXTURE2D(_MobileSSPR_ColorRT, LinearClampSampler, screenUV);
-                SSPRResult.rgb*=2;
-                half3 finalReflection = lerp(reflectionProbeResult, SSPRResult.rgb, SSPRResult.a);
-                finalReflection*=2;
-                return half4(finalReflection * color, 1) ;//reflectionProbeResult
+                //viewDir = normalize(viewDir);
+                //half3 reflectDirWS = reflect(-viewDir, refectionNormal);
+                //half3 reflectionProbeResult = GlossyEnvironmentReflection(reflectDirWS, _Roughness, 1);
+                //half2 screenUV = IN.screenPos.xy / IN.screenPos.w;
+                //half4 SSPRResult = SAMPLE_TEXTURE2D(_MobileSSPR_ColorRT, LinearClampSampler, screenUV);
+                //SSPRResult.rgb*=2;
+                //half3 finalReflection = lerp(reflectionProbeResult, SSPRResult.rgb, SSPRResult.a);
+                //finalReflection*=2;
+                return half4(resultReflection * color, 1) ;//reflectionProbeResult
 
             }
             ENDHLSL

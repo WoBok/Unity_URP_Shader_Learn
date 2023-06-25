@@ -1,6 +1,7 @@
 Shader "Light/Light" {
     Properties {
         _MainTex ("MainTex", 2D) = "white" { }
+        [Space(15)]
         _LightDirection ("LightDirection", vector) = (0.3, 0.1, -0.1, 0)
         [Header(Diffuse)]
         [Toggle]DiffuseSwitch ("Diffuse Switch", int) = 1
@@ -18,9 +19,9 @@ Shader "Light/Light" {
         [Toggle]AlphaClipping ("Alpah Clipping", int) = 0
         _AlphaClipThreshold ("Alpha Clip Threshold", Range(0, 1)) = 1
         [Header(Other Settings)]
-        _SrcBlend ("SrcBlend   [1  5]", float) = 1
-        _DstBlend ("DstBlend   [0  10]", float) = 0
-        _ZWrite ("ZWrite        [1  0]", float) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]_SrcBlend ("SrcBlend   [One  SrcAlpha]", float) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]_DstBlend ("DstBlend   [Zero  OneMinusSrcAlpha]", float) = 0
+        [Enum(On,1,Off,0)]_ZWrite ("ZWrite        [On  Off]", float) = 1
     }
 
     SubShader {
