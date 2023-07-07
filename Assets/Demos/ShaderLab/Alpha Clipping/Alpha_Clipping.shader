@@ -1,4 +1,4 @@
-Shader "ShaderLab Syntax/Alpha Clipping" {
+Shader "Demo/ShaderLab Syntax/Alpha Clipping" {
     Properties {
         _BaseMap ("Albedo", 2D) = "white" { }
         _BaseColor ("Color", Color) = (1, 1, 1, 1)

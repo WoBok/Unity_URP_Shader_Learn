@@ -1,4 +1,4 @@
-Shader "ShaderLab Syntax/Stencil/Stencil_2" {
+Shader "Demo/ShaderLab Syntax/Stencil/Stencil_2" {
 
     SubShader {
         Tags { "RenderPipeline" = "UniversalPipeline" }

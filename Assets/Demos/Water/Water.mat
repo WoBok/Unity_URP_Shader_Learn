@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
-  m_Shader: {fileID: 4800000, guid: b71c6813818ac6046bdf49e4cd8c7bcb, type: 3}
+  m_Shader: {fileID: 4800000, guid: 4a4e65792bc307c49ab187c751a527e1, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 0
@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FoamTex:
-        m_Texture: {fileID: 2800000, guid: 46256ef03838b6a4d9e4354c2ddf1c27, type: 3}
+        m_Texture: {fileID: 2800000, guid: a2e41f74d5f675b4d958e901db11a509, type: 3}
         m_Scale: {x: 500, y: 500}
         m_Offset: {x: 0, y: 0}
     - _Foam_Texture:
@@ -66,6 +66,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTexture:
+        m_Texture: {fileID: 2800000, guid: 41d01fe6e8db970449385e7f43d4aa06, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -157,19 +161,24 @@ Material:
     - _DistortionTiling: 0.33
     - _DstBlend: 0
     - _Float4: 0.37
-    - _FoamDepth: 10
+    - _FoamDepth: 5.9
     - _FoamDepth1: 0
-    - _FoamFactor: 4.94
+    - _FoamDistance: 0.032
+    - _FoamFactor: 3.74
     - _FoamFalloff: -56.77
     - _FoamFalloff1: 0
     - _FoamGlowMultiplier: 17.41
-    - _FoamShoreline: 0
+    - _FoamHardness: 0.145
+    - _FoamOpacity: 1
+    - _FoamScale: 0.284
+    - _FoamShoreline: 1
     - _FoamSize: 5.32
     - _FoamSize1: 0.019
     - _FoamSmoothness: 1.09
     - _FoamSmoothness1: 0
-    - _FoamSpread: 46.3
-    - _FoamWave: 9.81
+    - _FoamSpeed: 0.214
+    - _FoamSpread: 1
+    - _FoamWave: 9.56
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -265,7 +274,7 @@ Material:
     - _DeepColour: {r: 0.14117648, g: 0.3372549, b: 0.16470589, a: 0}
     - _DepthGlowColour: {r: 0.8490566, g: 0.23591222, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FoamColor: {r: 1, g: 0, b: 0, a: 1}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamColor1: {r: 0.5215687, g: 0.8980392, b: 0.8470588, a: 0}
     - _FoamEmitColour: {r: 0.7735849, g: 0.018244924, b: 0.018244924, a: 0}
     - _FoamOffset: {r: -0.001, g: 0.001, b: 2, a: 0.02}

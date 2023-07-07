@@ -1,4 +1,4 @@
-Shader "Light/Simple Lighting Simulation_Attach Shadow" {
+Shader "Demo/SimpleShadow/Simple Lighting Simulation_Attach Shadow" {
     Properties {
         _MainTex ("MainTex", 2D) = "white" { }
         _LightDirection ("LightDirection", vector) = (0.3, 0.1, -0.1, 0)

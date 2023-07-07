@@ -1,4 +1,4 @@
-Shader "Water/Reflection" {
+Shader "Demo/Water/Reflection" {
     Properties {
         _MainTex ("Texture", 2D) = "white" { }
         _ReflectionColor ("Reflection Color", Color) = (1, 1, 1, 1)

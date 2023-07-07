@@ -1,4 +1,4 @@
-Shader "Light/Light" {
+Shader "Demo/SimpleShadow/Light" {
     Properties {
         _MainTex ("MainTex", 2D) = "white" { }
         [Space(15)]
@@ -85,8 +85,15 @@ Shader "Light/Light" {
 
             half4 frag(Varyings IN) : SV_Target {
 
-                half4 albedo = tex2D(_MainTex, IN.uv);
-
+                half4 albedo = tex2D(_MainTex, IN.uv);//Albedo决定了多少红绿蓝不被反射
+                /*
+                       反照率指的是光线被物体或表面反射回来的比例，涵盖了所有波长的光。物体的反照率不同波长的光线可能会有所差异。在可见光谱范围内，
+                不同颜色的光波长对应不同的颜色。当光线照射到物体上时，物体的反照率会影响不同波长光的反射程度。
+                       例如，对于红色物体，它能够吸收大部分的非红色波长光，并反射红色波长光，因此我们看到它是红色的。相应地，对于蓝色物体，它吸收
+                大部分非蓝色波长光，并反射蓝色波长光。
+                       因此，反照率并不局限于特定的波长范围，而是表示物体对所有波长光线的反射能力。不同波长的光线在反射过程中可能会被物体吸收、散
+                射或反射，最终形成我们所观察到的颜色和亮度。
+                */
                 float3 worldNormal = normalize(IN.worldNormal);
                 float3 worldLightDir = normalize(_LightDirection.xyz);
                 

@@ -1,4 +1,4 @@
-Shader "Water/Water_Foam" {
+Shader "Demo/Water/Water_Foam" {
     Properties {
         _Opacity ("Opacity", Range(0, 1)) = 1
         _OpacityFalloff ("Opacity Falloff", Float) = 1

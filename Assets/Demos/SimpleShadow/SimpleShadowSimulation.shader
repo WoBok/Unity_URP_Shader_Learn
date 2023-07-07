@@ -1,4 +1,4 @@
-Shader "Shadow/Simple Shadow Simulation" {
+Shader "Demo/SimpleShadow/Simple Shadow Simulation" {
     Properties {
         _LightDirection ("Light Direction", vector) = (0.3, 0.1, -0.1, 0)
         _ShadowColor ("Shadow Color", Color) = (0, 0, 0, 0.5)

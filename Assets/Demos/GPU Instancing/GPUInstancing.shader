@@ -1,4 +1,4 @@
-Shader "URP Shader/GPU Instancing" {
+Shader "Demo/GPU Instancing/GPU Instancing" {
     Properties {
         _BaseMap ("Albedo", 2D) = "white" { }
     }

@@ -1,4 +1,4 @@
-Shader "Light/Light and Shadow" {
+Shader "Demo/SimpleShadow/Light and Shadow" {
     Properties {
         _MainTex ("MainTex", 2D) = "white" { }
         [Space(15)]

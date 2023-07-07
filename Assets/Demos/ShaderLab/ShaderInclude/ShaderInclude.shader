@@ -1,4 +1,4 @@
-Shader "ShaderLab Syntax/ShaderInclude"
+Shader "Demo/ShaderLab Syntax/ShaderInclude"
 {
     SubShader
     {

@@ -1,4 +1,4 @@
-Shader "ShaderLab Syntax/Offset"
+Shader "Demo/ShaderLab Syntax/Offset"
 {
     Properties
     {
