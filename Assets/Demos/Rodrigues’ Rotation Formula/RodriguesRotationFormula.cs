@@ -17,6 +17,8 @@ public class RodriguesRotationFormula
         rotationMatrix = Matrix4x4PlusMatrix4x4(rotationMatrix, MatrixMultipliedByNumber(ColumnVector4MultipliedByRowVector4(axisV4, axisV4), 1 - cosValue));
         rotationMatrix = Matrix4x4PlusMatrix4x4(rotationMatrix, MatrixMultipliedByNumber(matrixN, Mathf.Sin(angle)));
 
+        rotationMatrix[3, 3] = 1;
+
         return rotationMatrix;
     }
 
