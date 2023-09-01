@@ -7,7 +7,7 @@ Shader "Demo/ShaderLab Syntax/Stencil/Stencil_2" {
             Stencil {
                 Ref 50
                 Comp Less//Less	2	在参考值小于模板缓冲区中的当前值时渲染像素。Greater	5	在参考值大于模板缓冲区中的当前值时渲染像素。
-                Pass Keep
+                Pass Keep//Keep	0	保持模板缓冲区的当前内容。
             }
 
             HLSLPROGRAM

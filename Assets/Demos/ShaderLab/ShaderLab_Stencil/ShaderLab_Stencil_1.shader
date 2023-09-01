@@ -7,7 +7,7 @@ Shader "Demo/ShaderLab Syntax/Stencil/Stencil_1" {
             Stencil {
                 Ref 55
                 Comp Always
-                Pass Replace
+                Pass Replace//Replace	2	将参考值写入缓冲区。
             }
 
             HLSLPROGRAM
