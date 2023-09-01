@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 public class Polygon : MonoBehaviour
 {
-    public int sideCount=3;
-    public float radius=0.5f;
+    public int sideCount = 3;
+    public float radius = 0.5f;
     void Start()
     {
         Render();
@@ -13,13 +13,12 @@ public class Polygon : MonoBehaviour
 
     public void Render()
     {
-#if UNITY_EDITOR
-        var mesh = GetComponent<MeshFilter>().sharedMesh;
-#else
-        var mesh = GetComponent<MeshFilter>().mesh; 
-#endif
-        mesh.Clear();
-        GetComponent<MeshFilter>().mesh.name = "Polygon";
+        if (GetComponent<MeshRenderer>().sharedMaterial == null)
+            GetComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+
+        var mesh = GetComponent<MeshFilter>().sharedMesh = new Mesh();
+        GetComponent<MeshFilter>().sharedMesh.name = "Polygon";
+
         //Vertices
         var vertices = new Vector3[sideCount + 1];
         var angle = 360.0f / sideCount * Mathf.Deg2Rad;
@@ -35,6 +34,7 @@ public class Polygon : MonoBehaviour
         }
         vertices[sideCount] = Vector3.zero;
         mesh.vertices = vertices;
+
         //Triangles
         var triangles = new List<int>();
         for (int i = 0; i < sideCount; i++)
@@ -44,6 +44,7 @@ public class Polygon : MonoBehaviour
             triangles.Add((i + 1) % sideCount);
         }
         mesh.triangles = triangles.ToArray();
+
         //uv
         currentAngle = 0;
         var uv = new Vector2[sideCount + 1];
@@ -56,6 +57,7 @@ public class Polygon : MonoBehaviour
         }
         uv[sideCount] = Vector2.one * 0.5f;
         mesh.uv = uv;
+
         //normals
         var normals = new Vector3[sideCount + 1];
         for (int i = 0; i < vertices.Length; i++)
