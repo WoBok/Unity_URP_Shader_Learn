@@ -3,6 +3,7 @@ Shader "Demo/AnimMapBaker/AnimMapBaker" {
         _BaseMap ("Albedo", 2D) = "white" { }
         _BaseColor ("Color", Color) = (1, 1, 1, 1)
         _AnimMap ("AnimMap", 2D) = "white" { }
+        _NormalMap ("NormalMap", 2D) = "white" { }
         _AnimLen ("Anim Length", Float) = 0
     }
 
@@ -37,6 +38,7 @@ Shader "Demo/AnimMapBaker/AnimMapBaker" {
             half4 _BaseColor;
             float _AnimLen;
             sampler2D _AnimMap;
+            sampler2D _NormalMap;
             float4 _AnimMap_TexelSize;//贴图_AnimMap的像素尺寸大小，值： Vector4(1 / width, 1 / height, width, height)
 
             UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
@@ -50,14 +52,15 @@ Shader "Demo/AnimMapBaker/AnimMapBaker" {
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
 
                 float f = _Time.y / _AnimLen;//如AnimLen总时长为5s，那么当5秒时从0采样到1，利用大于1时重复采样贴图的特性，
-                                                              //则AnimLen的时常内播放完整个动画
+                //则AnimLen的时常内播放完整个动画
                 //fmod(f, 1.0);
                 float animMap_x = (vid + 0.5) * _AnimMap_TexelSize.x;
                 float animMap_y = f;
                 float4 pos = tex2Dlod(_AnimMap, float4(animMap_x, animMap_y, 0, 0));
-                
+                float4 normal = tex2Dlod(_NormalMap, float4(animMap_x, animMap_y, 0, 0));
+
                 output.positionCS = mul(UNITY_MATRIX_MVP, pos);
-                output.normalWS = normalize(mul(input.normalOS, (float3x3)unity_WorldToObject));
+                output.normalWS = normalize(mul(normal.xyz, (float3x3)unity_WorldToObject));
                 output.uv = input.texcoord.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 
                 return output;

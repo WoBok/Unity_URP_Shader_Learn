@@ -1,78 +1,74 @@
-Shader "URP Shader/OutLine" {
+Shader "Demo/OutLine/OutLine" {
     Properties {
-        _BaseMap ("Albedo", 2D) = "white" { }
-        _BaseColor ("Color", Color) = (1, 1, 1, 1)
-        _Power ("Power", float) = 1
-        _Edge ("Edge", float) = 2
+        _Color ("outline color", color) = (1, 1, 1, 1)
+        _Width ("outline width", range(0, 1)) = 0.2
     }
-
-    SubShader {
-        Tags { "RenderPipeline" = "UniversalPipeline" }
-
+    Subshader {
         Pass {
+            Tags { "LightMode" = "UniversalForward" }
+
+            ColorMask 0
+            ZWrite Off
+            ZTest Off
+            
+            Stencil {
+                Ref 1
+                Comp Always
+                Pass Replace
+            }
             HLSLPROGRAM
-
-            #pragma vertex Vertex
-            #pragma fragment Fragment
-
+            #pragma vertex vert
+            #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            struct Attributes {
-                float4 positionOS : POSITION;
-                float3 normalOS : NORMAL;
-                float2 texcoord : TEXCOORD0;
-            };
-
-            struct Varyings {
-                float4 positionCS : SV_POSITION;
-                float2 uv : TEXCOORD0;
-                float3 normalWS : TEXCOORD1;
-                float3 viewDirWS : TEXCOORD2;
+            float4 vert(float4 pos : POSITION) : SV_POSITION {
+                return TransformObjectToHClip(pos.xyz);
+            }
+            
+            half4 frag() : SV_Target {
+                return half4(0, 0, 0, 0);
+            }
+            ENDHLSL
+        }
+        
+        Pass {
+            ZTest Off
+            
+            Stencil {
+                Ref 1
+                Comp NotEqual
+                Pass Keep
+            }
+            
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            
+            struct appdata {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
             };
             
-            sampler2D _BaseMap;
+            struct v2f {
+                float4 vertex : SV_POSITION;
+            };
+
             CBUFFER_START(UnityPerMaterial)
-            float4 _BaseMap_ST;
-            half4 _BaseColor;
-            float _Power;
-            float _Edge;
+            half4 _Color;
+            half _Width;
             CBUFFER_END
 
-            //float GetFactor(float3 normalWS, float3 viewDirWS, float Power) {
-            //    return pow((1.0 - saturate(dot(normalize(Normal), normalize(ViewDir)))), Power);
-            //}
-
-            Varyings Vertex(Attributes input) {
-
-                Varyings output;
-                
-                output. viewDirWS = normalize(_WorldSpaceCameraPos.xyz - TransformObjectToWorld(input.positionOS.xyz));
-                
-                output.positionCS = mul(UNITY_MATRIX_MVP, input.positionOS);
-                
-                output.normalWS = normalize(mul(input.normalOS, (float3x3)unity_WorldToObject));
-
-                output.uv = input.texcoord.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
-
-
-                return output;
+            v2f vert(appdata v) {
+                v2f o;
+                v.vertex.xyz += _Width * normalize(v.normal) * length(v.vertex);
+                o.vertex = TransformObjectToHClip(v.vertex.xyz);
+                return o;
             }
-
-            half4 Fragment(Varyings input) : SV_Target {
-
-                half4 albedo = tex2D(_BaseMap, input.uv);
-
-                half4 diffuse = albedo * (dot(input.normalWS, normalize(_MainLightPosition.xyz)) * 0.5 + 0.5);
-
-                float f = pow((1.0 - saturate(dot(normalize(input.normalWS), normalize(input.viewDirWS)))), _Power);
-                f = 1 - f;
-                f = step(_Edge, f);
-                f = 1 - f;
-                float o = min(2 * (2 - 0.5), 1);
-                f = lerp(0, o, f);
-
-
-                return (1-f) * albedo * _BaseColor;
+            
+            half4 frag(v2f i) : SV_Target {
+                return _Color;
             }
             ENDHLSL
         }
