@@ -22,7 +22,7 @@ public struct AnimData
     private readonly List<AnimationState> _animClips;
     private string _name;
 
-    private  Animation _animation;
+    private Animation _animation;
     private SkinnedMeshRenderer _skin;
 
     public List<AnimationState> AnimationClips => _animClips;
@@ -89,29 +89,35 @@ public struct BakedData
     #region FIELDS
 
     private readonly string _name;
+    private readonly string _normalName;
     private readonly float _animLen;
     private readonly byte[] _rawAnimMap;
+    private readonly byte[] _rawNormalMap;
     private readonly int _animMapWidth;
     private readonly int _animMapHeight;
 
     #endregion
 
-    public BakedData(string name, float animLen, Texture2D animMap)
+    public BakedData(string name, string normalName, float animLen, Texture2D animMap, Texture2D normalMap)
     {
         _name = name;
+        _normalName = normalName;
         _animLen = animLen;
         _animMapHeight = animMap.height;
         _animMapWidth = animMap.width;
         _rawAnimMap = animMap.GetRawTextureData();
+        _rawNormalMap = normalMap.GetRawTextureData();
     }
 
     public int AnimMapWidth => _animMapWidth;
 
     public string Name => _name;
+    public string NormalName => _normalName;
 
     public float AnimLen => _animLen;
 
     public byte[] RawAnimMap => _rawAnimMap;
+    public byte[] RawNormalMap => _rawNormalMap;
 
     public int AnimMapHeight => _animMapHeight;
 }
@@ -119,7 +125,8 @@ public struct BakedData
 /// <summary>
 /// 烘焙器
 /// </summary>
-public class AnimMapBaker{
+public class AnimMapBaker
+{
 
     #region FIELDS
 
@@ -134,7 +141,7 @@ public class AnimMapBaker{
 
     public void SetAnimData(GameObject go)
     {
-        if(go == null)
+        if (go == null)
         {
             Debug.LogError("go is null!!");
             return;
@@ -143,7 +150,7 @@ public class AnimMapBaker{
         var anim = go.GetComponent<Animation>();
         var smr = go.GetComponentInChildren<SkinnedMeshRenderer>();
 
-        if(anim == null || smr == null)
+        if (anim == null || smr == null)
         {
             Debug.LogError("anim or smr is null!!");
             return;
@@ -154,7 +161,7 @@ public class AnimMapBaker{
 
     public List<BakedData> Bake()
     {
-        if(_animData == null)
+        if (_animData == null)
         {
             Debug.LogError("bake data is null!!");
             return _bakedDataList;
@@ -163,7 +170,7 @@ public class AnimMapBaker{
         //每一个动作都生成一个动作图
         foreach (var t in _animData.Value.AnimationClips)
         {
-            if(!t.clip.legacy)
+            if (!t.clip.legacy)
             {
                 Debug.LogError(string.Format($"{t.clip.name} is not legacy!!"));
                 continue;
@@ -185,6 +192,8 @@ public class AnimMapBaker{
 
         var animMap = new Texture2D(_animData.Value.MapWidth, curClipFrame, TextureFormat.RGBAHalf, true);
         animMap.name = string.Format($"{_animData.Value.Name}_{curAnim.name}.animMap");
+        var normalMap = new Texture2D(_animData.Value.MapWidth, curClipFrame, TextureFormat.RGBAHalf, true);
+        normalMap.name = string.Format($"{_animData.Value.Name}_{curAnim.name}.normalMap");
         _animData.Value.AnimationPlay(curAnim.name);
 
         for (var i = 0; i < curClipFrame; i++)
@@ -193,17 +202,19 @@ public class AnimMapBaker{
 
             _animData.Value.SampleAnimAndBakeMesh(ref _bakedMesh);
 
-            for(var j = 0; j < _bakedMesh.vertexCount; j++)
+            for (var j = 0; j < _bakedMesh.vertexCount; j++)
             {
                 var vertex = _bakedMesh.vertices[j];
+                var normal = _bakedMesh.normals[j];
                 animMap.SetPixel(j, i, new Color(vertex.x, vertex.y, vertex.z));
+                normalMap.SetPixel(j, i, new Color(normal.x, normal.y, normal.z));
             }
 
             sampleTime += perFrameTime;
         }
         animMap.Apply();
-
-        _bakedDataList.Add(new BakedData(animMap.name, curAnim.clip.length, animMap));
+        normalMap.Apply();
+        _bakedDataList.Add(new BakedData(animMap.name, normalMap.name, curAnim.clip.length, animMap, normalMap));
     }
 
     #endregion
