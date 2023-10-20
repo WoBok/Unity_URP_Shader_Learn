@@ -104,6 +104,7 @@ Shader "URP Shader/Lit" {
             }
             ENDHLSL
         }
+
         UsePass "Universal Render Pipeline/Lit/ShadowCaster"
     }
 }
