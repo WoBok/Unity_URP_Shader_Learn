@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ContourLines_2
+  m_Name: ContourLines_3
   m_Shader: {fileID: 4800000, guid: a13c8b1179199d5419274b390c644b4d, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

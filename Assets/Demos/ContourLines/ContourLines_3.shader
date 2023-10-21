@@ -1,4 +1,4 @@
-Shader "URP Shader/ContourLines 2" {
+Shader "URP Shader/ContourLines 3" {
     Properties {
         [HDR]_BaseColor ("Color", Color) = (1, 1, 1, 1)
         _RandomOffset ("Random Offset", Float) = 0
@@ -134,7 +134,7 @@ Shader "URP Shader/ContourLines 2" {
 
                 float offset_time = sin(_Time.y * speed);
                 float timeToGliter = step(frequency, offset_time);
-                float gliterPosY = sin(vertex.z + _Time.z);
+                float gliterPosY = sin(vertex.y + _Time.z);
                 float gliterPosYRange = step(0, gliterPosY) * step(gliterPosY, range);
                 float res = gliterPosYRange * offset * timeToGliter * gliterPosY;
                 float3 view_offset = float3(res, 0, 0);
@@ -166,11 +166,11 @@ Shader "URP Shader/ContourLines 2" {
                 half4 diffuse = dot(input.normalWS, normalize(_MainLightPosition.xyz)) * 0.5 + 0.5;
                 float4 color = diffuse * _BaseColor;
 
-                float line1 = ContourLine(_Line1Mask, input.positionOS.z, _RandomOffset, _Line1Speed, _Line1Frequency);
+                float line1 = ContourLine(_Line1Mask, input.positionOS.y, _RandomOffset, _Line1Speed, _Line1Frequency);
                 float4 line1Color = color * line1;
                 line1Color.a = _Line1Alpha * line1;
 
-                float line2 = ContourLine(_Line2Mask, input.positionOS.z, _RandomOffset, _Line2Speed, _Line2Frequency);
+                float line2 = ContourLine(_Line2Mask, input.positionOS.y, _RandomOffset, _Line2Speed, _Line2Frequency);
                 float4 line2Color = color * line2;
                 line2Color.a = _Line2Alpha * line2;
 
