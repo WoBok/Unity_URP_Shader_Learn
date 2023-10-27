@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1792981940169969801
+--- !u!114 &-5267482214484195931
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ContourLines_3
-  m_Shader: {fileID: 4800000, guid: 8d5423af4a5317642b0506278b0dca97, type: 3}
+  m_Name: ContourLines_Final
+  m_Shader: {fileID: 4800000, guid: 43608149e323b7a40b1facbb507e858a, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -34,11 +34,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AlphaMask:
-        m_Texture: {fileID: 2800000, guid: c8f5ec74e630a614087ae2dd065f350a, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ApertureMap:
-        m_Texture: {fileID: 2800000, guid: 73ae5644967fc4940a2cdb395242b916, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -47,10 +43,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ContourLineTex:
-        m_Texture: {fileID: 2800000, guid: 231a2e07210c008419d0c2f351061f69, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -70,19 +62,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Line1Mask:
-        m_Texture: {fileID: 2800000, guid: 231a2e07210c008419d0c2f351061f69, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Line1Tex:
-        m_Texture: {fileID: 2800000, guid: 231a2e07210c008419d0c2f351061f69, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Line2Mask:
-        m_Texture: {fileID: 2800000, guid: 5e80845675ae2644ca13afbb989a1f4b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Line2Tex:
-        m_Texture: {fileID: 2800000, guid: 5e80845675ae2644ca13afbb989a1f4b, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -119,52 +103,37 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _A: 1
+    - _Alpha: 1
     - _AlphaClip: 0
-    - _Amplitude: 2.33
-    - _B: 1.18
     - _Blend: 0
     - _BumpScale: 1
-    - _C: 20.97
-    - _CenterFactor: 20
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ContourLineRate: 0.91
-    - _Count: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _Frequency: 44.19
-    - _FresnelPower: 4.76
+    - _FadeHight: 0.2
+    - _Falloff: 0
+    - _FresnelPower: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GroundHight: 0.02
-    - _HeightLineRate: 0.055
-    - _HeightOffset: 0.2
-    - _HologramSpeed: 30
-    - _LengthScale: 1
-    - _Line1Alpha: 1.41
-    - _Line1Frequency: 150
-    - _Line1Hardness: 1.92
+    - _Line1Alpha: 0.2
+    - _Line1Frequency: 100
     - _Line1Speed: 0
-    - _Line1Thickness: 0
-    - _Line2Alpha: 10
+    - _Line2Alpha: 0.2
     - _Line2Frequency: 100
-    - _Line2Speed: -0.3
+    - _Line2Speed: 0
     - _Metallic: 0
-    - _NFrequency: 20
-    - _NIntensity: 37.3
-    - _NSpeed: 47.3
-    - _NoiseScale: 255
-    - _NoiseSpeed: 1.16
+    - _NoiseScale: 100
+    - _NoiseSpeed: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _RadialScale: 1
+    - _RandomHightFactor: 0
     - _RandomOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -172,29 +141,19 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _USpeed: 0.5
-    - _VSpeed: 0
-    - _VibrationFrequency: 0.1
-    - _VibrationNoiseOffset: 1
-    - _VibrationNoiseScale: 1
-    - _VibrationNoiseTitll: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _ApertureColor: {r: 482.77704, g: 652.7335, b: 421.81363, a: 1}
-    - _ApertureOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _BaseColor: {r: 0.070588216, g: 0.25181141, b: 0.6117647, a: 0.3764706}
-    - _Center: {r: 1746.5, g: 159.7, b: 0, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ContourColor: {r: 0.5283019, g: 0.036912613, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelColor: {r: 0.8125139, g: 1.1470784, b: 1.3041189, a: 1}
-    - _HologramGliterData1: {r: 34.1, g: 5, b: 0.0001, a: -0.9}
-    - _HologramGliterData2: {r: 67.8, g: 10, b: -0.0015, a: 0.9}
-    - _HologramGliterData3: {r: 22.34, g: 20, b: 0.0001, a: -0.4}
+    - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HologramGliterData1: {r: 0, g: 1, b: 0, a: 0}
+    - _HologramGliterData2: {r: 0, g: 1, b: 0, a: 0}
+    - _HologramGliterData3: {r: 0, g: 1, b: 0, a: 0}
     - _Line1Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Line2Color: {r: 1825.2128, g: 1825.2128, b: 1825.2128, a: 1}
-    - _LineColor: {r: 0.9339623, g: 0.2783574, b: 0, a: 1}
-    - _NoiseColor: {r: 0, g: 0.12404156, b: 1, a: 0}
+    - _MaskCenter: {r: 0, g: 0, b: 0, a: 0}
+    - _MaskSize: {r: 0, g: 0, b: 0, a: 0}
+    - _NoiseColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

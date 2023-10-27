@@ -11,10 +11,10 @@ public class LearnPipeline : RenderPipeline
     protected override void Render(ScriptableRenderContext context, Camera[] cameras)
     {
         ////Debug.Log("Renderer is working...");
-        //foreach (var camera in cameras)
-        //{
-        //    renderer. Render(context, camera);
-        //}
+        foreach (var camera in cameras)
+        {
+            renderer.Render(context, camera);
+        }
         context.SetupCameraProperties(cameras[0]);
         context.DrawSkybox(cameras[0]);
         context.Submit();
