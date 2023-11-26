@@ -95,39 +95,15 @@ namespace UnityEngine.UI
         {
             set => BlurredImageMaterial.SetFloat("_Size", value);
         }
-        RenderTexture m_BlurredImageRenderTexture;
-        public RenderTexture BlurredImageRenderTexture
-        {
-            get
-            {
-                if (m_BlurredImageRenderTexture == null)
-                {
-                    m_BlurredImageRenderTexture = new RenderTexture((int)(Screen.width * renderScale), (int)(Screen.height * renderScale), 0);
-                    m_BlurredImageRenderTexture.filterMode = FilterMode.Bilinear;
-                }
-                return m_BlurredImageRenderTexture;
-            }
-        }
-        RenderTexture m_BlurredImageRenderTextureTemp;
-        RenderTexture BlurredImageRenderTextureTemp
-        {
-            get
-            {
-                if (m_BlurredImageRenderTextureTemp == null)
-                {
-                    m_BlurredImageRenderTextureTemp = new RenderTexture((int)(Screen.width * renderScale), (int)(Screen.height * renderScale), 0);
-                    m_BlurredImageRenderTextureTemp.filterMode = FilterMode.Bilinear;
-                }
-                return m_BlurredImageRenderTextureTemp;
-            }
-        }
+        int renderTextureWidth => Mathf.NextPowerOfTwo((int)(Screen.width * renderScale));
+        int renderTextureHeight => Mathf.NextPowerOfTwo((int)(Screen.height * renderScale));
         RTHandle m_BlurredImageRTHandle;
         RTHandle BlurredImageRTHandle
         {
             get
             {
                 if (m_BlurredImageRTHandle == null)
-                    m_BlurredImageRTHandle = RTHandles.Alloc(BlurredImageRenderTexture);
+                    m_BlurredImageRTHandle = RTHandles.Alloc(renderTextureWidth, renderTextureHeight, filterMode: FilterMode.Bilinear);
                 return m_BlurredImageRTHandle;
             }
         }
@@ -137,7 +113,7 @@ namespace UnityEngine.UI
             get
             {
                 if (m_BlurredImageRTHandleTemp == null)
-                    m_BlurredImageRTHandleTemp = RTHandles.Alloc(BlurredImageRenderTextureTemp);
+                    m_BlurredImageRTHandleTemp = RTHandles.Alloc(renderTextureWidth, renderTextureHeight, filterMode: FilterMode.Bilinear);
                 return m_BlurredImageRTHandleTemp;
             }
         }
@@ -180,16 +156,6 @@ namespace UnityEngine.UI
             {
                 m_BlurredImageRTHandleTemp.Release();
                 m_BlurredImageRTHandleTemp = null;
-            }
-            if (m_BlurredImageRenderTexture != null)
-            {
-                m_BlurredImageRenderTexture.Release();
-                m_BlurredImageRenderTexture = null;
-            }
-            if (m_BlurredImageRenderTextureTemp != null)
-            {
-                m_BlurredImageRenderTextureTemp.Release();
-                m_BlurredImageRenderTextureTemp = null;
             }
         }
     }
