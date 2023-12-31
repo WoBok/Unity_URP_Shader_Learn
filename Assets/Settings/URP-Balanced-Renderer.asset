@@ -54,7 +54,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
   - {fileID: 7245823674205964280}
-  m_RendererFeatureMap: adc0de57c6d2eee5f88729de3d568e64
+  - {fileID: 7291351496364872003}
+  m_RendererFeatureMap: adc0de57c6d2eee5f88729de3d568e64435157018e153065
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -135,7 +136,28 @@ MonoBehaviour:
       failOperation: 0
       zFailOperation: 0
     cameraSettings:
-      overrideCamera: 0
+      overrideCamera: 1
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+--- !u!114 &7291351496364872003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2644870f691674a47893db69d1cebdca, type: 3}
+  m_Name: FurRenderer
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  renderPassEvent: 400
+  renderQueueType: 0
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  furMaterial: {fileID: 2100000, guid: 094f11877cfe7e64e8e43b840a10ebba, type: 2}
+  furLayers: 20
+  step: 0.05
