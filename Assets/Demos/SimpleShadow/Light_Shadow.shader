@@ -26,7 +26,8 @@ Shader "Demo/SimpleShadow/Light and Shadow" {
         [Header(Other Settings)]
         [Enum(UnityEngine.Rendering.BlendMode)]_SrcBlend ("SrcBlend   [One  SrcAlpha]", float) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]_DstBlend ("DstBlend   [Zero  OneMinusSrcAlpha]", float) = 0
-        [Enum(On,1,Off,0)]_ZWrite ("ZWrite        [On  Off]", float) = 1
+        [Enum(UnityEngine.Rendering.CullMode)]_Cull ("Cull", float) = 0
+        [Enum(On, 1, Off, 0)]_ZWrite ("ZWrite        [On  Off]", float) = 1
     }
 
     SubShader {
@@ -37,6 +38,7 @@ Shader "Demo/SimpleShadow/Light and Shadow" {
 
             Blend[_SrcBlend][_DstBlend]
             ZWrite[_ZWrite]
+            Cull[_Cull]
 
             HLSLPROGRAM
 
