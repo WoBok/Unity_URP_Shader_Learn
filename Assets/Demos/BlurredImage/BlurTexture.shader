@@ -25,7 +25,7 @@ Shader "URP Shader/Blur Texture" {
         float2 uv = input.texcoord;
 
         half4 color = half4(0, 0, 0, 1);
-        color += BlurHorizontalPixel(0.05, -4.0, uv);
+        color += BlurHorizontalPixel(0.05, -4.0, uv);//对UV偏移采样贴图，对颜色按权重相加
         color += BlurHorizontalPixel(0.09, -3.0, uv);
         color += BlurHorizontalPixel(0.12, -2.0, uv);
         color += BlurHorizontalPixel(0.15, -1.0, uv);
