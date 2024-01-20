@@ -6,6 +6,7 @@ Shader "URP Shader/EdgeDetection" {
         _BackgroundColor ("Background Color", color) = (1, 1, 1, 1)
         _EdgeOnly ("EdgeOnly", Range(0, 1)) = 0
         _Radius ("Radius", float) = 1
+        _Frequency ("Frequency", float) = 3.14
         _Speed ("Speed", float) = 1
     }
 
@@ -41,6 +42,7 @@ Shader "URP Shader/EdgeDetection" {
             half4 _BackgroundColor;
             half _EdgeOnly;
             half _Radius;
+            half _Frequency;
             half _Speed;
             CBUFFER_END
 
@@ -106,8 +108,8 @@ Shader "URP Shader/EdgeDetection" {
                 half4 diffuse = albedo * (dot(input.normalWS, normalize(_MainLightPosition.xyz)) * 0.5 + 0.5);
 
                 half4 color = diffuse * _BaseColor;
-
-                float inner = step(sqrt(input.positionOS.x * input.positionOS.x + input.positionOS.y * input.positionOS.y), _Radius * frac(_Time.x*_Time.x * _Speed));
+                float dis = distance(input.positionOS, float3(0, 0, 0));
+                float inner = step(sqrt(input.positionOS.x * input.positionOS.x + input.positionOS.y * input.positionOS.y), _Radius * sin(_Frequency * dis + _Time.y * _Speed));//frac(_Time.x*_Time.x * _Speed)
                 half edge = Sobel(input) * (inner);
                 half4 withEdgeColor = lerp(_EdgeColor, color, edge);
                 withEdgeColor = lerp(withEdgeColor, color, 1 - inner);
