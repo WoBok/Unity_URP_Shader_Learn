@@ -8,6 +8,7 @@ Shader "URP Shader/EdgeDetection" {
         _Radius ("Radius", float) = 1
         _Frequency ("Frequency", float) = 3.14
         _Speed ("Speed", float) = 1
+        _Denoise ("Denoise", float) = 0
     }
 
     SubShader {
@@ -44,6 +45,7 @@ Shader "URP Shader/EdgeDetection" {
             half _Radius;
             half _Frequency;
             half _Speed;
+            half _Denoise;
             CBUFFER_END
 
             Varyings Vertex(Attributes input) {
@@ -96,7 +98,9 @@ Shader "URP Shader/EdgeDetection" {
                     edgeY += texLuminance * Gy[i];
                 }
 
-                half edge = 1 - abs(edgeX) - abs(edgeY);
+                half edgeXDenoise = step(edgeX, _Denoise);
+                half edgeYDenoise = step(edgeY, _Denoise);
+                half edge = 1 - abs(edgeX) * edgeXDenoise - abs(edgeY) * edgeYDenoise;
 
                 return edge;
             }
