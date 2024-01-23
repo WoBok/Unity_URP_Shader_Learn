@@ -1,4 +1,4 @@
-Shader "Light/Simple Lighting Simulation Plus Plus" {
+Shader "Light/Fur Shader" {
     Properties {
         _MainTex ("Main Tex", 2D) = "white" { }
         _LightDirection ("Light Direction", vector) = (0.3, 0.1, -0.1, 0)

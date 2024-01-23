@@ -56,7 +56,7 @@ public class FurRenderPass : ScriptableRenderPass
                 ? SortingCriteria.CommonTransparent
                 : renderingData.cameraData.defaultOpaqueSortFlags;
         m_DrawingSettings = CreateDrawingSettings(new ShaderTagId("UniversalForward"), ref renderingData, m_SortingCriteria);
-        //m_DrawingSettings.overrideMaterial = furMaterial;
+        m_DrawingSettings.overrideMaterial = furMaterial;
         CommandBuffer cmd = CommandBufferPool.Get("Fur Renderer");
         cmd.Clear();
         for (int i = 0; i <= furLayers; i++)
