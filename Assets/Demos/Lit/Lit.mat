@@ -24,8 +24,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 191e2fdff3188d8499dff793075130c4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - NORMALMAP_ON
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - _NORMALMAP
   - _NORMALMAP_ON
@@ -97,7 +96,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - NormalMap: 1
+    - NormalMap: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
