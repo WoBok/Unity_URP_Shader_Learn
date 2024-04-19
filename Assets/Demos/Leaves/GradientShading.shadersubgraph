@@ -578,7 +578,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "Sample Gradient Texture",
+    "m_Name": "SampleGradientTexture",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {

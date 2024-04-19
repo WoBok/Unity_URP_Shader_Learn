@@ -5389,7 +5389,7 @@
     "m_CastShadows": false,
     "m_ReceiveShadows": true,
     "m_SupportsLODCrossFade": false,
-    "m_CustomEditorGUI": "",
+    "m_CustomEditorGUI": "LeavesShaderEditor",
     "m_SupportVFX": false
 }
 
