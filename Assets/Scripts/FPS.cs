@@ -1,16 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
-using Unity.XR.PXR;
+﻿using Unity.XR.PXR;
+using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Experimental.Rendering.Universal;
 
-public class FPS:MonoBehaviour
+public class FPS : MonoBehaviour
 {
-    private float updateInterval = 1.0f;
-    private float timeLeft = 0.0f;
-    private string strFps = null;
+    float updateInterval = 1.0f;
+    float timeLeft = 0.0f;
+    string strFps = null;
     Text fpsText;
-    private void Start()
+    void Start()
     {
         fpsText = GetComponent<Text>();
     }
@@ -19,7 +17,7 @@ public class FPS:MonoBehaviour
         ShowFps();
     }
 
-    private void ShowFps()
+    void ShowFps()
     {
         timeLeft -= Time.unscaledDeltaTime;
 
@@ -35,9 +33,3 @@ public class FPS:MonoBehaviour
         }
     }
 }
-
-
-
-
-
-

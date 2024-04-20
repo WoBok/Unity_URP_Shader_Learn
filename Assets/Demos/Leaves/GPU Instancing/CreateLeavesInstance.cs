@@ -32,7 +32,7 @@ public class CreateLeavesInstance : MonoBehaviour
         var scale = Vector3.one;
         for (int i = 0; i < instanceCount; i++)
         {
-            var position = new Vector3(i % 10 * 3, (i / 10) % 10 * 3, (i / 100) % 100 * 3) + new Vector3(-12.5f, 0, 50);
+            var position = new Vector3(i % 10 * 3, (i / 10) % 10 * 3, (i / 100) % 100 * 3) + new Vector3(-12.5f, -10, 50);
 
             matrix4X4s[i] = Matrix4x4.TRS(position, rotation, scale);
         }
