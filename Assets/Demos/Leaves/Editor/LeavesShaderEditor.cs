@@ -8,6 +8,7 @@ public class LeavesShaderEditor : ShaderGUI
     readonly MaterialVector2Drawer _vectorDrawer = new MaterialVector2Drawer();
     bool m_UseGradient = true;
     bool m_NeedUpdateGradient = false;
+
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         m_UseGradient = EditorGUILayout.Toggle("Use Gradient", m_UseGradient);

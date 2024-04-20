@@ -1,0 +1,23 @@
+﻿{
+   "name": "Com.Wemake.FishFlock.Editor",
+    "references": [
+        "Com.Wemake.FishFlock"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+    	"Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.wemake.fishflockeditor",
+            "expression": "",
+            "define": "Fish_Flock"
+        }
+    ]
+}
