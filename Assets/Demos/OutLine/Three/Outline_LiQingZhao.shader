@@ -1,9 +1,8 @@
-Shader "HunagSiPu/Outline" {
+Shader "LiQingZhao/Outline" {
     Properties {
         _BaseMap ("Albedo", 2D) = "white" { }
         _BaseColor ("Color", Color) = (1, 1, 1, 1)
-        _OutlinIntensity ("Outline Intensity", float) = 1
-        _Width ("OutlineWidth", float) = 0.1
+        _OutlineWidth ("Outline Width", float) = 0.1
         _DiffuseFrontIntensity ("Front Light Intensity", float) = 1
         _DiffuseBackIntensity ("Back Light Intensity", float) = 0.5
         [Toggle]ReceiveShadow ("Receive Shadow", int) = 1
@@ -18,10 +17,12 @@ Shader "HunagSiPu/Outline" {
             #pragma vertex Vertex
             #pragma fragment Fragment
             #pragma multi_compile _ LIGHTMAP_ON
+
             #pragma shader_feature RECEIVESHADOW_ON
-            #if defined(RECEIVESHADOW_ON)
-                #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
-            #endif
+
+            #pragma multi_compile  _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile  _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile  _SHADOWS_SOFT
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -46,8 +47,7 @@ Shader "HunagSiPu/Outline" {
             CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST;
             half4 _BaseColor;
-            float _OutlinIntensity;
-            float _Width;
+            float _OutlineWidth;
             float _DiffuseFrontIntensity;
             float _DiffuseBackIntensity;
             CBUFFER_END
@@ -66,10 +66,10 @@ Shader "HunagSiPu/Outline" {
 
                 output.uv = input.texcoord.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 
+                output.shadowCoord = TransformWorldToShadowCoord(positionWS);
+
                 OUTPUT_LIGHTMAP_UV(input.lightmapUV, unity_LightmapST, output.lightmapUV);
                 OUTPUT_SH(output.normalWS.xyz, output.vertexSH);
-
-                output.shadowCoord = TransformWorldToShadowCoord(positionWS);
 
                 return output;
             }
@@ -80,28 +80,30 @@ Shader "HunagSiPu/Outline" {
 
                 half4 albedo = tex2D(_BaseMap, input.uv);
 
-                float3 worldLightDir = normalize(float3(0.1,0.3,0.2));
+                float3 worldLightDir = normalize(_MainLightPosition.xyz);
                 float halfLambert = dot(input.normalWS, worldLightDir) * 0.5 + 0.5;
-                half3 diffuse =  albedo.rgb * halfLambert * _DiffuseFrontIntensity;//_MainLightColor.rgb *
+                half3 diffuse = _MainLightColor.rgb * albedo.rgb * halfLambert * _DiffuseFrontIntensity;
                 float oneMinusHalfLambert = 1 - halfLambert;
                 diffuse += _MainLightColor.rgb * albedo.rgb * oneMinusHalfLambert * _DiffuseBackIntensity;
 
                 diffuse *= SAMPLE_GI(input.lightmapUV, input.vertexSH, input.normalWS);
 
-                float factor = saturate(dot(normalize(input.normalWS), normalize(input.viewDirWS)));
-                factor = step(_Width, factor);
+                float factor = dot(normalize(input.normalWS), normalize(input.viewDirWS));
+                factor = step(_OutlineWidth, factor);
 
                 color = half4(diffuse, 1) * _BaseColor * factor ;
 
                 #if defined(RECEIVESHADOW_ON)
                     Light mainLight = GetMainLight(input.shadowCoord);
-                    color *= mainLight.shadowAttenuation;
+                    half3 attenuatedLightColor = mainLight.color * (mainLight.distanceAttenuation * mainLight.shadowAttenuation);
+                    half3 lightDiffuseColor = LightingLambert(attenuatedLightColor, mainLight.direction, input.normalWS);
+                    color.rgb *= lightDiffuseColor + _GlossyEnvironmentColor.rgb;
                 #endif
 
                 return color;
             }
             ENDHLSL
         }
-        
+        UsePass "Universal Render Pipeline/Lit/ShadowCaster"
     }
 }

@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class LeavesShaderEditor : ShaderGUI
+public class LeavesShaderEditor : BaseShaderGUI
 {
     readonly MaterialGradientDrawer _gradientDrawer = new MaterialGradientDrawer();
     readonly MaterialVector2Drawer _vectorDrawer = new MaterialVector2Drawer();
