@@ -19,6 +19,8 @@ Shader "LiQingZhao/Outline_InnerOuter" {
         [Header(Alpha)]
         [Toggle]AlphaClipping ("Alpah Clipping", int) = 0
         _AlphaClipThreshold ("Threshold", Range(0, 1)) = 0.5
+
+        [Toggle]ReceiveShadow ("Receive Shadow", int) = 1
     }
 
     SubShader {
@@ -30,13 +32,15 @@ Shader "LiQingZhao/Outline_InnerOuter" {
             #pragma vertex Vertex
             #pragma fragment Fragment
             #pragma multi_compile _ LIGHTMAP_ON
-            #pragma shader_feature RECEIVESHADOW_ON
             #pragma shader_feature ALPHACLIPPING_ON
             #pragma shader_feature OUTLINESWITCH_ON
             #pragma shader_feature INNERLINESWITCH_ON
-            #if defined(RECEIVESHADOW_ON)
-                #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
-            #endif
+
+            #pragma shader_feature RECEIVESHADOW_ON
+
+            #pragma multi_compile  _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile  _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile  _SHADOWS_SOFT
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -152,7 +156,9 @@ Shader "LiQingZhao/Outline_InnerOuter" {
 
                 #if defined(RECEIVESHADOW_ON)
                     Light mainLight = GetMainLight(input.shadowCoord);
-                    color *= mainLight.shadowAttenuation;
+                    half3 attenuatedLightColor = mainLight.color * (mainLight.distanceAttenuation * mainLight.shadowAttenuation);
+                    half3 lightDiffuseColor = LightingLambert(attenuatedLightColor, mainLight.direction, input.normalWS);
+                    color.rgb *= lightDiffuseColor + _GlossyEnvironmentColor.rgb;
                 #endif
 
                 #if defined(OUTLINESWITCH_ON)
