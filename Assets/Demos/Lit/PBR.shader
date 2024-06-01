@@ -1,16 +1,12 @@
-Shader "URP Shader/Water" {
+Shader "URP Shader/PBR" {
     Properties {
         _BaseMap ("Albedo", 2D) = "white" { }
         _BaseColor ("Color", Color) = (1, 1, 1, 1)
 
         [Header(PBR)]
         [Space(5)]
-        _Smoothness ("Smoothness", Range(0, 1)) = 0
         _Metallic ("Metallic", Range(0, 1)) = 0
-
-        [Header(Water)]
-        _Amplitude ("Amplitude", Float) = 1
-        _Wavelength ("Wavelength", Float) = 10
+        _Smoothness ("Smoothness", Range(0, 1)) = 0
     }
 
     SubShader {
@@ -44,19 +40,13 @@ Shader "URP Shader/Water" {
             float4 _BaseMap_ST;
             half4 _BaseColor;
 
-            float _Smoothness;
             float _Metallic;
-
-            float _Amplitude;
-            float _Wavelength;
+            float _Smoothness;
             CBUFFER_END
 
             Varyings Vertex(Attributes input) {
                 Varyings output;
                 
-                float k = 2 * 3.141592653589793 / _Wavelength;
-                input.positionOS.y = _Amplitude * sin(k * input.positionOS.x);
-
                 output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 output.viewDirectionWS = normalize(_WorldSpaceCameraPos - TransformObjectToWorld(input.positionOS.xyz));
@@ -78,12 +68,11 @@ Shader "URP Shader/Water" {
 
             void InitializeSurfaceData(float2 uv, out SurfaceData surfaceData) {
                 surfaceData = (SurfaceData)0;
-                half4 albedo = tex2D(_BaseMap, uv);
-                surfaceData.albedo = albedo.rgb * _BaseColor.rgb;
+                surfaceData.albedo = tex2D(_BaseMap, uv).rgb * _BaseColor.rgb;
                 surfaceData.metallic = _Metallic;
                 surfaceData.smoothness = _Smoothness;
                 surfaceData.occlusion = 1;
-                surfaceData.alpha = albedo.a * _BaseColor.a;
+                surfaceData.alpha = 1;
             }
 
             half4 Fragment(Varyings input) : SV_Target {
