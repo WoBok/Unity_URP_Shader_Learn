@@ -1,0 +1,72 @@
+using System.Collections;
+using UnityEngine;
+
+public class CreateFlowersWithinTheRange : MonoBehaviour
+{
+    [SerializeField]
+    [Tooltip("预制体")]
+    GameObject flowerPrefab;
+    [SerializeField]
+    [Tooltip("生成范围：x：左，y：右，z：前")]
+    Vector3 m_GenerationRange = new Vector3(-5, 5, 10);
+    [SerializeField]
+    [Tooltip("旋转范围")]
+    Vector2 m_RotationRange = new Vector2(10f, 30f);
+    [SerializeField]
+    [Tooltip("缩放范围：0-180")]
+    Vector2 m_ScaleRange = new Vector2(10f, 30f);
+    [SerializeField]
+    [Tooltip("数量")]
+    int count = 100;
+    [SerializeField]
+    [Tooltip("持续时长")]
+    float duration = 3;
+
+    GameObject[] m_Objs;
+    Coroutine m_Coroutine;
+    void OnEnable()
+    {
+        m_Objs = new GameObject[count];
+        StopCoroutine();
+        m_Coroutine = StartCoroutine(Generate());
+    }
+    void OnDisable()
+    {
+        StopCoroutine();
+    }
+    IEnumerator Generate()
+    {
+        var generationCount = 0;
+        var countPerSecond = count / duration;
+        var forwardDistance = 0f;
+        var forwardStepPerSecond = m_GenerationRange.z / duration;
+        while (generationCount < count)
+        {
+            for (int i = 0; i < countPerSecond; i++)
+            {
+                var obj = Instantiate(flowerPrefab);
+                obj.transform.SetParent(transform, false);
+                obj.transform.position = transform.position + new Vector3(forwardDistance, 0, forwardDistance);
+                obj.transform.rotation = Quaternion.LookRotation(Vector3.up + new Vector3(Random.Range(m_RotationRange.x/180,m_RotationRange.y/180),0,0));
+            }
+            forwardDistance += forwardStepPerSecond;
+            yield return null;
+        }
+    }
+    void StopCoroutine()
+    {
+        if (m_Coroutine != null)
+            StopCoroutine(m_Coroutine);
+    }
+    void Destroy()
+    {
+        if (m_Objs != null)
+        {
+            foreach (GameObject obj in m_Objs)
+            {
+                Destroy(obj);
+            }
+            m_Objs = null;
+        }
+    }
+}
