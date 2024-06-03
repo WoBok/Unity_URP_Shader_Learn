@@ -14,7 +14,7 @@ public class CreateFlowersWithinTheRange : MonoBehaviour
     Vector2 m_RotationRange = new Vector2(10f, 30f);
     [SerializeField]
     [Tooltip("Ëõ·Å·¶Î§£º0-180")]
-    Vector2 m_ScaleRange = new Vector2(10f, 30f);
+    Vector2 m_ScaleRange = new Vector2(1, 2);
     [SerializeField]
     [Tooltip("ÊýÁ¿")]
     int count = 100;
@@ -33,24 +33,38 @@ public class CreateFlowersWithinTheRange : MonoBehaviour
     void OnDisable()
     {
         StopCoroutine();
+        Destroy();
     }
     IEnumerator Generate()
     {
         var generationCount = 0;
-        var countPerSecond = count / duration;
+        var countPerSecond = (int)(count / duration) * Time.fixedDeltaTime;
         var forwardDistance = 0f;
-        var forwardStepPerSecond = m_GenerationRange.z / duration;
+        var forwardStepPerSecond = m_GenerationRange.z / duration * Time.fixedDeltaTime;
+
         while (generationCount < count)
         {
             for (int i = 0; i < countPerSecond; i++)
             {
                 var obj = Instantiate(flowerPrefab);
                 obj.transform.SetParent(transform, false);
-                obj.transform.position = transform.position + new Vector3(forwardDistance, 0, forwardDistance);
-                obj.transform.rotation = Quaternion.LookRotation(Vector3.up + new Vector3(Random.Range(m_RotationRange.x/180,m_RotationRange.y/180),0,0));
+
+                var pX = Random.Range(m_GenerationRange.x, m_GenerationRange.y);
+                obj.transform.position = transform.position + new Vector3(pX, 0, forwardDistance);
+
+                var dX = Random.Range(m_RotationRange.x / 180, m_RotationRange.y / 180);
+                var dZ = Random.Range(m_RotationRange.x / 180, m_RotationRange.y / 180);
+                obj.transform.rotation = Quaternion.LookRotation(Vector3.up + new Vector3(dX, 0, dZ));
+
+                var scale = Random.Range(m_ScaleRange.x, m_ScaleRange.y);
+                obj.transform.localScale = Vector3.one * scale;
+
+                m_Objs[generationCount++] = obj;
+
+                if (generationCount >= count - 1) break;
             }
             forwardDistance += forwardStepPerSecond;
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
     }
     void StopCoroutine()
@@ -62,10 +76,8 @@ public class CreateFlowersWithinTheRange : MonoBehaviour
     {
         if (m_Objs != null)
         {
-            foreach (GameObject obj in m_Objs)
-            {
+            foreach (var obj in m_Objs)
                 Destroy(obj);
-            }
             m_Objs = null;
         }
     }
