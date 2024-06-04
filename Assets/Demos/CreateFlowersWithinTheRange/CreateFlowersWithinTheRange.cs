@@ -58,10 +58,10 @@ public class CreateFlowersWithinTheRange : MonoBehaviour
                 obj.transform.position = transform.position + pX + pZ;
 
                 var dX = Random.Range(m_RotationRange.x / 180, m_RotationRange.y / 180);
-                var dXDrection = Random.Range(0, 100f) > 50 ? 1 : -1;
+                var dXDirection = Random.Range(0, 100f) > 50 ? 1 : -1;
                 var dZ = Random.Range(m_RotationRange.x / 180, m_RotationRange.y / 180);
-                var dZDrection = Random.Range(0, 100f) > 50 ? 1 : -1;
-                obj.transform.rotation = Quaternion.LookRotation(Vector3.up + new Vector3(dX * dXDrection, 0, dZ * dZDrection));
+                var dZDirection = Random.Range(0, 100f) > 50 ? 1 : -1;
+                obj.transform.rotation = Quaternion.LookRotation(Vector3.up + new Vector3(dX * dXDirection, 0, dZ * dZDirection));
 
                 var scale = Random.Range(m_ScaleRange.x, m_ScaleRange.y);
                 obj.transform.localScale = Vector3.one * scale;
