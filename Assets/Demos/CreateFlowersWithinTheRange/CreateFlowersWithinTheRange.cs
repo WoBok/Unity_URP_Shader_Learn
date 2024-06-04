@@ -8,10 +8,10 @@ public class CreateFlowersWithinTheRange : MonoBehaviour
     GameObject flowerPrefab;
     [SerializeField]
     [Tooltip("生成范围：x：左，y：右，z：前")]
-    Vector3 m_GenerationRange = new Vector3(-5, 5, 10);
+    Vector3 m_GenerationRange = new Vector3(-10, 10, 100);
     [SerializeField]
     [Tooltip("旋转范围")]
-    Vector2 m_RotationRange = new Vector2(10f, 30f);
+    Vector2 m_RotationRange = new Vector2(20f, 50f);
     [SerializeField]
     [Tooltip("缩放范围：0-180")]
     Vector2 m_ScaleRange = new Vector2(1, 2);
@@ -20,7 +20,7 @@ public class CreateFlowersWithinTheRange : MonoBehaviour
     int count = 100;
     [SerializeField]
     [Tooltip("持续时长")]
-    float duration = 3;
+    float duration = 10;
 
     GameObject[] m_Objs;
     Coroutine m_Coroutine;
@@ -38,23 +38,30 @@ public class CreateFlowersWithinTheRange : MonoBehaviour
     IEnumerator Generate()
     {
         var generationCount = 0;
-        var countPerSecond = (int)(count / duration) * Time.fixedDeltaTime;
+        var countPerFrame = count / duration * Time.fixedDeltaTime;
+        var currentGenCount = 0f;
+
         var forwardDistance = 0f;
-        var forwardStepPerSecond = m_GenerationRange.z / duration * Time.fixedDeltaTime;
+        var forwardStepPerFrame = m_GenerationRange.z / duration * Time.fixedDeltaTime;
 
         while (generationCount < count)
         {
-            for (int i = 0; i < countPerSecond; i++)
+            currentGenCount += countPerFrame;
+            while (currentGenCount >= 1)
             {
+                currentGenCount--;
                 var obj = Instantiate(flowerPrefab);
                 obj.transform.SetParent(transform, false);
 
-                var pX = Random.Range(m_GenerationRange.x, m_GenerationRange.y);
-                obj.transform.position = transform.position + new Vector3(pX, 0, forwardDistance);
+                var pX = Random.Range(m_GenerationRange.x, m_GenerationRange.y) * transform.right;
+                var pZ = forwardDistance * transform.forward;
+                obj.transform.position = transform.position + pX + pZ;
 
                 var dX = Random.Range(m_RotationRange.x / 180, m_RotationRange.y / 180);
+                var dXDrection = Random.Range(0, 100f) > 50 ? 1 : -1;
                 var dZ = Random.Range(m_RotationRange.x / 180, m_RotationRange.y / 180);
-                obj.transform.rotation = Quaternion.LookRotation(Vector3.up + new Vector3(dX, 0, dZ));
+                var dZDrection = Random.Range(0, 100f) > 50 ? 1 : -1;
+                obj.transform.rotation = Quaternion.LookRotation(Vector3.up + new Vector3(dX * dXDrection, 0, dZ * dZDrection));
 
                 var scale = Random.Range(m_ScaleRange.x, m_ScaleRange.y);
                 obj.transform.localScale = Vector3.one * scale;
@@ -63,7 +70,7 @@ public class CreateFlowersWithinTheRange : MonoBehaviour
 
                 if (generationCount >= count - 1) break;
             }
-            forwardDistance += forwardStepPerSecond;
+            forwardDistance += forwardStepPerFrame;
             yield return new WaitForFixedUpdate();
         }
     }
