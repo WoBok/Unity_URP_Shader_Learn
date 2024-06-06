@@ -1,52 +1,68 @@
-Shader "LiQingZhao/Outline"
-{
-    Properties
-    {
-        [MainTexture] _BaseMap("Base Map", 2D) = "white" {}
-        [MainColor]   _BaseColor("Base Color", Color) = (1, 1, 1, 1)
+Shader "LiQingZhao/Outline Simple" {
 
-        [ToggleUI] _AlphaClip("Alpha Clip", Float) = 0.0
-        _Cutoff("Alpha Clipping", Range(0.0, 1.0)) = 0.5
+    Properties {
+        [MainTexture] _BaseMap ("Base Map (RGB) Smoothness / Alpha (A)", 2D) = "white" { }
+        [MainColor]   _BaseColor ("Base Color", Color) = (1, 1, 1, 1)
 
-        _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
-        _SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 0.5)
-        _SpecGlossMap("Specular Map", 2D) = "white" {}
-        _SmoothnessSource("Smoothness Source", Float) = 0.0
-        _SpecularHighlights("Specular Highlights", Float) = 1.0
+        _Cutoff ("Alpha Clipping", Range(0.0, 1.0)) = 0.5
 
-        [HideInInspector] _BumpScale("Scale", Float) = 1.0
-        [NoScaleOffset] _BumpMap("Normal Map", 2D) = "bump" {}
+        _Smoothness ("Smoothness", Range(0.0, 1.0)) = 0.5
+        _SpecColor ("Specular Color", Color) = (0.5, 0.5, 0.5, 0.5)
+        _SpecGlossMap ("Specular Map", 2D) = "white" { }
+        _SmoothnessSource ("Smoothness Source", Float) = 0.0
+        _SpecularHighlights ("Specular Highlights", Float) = 1.0
 
-        [HDR] _EmissionColor("Emission Color", Color) = (0,0,0)
-        [NoScaleOffset]_EmissionMap("Emission Map", 2D) = "white" {}
+        [HideInInspector] _BumpScale ("Scale", Float) = 1.0
+        [NoScaleOffset] _BumpMap ("Normal Map", 2D) = "bump" { }
+
+        [HDR] _EmissionColor ("Emission Color", Color) = (0, 0, 0)
+        [NoScaleOffset]_EmissionMap ("Emission Map", 2D) = "white" { }
+
+        _Surface ("__surface", Float) = 0.0
+        _Blend ("__blend", Float) = 0.0
+        _Cull ("__cull", Float) = 2.0
+        [ToggleUI] _AlphaClip ("__clip", Float) = 0.0
+        [HideInInspector] _SrcBlend ("__src", Float) = 1.0
+        [HideInInspector] _DstBlend ("__dst", Float) = 0.0
+        [HideInInspector] _SrcBlendAlpha ("__srcA", Float) = 1.0
+        [HideInInspector] _DstBlendAlpha ("__dstA", Float) = 0.0
+        [HideInInspector] _ZWrite ("__zw", Float) = 1.0
+        [HideInInspector] _BlendModePreserveSpecular ("_BlendModePreserveSpecular", Float) = 1.0
+        [HideInInspector] _AlphaToMask ("__alphaToMask", Float) = 0.0
 
         _OutlineWidth ("Outline Width", Float) = 0.1
+        [Toggle]_FlickerSwitch ("Enable Flicker", Float) = 0
+        _FlickerFrequency ("Flicker Frequency", Float) = 1
+        [HDR] _FlickerColor ("Flicker Color", Color) = (0, 0, 0)
 
-        [Enum(UnityEngine.Rendering.CullMode)]_Cull("Cull", Float) = 2.0
+        [ToggleUI] _ReceiveShadows ("Receive Shadows", Float) = 1.0
+        _QueueOffset ("Queue offset", Float) = 0.0
 
-        [ToggleUI] _ReceiveShadows("Receive Shadows", Float) = 1.0
+        [HideInInspector] _MainTex ("BaseMap", 2D) = "white" { }
+        [HideInInspector] _Color ("Base Color", Color) = (1, 1, 1, 1)
+        [HideInInspector] _Shininess ("Smoothness", Float) = 0.0
+        [HideInInspector] _GlossinessSource ("GlossinessSource", Float) = 0.0
+        [HideInInspector] _SpecSource ("SpecularHighlights", Float) = 0.0
+
+        [HideInInspector][NoScaleOffset]unity_Lightmaps ("unity_Lightmaps", 2DArray) = "" { }
+        [HideInInspector][NoScaleOffset]unity_LightmapsInd ("unity_LightmapsInd", 2DArray) = "" { }
+        [HideInInspector][NoScaleOffset]unity_ShadowMasks ("unity_ShadowMasks", 2DArray) = "" { }
     }
 
-    SubShader
-    {
-        Tags
-        {
-            "RenderType" = "Opaque"
-            "RenderPipeline" = "UniversalPipeline"
-            "UniversalMaterialType" = "SimpleLit"
-            "IgnoreProjector" = "True"
+    SubShader {
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline"
+            "UniversalMaterialType" = "SimpleLit" "IgnoreProjector" = "True"
         }
         LOD 300
 
-        Pass
-        {
+        Pass {
             Name "ForwardLit"
-            Tags
-            {
-                "LightMode" = "UniversalForward"
-            }
+            Tags { "LightMode" = "UniversalForward" }
 
+            Blend[_SrcBlend][_DstBlend], [_SrcBlendAlpha][_DstBlendAlpha]
+            ZWrite[_ZWrite]
             Cull[_Cull]
+            AlphaToMask[_AlphaToMask]
 
             HLSLPROGRAM
             #pragma target 2.0
@@ -56,6 +72,7 @@ Shader "LiQingZhao/Outline"
 
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local_fragment _EMISSION
+            #pragma shader_feature_local_fragment _FLICKERSWITCH_ON
             #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
             #pragma shader_feature_local_fragment _SURFACE_TYPE_TRANSPARENT
             #pragma shader_feature_local_fragment _ALPHATEST_ON
@@ -95,13 +112,9 @@ Shader "LiQingZhao/Outline"
             ENDHLSL
         }
 
-        Pass
-        {
+        Pass {
             Name "ShadowCaster"
-            Tags
-            {
-                "LightMode" = "ShadowCaster"
-            }
+            Tags { "LightMode" = "ShadowCaster" }
 
             ZWrite On
             ZTest LEqual
@@ -128,8 +141,8 @@ Shader "LiQingZhao/Outline"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
             ENDHLSL
         }
-
     }
 
     Fallback  "Hidden/Universal Render Pipeline/FallbackError"
+    CustomEditor "UnityEditor.Rendering.Universal.ShaderGUI.OutlineShader"
 }
