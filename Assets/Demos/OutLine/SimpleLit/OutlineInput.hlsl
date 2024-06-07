@@ -4,8 +4,11 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl"
 
+TEXTURE2D(_DissolutionMap);            SAMPLER(sampler_DissolutionMap);
+
 CBUFFER_START(UnityPerMaterial)
 float4 _BaseMap_ST;
+float4 _DissolutionMap_ST;
 half4 _BaseColor;
 half4 _SpecColor;
 half4 _EmissionColor;
@@ -14,6 +17,8 @@ half _Surface;
 half _OutlineWidth;
 half _FlickerFrequency;
 half4 _FlickerColor;
+half _DissolutionEdgeWidth;
+half4 _DissolutionEdgeColor;
 CBUFFER_END
 
 #ifdef UNITY_DOTS_INSTANCING_ENABLED
@@ -49,19 +54,22 @@ half4 SampleSpecularSmoothness(float2 uv, half alpha, half4 specColor, TEXTURE2D
     return specularSmoothness;
 }
 
-inline void InitializeSimpleLitSurfaceData(float2 uv, out SurfaceData outSurfaceData) {
+inline void InitializeSimpleLitSurfaceData(float2 uv, float2 dissolutionUV, out SurfaceData outSurfaceData) {
     outSurfaceData = (SurfaceData)0;
 
     half4 albedoAlpha = SampleAlbedoAlpha(uv, TEXTURE2D_ARGS(_BaseMap, sampler_BaseMap));
     outSurfaceData.alpha = albedoAlpha.a * _BaseColor.a;
-    outSurfaceData.alpha = AlphaDiscard(outSurfaceData.alpha, _Cutoff);
+
+    half dissolution = SAMPLE_TEXTURE2D(_DissolutionMap, sampler_DissolutionMap, dissolutionUV).r;
+    outSurfaceData.alpha = AlphaDiscard(outSurfaceData.alpha * dissolution, _Cutoff);
 
     outSurfaceData.albedo = albedoAlpha.rgb * _BaseColor.rgb;
     outSurfaceData.albedo = AlphaModulate(outSurfaceData.albedo, outSurfaceData.alpha);
+    half t = 1 - smoothstep(0, _DissolutionEdgeWidth, dissolution - _Cutoff);
+    outSurfaceData.albedo = lerp(outSurfaceData.albedo, _DissolutionEdgeColor, t * step(0.000001, _Cutoff));
 
     #ifdef _FLICKERSWITCH_ON
-        //outSurfaceData.albedo = lerp(outSurfaceData.albedo, _FlickerColor, abs(sin(_Time.y * _FlickerFrequency)));
-        outSurfaceData.albedo +=  _FlickerColor * abs(sin(_Time.y * _FlickerFrequency));
+        outSurfaceData.albedo += _FlickerColor.rgb * abs(sin(_Time.y * _FlickerFrequency));
     #endif
 
     half4 specularSmoothness = SampleSpecularSmoothness(uv, outSurfaceData.alpha, _SpecColor, TEXTURE2D_ARGS(_SpecGlossMap, sampler_SpecGlossMap));

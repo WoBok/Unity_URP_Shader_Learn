@@ -34,6 +34,9 @@ Shader "LiQingZhao/Outline Simple" {
         [Toggle]_FlickerSwitch ("Enable Flicker", Float) = 0
         _FlickerFrequency ("Flicker Frequency", Float) = 1
         [HDR] _FlickerColor ("Flicker Color", Color) = (0, 0, 0)
+        _DissolutionMap ("Dissolution Map", 2D) = "white" { }
+        _DissolutionEdgeWidth ("Dissolution Edge Width", Range(0, 1)) = 0
+        [HDR]_DissolutionEdgeColor ("Dissolution Edge Color", Color) = (0, 0, 0, 0)
 
         [ToggleUI] _ReceiveShadows ("Receive Shadows", Float) = 1.0
         _QueueOffset ("Queue offset", Float) = 0.0

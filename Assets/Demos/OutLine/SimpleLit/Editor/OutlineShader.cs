@@ -29,6 +29,21 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                     var guiContent = new GUIContent(property.displayName);
                     materialEditor.ShaderProperty(property, guiContent);
                 }
+                if (property.name.Contains("DissolutionMap"))
+                {
+                    var guiContent = new GUIContent(property.displayName);
+                    materialEditor.ShaderProperty(property, guiContent);
+                }
+                if (property.name.Contains("DissolutionEdgeWidth"))
+                {
+                    var guiContent = new GUIContent(property.displayName);
+                    materialEditor.ShaderProperty(property, guiContent);
+                }
+                if (property.name.Contains("DissolutionEdgeColor"))
+                {
+                    var guiContent = new GUIContent(property.displayName);
+                    materialEditor.ShaderProperty(property, guiContent);
+                }
             }
             base.OnGUI(materialEditor, properties);
         }

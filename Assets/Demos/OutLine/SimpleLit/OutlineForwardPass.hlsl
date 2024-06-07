@@ -45,6 +45,8 @@ struct Varyings {
         float2 dynamicLightmapUV : TEXCOORD8; // Dynamic lightmap UVs
     #endif
 
+    float2 dissolutionUV : TEXCOORD9;
+
     float4 positionCS : SV_POSITION;
     UNITY_VERTEX_INPUT_INSTANCE_ID
     UNITY_VERTEX_OUTPUT_STEREO
@@ -128,6 +130,7 @@ Varyings LitPassVertexSimple(Attributes input) {
     #endif
 
     output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
+    output.dissolutionUV = TRANSFORM_TEX(input.texcoord, _DissolutionMap);
     output.positionWS.xyz = vertexInput.positionWS;
     output.positionCS = vertexInput.positionCS;
 
@@ -172,7 +175,7 @@ void LitPassFragmentSimple(
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
     SurfaceData surfaceData;
-    InitializeSimpleLitSurfaceData(input.uv, surfaceData);
+    InitializeSimpleLitSurfaceData(input.uv,input.dissolutionUV, surfaceData);
 
     #ifdef LOD_FADE_CROSSFADE
         LODFadeCrossFade(input.positionCS);
@@ -192,7 +195,7 @@ void LitPassFragmentSimple(
 
     float factor = dot(normalize(input.normalWS), inputData.viewDirectionWS);
     factor = step(_OutlineWidth, factor);
-    color*=factor;
+    color.rgb *= factor;
 
     outColor = color;
 
