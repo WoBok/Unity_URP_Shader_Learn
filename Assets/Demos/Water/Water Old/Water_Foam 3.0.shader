@@ -270,7 +270,7 @@ Shader "Demo/Water/Water_Foam 3.0" {
                     Alpha);
 
                 float3 reflectionWave = BlendNormal(UnpackNormal(tex2DNormal1), UnpackNormal(tex2DNormal2)) * _ReflectionfWave;
-                float2 uv = (IN.screenPos.xy / IN.screenPos.w) - float2(0, reflectionWave.y);
+                float2 uv = (IN.screenPos.xy / IN.screenPos.w);
                 half4 reflectionCol = tex2D(_ReflectionRT, uv);
                 half3 finalCol = color + reflectionCol.xyz * _ReflectionIntensity * reflectionCol.a * _ReflectionColor;
 

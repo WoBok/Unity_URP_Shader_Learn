@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
   m_Shader: {fileID: 4800000, guid: 4a4e65792bc307c49ab187c751a527e1, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 0
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -191,7 +194,7 @@ Material:
     - _NormalTiling2: 0.1
     - _ODM: 0.02
     - _OcclusionStrength: 1
-    - _Opacity: 0.815
+    - _Opacity: 1
     - _OpacityFalloff: 3.78
     - _OpacityMin: 0.797
     - _OverallFalloff: 0.56
@@ -271,7 +274,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color3: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 0}
     - _Color4: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 0}
-    - _DeepColour: {r: 0.14117648, g: 0.3372549, b: 0.16470589, a: 0}
+    - _DeepColour: {r: 0.14117643, g: 0.33725488, b: 0.16470584, a: 1}
     - _DepthGlowColour: {r: 0.8490566, g: 0.23591222, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
@@ -280,8 +283,8 @@ Material:
     - _FoamOffset: {r: -0.001, g: 0.001, b: 2, a: 0.02}
     - _Foam_Color: {r: 1, g: 1, b: 1, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 0}
-    - _ShallowColour: {r: 0.47450984, g: 0.5411765, b: 0.27450982, a: 0}
-    - _VeryDeepColour: {r: 0.011764706, g: 0.13333334, b: 0.2, a: 0}
+    - _ShallowColour: {r: 0.47450978, g: 0.5411765, b: 0.2745098, a: 1}
+    - _VeryDeepColour: {r: 0.011764706, g: 0.1333333, b: 0.19999996, a: 1}
     - _WaterDeepColor: {r: 0.1254902, g: 0.34117648, b: 0.15583292, a: 0}
     - _WaterDeepColor1: {r: 0.04705882, g: 0.3098039, b: 0.1960784, a: 0}
     - _WaterReallyDeepColor: {r: 0.1459713, g: 0.20784314, b: 0.11764706, a: 1}
