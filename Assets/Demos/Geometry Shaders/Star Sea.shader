@@ -38,16 +38,23 @@ Shader "Geometry Shader/Star Sea" {
             float _NoiseFactor;
             float _Speed;
 
-            float GetNoise(float2 uv, float noiseFactor) {
-                return perlin(uv.x * noiseFactor * _NoiseFactor + (_Time.y * _Speed * 100), uv.y * noiseFactor * _NoiseFactor + (_Time.y * _Speed * 100));
+            //float GetNoise(float2 uv, float noiseFactor) {
+            //    return perlin(uv.x * noiseFactor * _NoiseFactor + (_Time.y * _Speed * 100), uv.y * noiseFactor * _NoiseFactor + (_Time.y * _Speed * 100));
+            //}
+            float random(float value, float seed = 0.546) {
+                float res = frac(sin(value + seed) * 143758.5453);
+                return res;
             }
-
             v2g VS_Main(appdata_base v) {
                 v2g o = (v2g)0;
 
-                float4 posOffset = float4(GetNoise(v.texcoord, 1000), GetNoise(v.texcoord, 1200), GetNoise(v.texcoord, 900), 0);
+                //float4 posOffset = float4(GetNoise(v.texcoord, 1000), GetNoise(v.texcoord, 1200), GetNoise(v.texcoord, 900), 0);
+                //v.vertex += posOffset;
+                float x = random(v.vertex.y) * sin(random(v.vertex.x) * _Time.y);
+                float y = random(v.vertex.z) * cos(random(v.vertex.y) * _Time.y);
+                float z = random(v.vertex.x) * sin(random(v.vertex.z) * _Time.y);
 
-                v.vertex += posOffset;
+                v.vertex += float4(x, y, z, 0);
 
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = v.texcoord;
