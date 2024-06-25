@@ -8,7 +8,7 @@ Shader "URP Shader/Billboarding" {
         Tags { "RenderPipeline" = "UniversalPipeline" }
 
         Blend SrcAlpha OneMinusSrcAlpha
-
+        Cull Off
         Pass {
             HLSLPROGRAM
 
@@ -41,8 +41,8 @@ Shader "URP Shader/Billboarding" {
                 float3 forward = normalize(TransformWorldToObject(_WorldSpaceCameraPos));
                 half isVertical = step(0.999, forward.y);
                 float3 up = isVertical * float3(0, 0, 1) + (1 - isVertical) * float3(0, 1, 0);
-                float3 right = normalize(cross(forward, up));
-                up = normalize(cross(right, forward));
+                float3 right = normalize(cross(up, forward));
+                up = normalize(cross(forward, right));
 
                 float3 newPos = input.positionOS.x * right + input.positionOS.y * up + input.positionOS.z * forward;
 
