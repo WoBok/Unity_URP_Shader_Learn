@@ -3,6 +3,7 @@
 struct Star {
     float3 position;
     float3 direction;
+    float3 forward;
     float movementSpeed;
     float rotationSpeed;
     float scale;
@@ -14,6 +15,7 @@ StructuredBuffer<float3> targetDirection;
 float deltaTime;
 float3 containerPosition;
 float3 boundarySize;
+float3 cameraPosition;
 
 [numthreads(128, 1, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID) {
@@ -32,6 +34,8 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     start.position -= boundarySize / 2;
 
     start.direction = lerp(start.direction, targetDirection[id.x], start.rotationSpeed * deltaTime);
+
+    start.forward = cameraPosition - start.position;
 
     starts[id.x] = start;
 }

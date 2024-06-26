@@ -1,4 +1,4 @@
-Shader "URP Shader/SeaOfStar 2" {
+Shader "URP Shader/SeaOfStar" {
     Properties {
         [HDR]_BaseColor ("Color", Color) = (1, 1, 1, 1)
         _BlurRange ("Blur Rnage", Range(0, 1)) = 0.3
@@ -9,7 +9,7 @@ Shader "URP Shader/SeaOfStar 2" {
 
         Blend SrcAlpha OneMinusSrcAlpha
         ZWrite Off
-        Cull Off
+
         Pass {
             HLSLPROGRAM
 
@@ -66,15 +66,7 @@ Shader "URP Shader/SeaOfStar 2" {
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
 
-                float3 addPosition = float3(0, 0, 0);
-                #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-                    input.positionOS.xyz *= _Scale;
-                    input.positionOS.xyz += TransformWorldToObject(_Position);
-                    //viewDirection = _WorldSpaceCameraPos - _Position;
-                    addPosition = TransformWorldToObject(_Position);
-                #endif
-
-                float3 forward = normalize(TransformWorldToObject(_WorldSpaceCameraPos - addPosition));
+                float3 forward = normalize(TransformWorldToObject(_WorldSpaceCameraPos));
                 half isVertical = step(0.999, forward.y);
                 float3 up = isVertical * float3(0, 0, 1) + (1 - isVertical) * float3(0, 1, 0);
                 float3 right = normalize(cross(up, forward));
@@ -82,17 +74,21 @@ Shader "URP Shader/SeaOfStar 2" {
 
                 float3 newPos = input.positionOS.x * - right + input.positionOS.y * up + input.positionOS.z * forward;
 
-                output.positionCS = mul(UNITY_MATRIX_MVP, float4(newPos, input.positionOS.w));
+                #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
+                    float scale = _Scale;
+                    UNITY_MATRIX_M[0][0] = scale;
+                    UNITY_MATRIX_M[1][1] = scale;
+                    UNITY_MATRIX_M[2][2] = scale;
+                #endif
 
-                //float4 ori = mul(UNITY_MATRIX_MV, float4(0, 0, 0, 1));
-                //float4 vt = input.positionOS;
-                //float2 r1 = float2(unity_ObjectToWorld[0][0], unity_ObjectToWorld[0][2]);
-                //float2 r2 = float2(unity_ObjectToWorld[2][0], unity_ObjectToWorld[2][2]);
-                //vt.xy = vt.x * r1 + vt.z * r2;
-                //vt.z = 0;
-                //vt.xyz += ori.xyz;
-                //output.positionCS = mul(UNITY_MATRIX_P, vt);
+                float4 positionWS = mul(UNITY_MATRIX_M, float4(newPos, input.positionOS.w));
 
+                #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
+                    positionWS += float4(_Position, 0);
+                #endif
+                float4 positionCS = mul(UNITY_MATRIX_VP, positionWS);
+
+                output.positionCS = positionCS;
                 output.uv = input.texcoord;
 
                 return output;

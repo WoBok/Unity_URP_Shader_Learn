@@ -17,7 +17,7 @@ Shader "URP Shader/SeaOfStar 2" {
             #pragma fragment Fragment
 
             #pragma multi_compile_instancing
-            #pragma instancing_options procedural:SetupPosition
+            #pragma instancing_options procedural:SetupMatrix
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
@@ -41,6 +41,7 @@ Shader "URP Shader/SeaOfStar 2" {
                 struct Star {
                     float3 position;
                     float3 direction;
+                    float3 forward;
                     float movementSpeed;
                     float rotationSpeed;
                     float scale;
@@ -50,12 +51,37 @@ Shader "URP Shader/SeaOfStar 2" {
 
                 float3 _Position ;
                 float _Scale;
+                float4x4 _ObjectToWorldMatrix;
             #endif
 
-            void SetupPosition() {
+            void SetupMatrix() {
                 #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-                    _Position = starts[unity_InstanceID].position;
-                    _Scale = starts[unity_InstanceID].scale;
+                    Star star = starts[unity_InstanceID];
+                    float3 forward = normalize(star.forward);
+                    half isVertical = step(0.999, forward.y);
+                    float3 up = isVertical * float3(0, 0, 1) + (1 - isVertical) * float3(0, 1, 0);
+                    float3 right = normalize(cross(up, forward));
+                    up = normalize(cross(forward, right));
+
+                    forward *= star.scale;
+                    up *= star.scale;
+                    right *= star.scale;
+
+                    _ObjectToWorldMatrix = float4x4(
+                        right.x, up.x, forward.x, star.position.x,
+                        right.y, up.y, forward.y, star.position.y,
+                        right.z, up.z, forward.z, star.position.z,
+                        0, 0, 0, 1
+                    );
+
+                    //float4x4 scaleMatrix = float4x4(
+                    //    start.scale, 0, 0, 0,
+                    //    0, start.scale, 0, 0,
+                    //    0, 0, start.scale, 0,
+                    //    0, 0, 0, 1
+                    //);
+
+                    //_ObjectToWorldMatrix = mul(_ObjectToWorldMatrix, scaleMatrix);
                 #endif
             }
 
@@ -66,32 +92,14 @@ Shader "URP Shader/SeaOfStar 2" {
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
 
-                float3 addPosition = float3(0, 0, 0);
+                float4x4 objectToWorldMatrix = UNITY_MATRIX_M;
+
                 #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-                    input.positionOS.xyz *= _Scale;
-                    input.positionOS.xyz += TransformWorldToObject(_Position);
-                    //viewDirection = _WorldSpaceCameraPos - _Position;
-                    addPosition = TransformWorldToObject(_Position);
+                    objectToWorldMatrix = _ObjectToWorldMatrix;
                 #endif
 
-                float3 forward = normalize(TransformWorldToObject(_WorldSpaceCameraPos - addPosition));
-                half isVertical = step(0.999, forward.y);
-                float3 up = isVertical * float3(0, 0, 1) + (1 - isVertical) * float3(0, 1, 0);
-                float3 right = normalize(cross(up, forward));
-                up = normalize(cross(forward, right));
-
-                float3 newPos = input.positionOS.x * - right + input.positionOS.y * up + input.positionOS.z * forward;
-
-                output.positionCS = mul(UNITY_MATRIX_MVP, float4(newPos, input.positionOS.w));
-
-                //float4 ori = mul(UNITY_MATRIX_MV, float4(0, 0, 0, 1));
-                //float4 vt = input.positionOS;
-                //float2 r1 = float2(unity_ObjectToWorld[0][0], unity_ObjectToWorld[0][2]);
-                //float2 r2 = float2(unity_ObjectToWorld[2][0], unity_ObjectToWorld[2][2]);
-                //vt.xy = vt.x * r1 + vt.z * r2;
-                //vt.z = 0;
-                //vt.xyz += ori.xyz;
-                //output.positionCS = mul(UNITY_MATRIX_P, vt);
+                float4 positionWS = mul(objectToWorldMatrix, input.positionOS);
+                output.positionCS = mul(UNITY_MATRIX_VP, positionWS);
 
                 output.uv = input.texcoord;
 
