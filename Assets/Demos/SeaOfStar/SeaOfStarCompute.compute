@@ -1,14 +1,37 @@
-// Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
 
-// Create a RenderTexture with enableRandomWrite flag and set it
-// with cs.SetTexture
-RWTexture2D<float4> Result;
+struct Star {
+    float3 position;
+    float3 direction;
+    float movementSpeed;
+    float rotationSpeed;
+    float scale;
+};
 
-[numthreads(8,8,1)]
-void CSMain (uint3 id : SV_DispatchThreadID)
-{
-    // TODO: insert actual code here!
+RWStructuredBuffer<Star> starts;
+StructuredBuffer<float3> targetDirection;
 
-    Result[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
+float deltaTime;
+float3 containerPosition;
+float3 boundarySize;
+
+[numthreads(128, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID) {
+    Star start = starts[id.x];
+
+    start.position -= containerPosition;
+    start.position += boundarySize / 2;
+
+    start.position += start.direction * start.movementSpeed * deltaTime;
+
+    start.position.x %= boundarySize.x;
+    start.position.y %= boundarySize.y;
+    start.position.z %= boundarySize.z;
+
+    start.position += containerPosition;
+    start.position -= boundarySize / 2;
+
+    start.direction = lerp(start.direction, targetDirection[id.x], start.rotationSpeed * deltaTime);
+
+    starts[id.x] = start;
 }

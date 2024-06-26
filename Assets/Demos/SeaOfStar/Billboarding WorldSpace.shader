@@ -1,4 +1,4 @@
-Shader "URP Shader/Billboarding" {
+Shader "URP Shader/Billboarding WorldSpace" {
     Properties {
         _BaseMap ("Albedo", 2D) = "white" { }
         _BaseColor ("Color", Color) = (1, 1, 1, 1)
@@ -38,15 +38,25 @@ Shader "URP Shader/Billboarding" {
 
                 Varyings output;
                 
-                float3 forward = normalize(TransformWorldToObject(_WorldSpaceCameraPos));
+                //float3 forward = normalize(TransformWorldToObject(_WorldSpaceCameraPos));
+                //half isVertical = step(0.999, forward.y);
+                //float3 up = isVertical * float3(0, 0, 1) + (1 - isVertical) * float3(0, 1, 0);
+                //float3 right = normalize(cross(up, forward));
+                //up = normalize(cross(forward, right));
+
+                //float3 newPos = input.positionOS.x * - right + input.positionOS.y * up + input.positionOS.z * forward;
+
+                float3 positionWS = mul(UNITY_MATRIX_M, input.positionOS);
+
+                float3 forward = normalize(TransformWorldToObject(_WorldSpaceCameraPos - positionWS));
                 half isVertical = step(0.999, forward.y);
                 float3 up = isVertical * float3(0, 0, 1) + (1 - isVertical) * float3(0, 1, 0);
                 float3 right = normalize(cross(up, forward));
                 up = normalize(cross(forward, right));
 
-                float3 newPos = input.positionOS.x * - right + input.positionOS.y * up + input.positionOS.z * forward;
+                float3 newPos = positionWS.x * - right + positionWS.y * up + positionWS.z * forward;
 
-                output.positionCS = mul(UNITY_MATRIX_MVP, float4(newPos, input.positionOS.w));
+                output.positionCS = mul(UNITY_MATRIX_VP, float4(newPos, input.positionOS.w));
                 
                 output.uv = input.texcoord.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 
