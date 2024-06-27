@@ -1,12 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-public class SeaOfStar : MonoBehaviour
+public class SeaOfStarPassDirection : MonoBehaviour
 {
     struct Star
     {
         public Vector3 position;
         public Vector3 direction;
+        public Vector3 forward;
         public float movementSpeed;
         public float rotationSpeed;
         public float scale;
@@ -42,16 +43,22 @@ public class SeaOfStar : MonoBehaviour
 
     Coroutine m_Coroutine;
 
+    Camera m_MainCamera;
+    Camera MainCamera
+    {
+        get
+        {
+            if (m_MainCamera == null)
+                m_MainCamera = Camera.main;
+            return m_MainCamera;
+        }
+    }
     void OnEnable()
     {
         Init();
         UpdateBuffer();
         UpdateComputeParma();
         StartUpdateDirection();
-    }
-    void OnDisable()
-    {
-        Clear();
     }
     void OnValidate()
     {
@@ -73,6 +80,8 @@ public class SeaOfStar : MonoBehaviour
         UpdateStarBuffer();
 
         UpdateDirectionBuffer();
+
+        m_CachedCount = count;
     }
     void UpdateArgsBuffer()
     {
@@ -89,11 +98,10 @@ public class SeaOfStar : MonoBehaviour
     void UpdateStarBuffer()
     {
         if (count <= 0 || m_CachedCount <= 0) return;
-        m_CachedCount = count;
 
         if (m_StarsBuffer != null)
             m_StarsBuffer.Dispose();
-        m_StarsBuffer = new ComputeBuffer(count, sizeof(float) * 3 * 2 + sizeof(float) * 1 * 3);
+        m_StarsBuffer = new ComputeBuffer(count, sizeof(float) * 3 * 3 + sizeof(float) * 1 * 3);
 
         var stars = new Star[count];
         for (int i = 0; i < count; i++)
@@ -104,7 +112,7 @@ public class SeaOfStar : MonoBehaviour
             var localPosition = new Vector3(x, y, z);
             stars[i].position = localPosition + transform.position - boundarySize / 2;
 
-            stars[i].direction = GetRandomDirection();
+            stars[i].direction = Vector3.Normalize(new Vector3(z, x, y));
 
             stars[i].movementSpeed = Random.Range(movementSpeed.x, movementSpeed.y);
 
@@ -120,7 +128,6 @@ public class SeaOfStar : MonoBehaviour
     void UpdateDirectionBuffer()
     {
         if (count <= 0 || m_CachedCount <= 0) return;
-        m_CachedCount = count;
 
         if (m_DirectionBuffer != null)
             m_DirectionBuffer.Dispose();
@@ -128,8 +135,12 @@ public class SeaOfStar : MonoBehaviour
 
         var direction = new Vector3[count];
         for (int i = 0; i < count; i++)
-            direction[i] = GetRandomDirection();
-
+        {
+            var x = Random.value * 2 - 1;
+            var y = Random.value * 2 - 1;
+            var z = Random.value * 2 - 1;
+            direction[i] = new Vector3(x, y, z);
+        }
         m_DirectionBuffer.SetData(direction);
         computeShader.SetBuffer(m_KernelIndex, "targetDirection", m_DirectionBuffer);
     }
@@ -137,13 +148,6 @@ public class SeaOfStar : MonoBehaviour
     {
         computeShader.SetVector("containerPosition", transform.position);
         computeShader.SetVector("boundarySize", boundarySize);
-    }
-    Vector3 GetRandomDirection()
-    {
-        var x = Random.value * 2 - 1;
-        var y = Random.value * 2 - 1;
-        var z = Random.value * 2 - 1;
-        return new Vector3(x, y, z).normalized;
     }
     void Update()
     {
@@ -154,6 +158,7 @@ public class SeaOfStar : MonoBehaviour
     void DispatchKernel()
     {
         computeShader.SetFloat("deltaTime", Time.deltaTime);
+        computeShader.SetVector("cameraPosition", MainCamera.transform.position);
 
         computeShader.Dispatch(m_KernelIndex, (int)Mathf.Ceil((float)count / 128), 1, 1);
     }
@@ -173,10 +178,6 @@ public class SeaOfStar : MonoBehaviour
         }
     }
     void OnDestroy()
-    {
-        Clear();
-    }
-    void Clear()
     {
         if (m_argsBuffer != null)
             m_argsBuffer.Dispose();

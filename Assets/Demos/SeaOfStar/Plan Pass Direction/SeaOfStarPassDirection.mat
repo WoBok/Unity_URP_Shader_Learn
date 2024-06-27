@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SeaOfStar 3
+  m_Name: SeaOfStarPassDirection
   m_Shader: {fileID: 4800000, guid: c3d6794d1e1c3624383fbba25e0f5e64, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

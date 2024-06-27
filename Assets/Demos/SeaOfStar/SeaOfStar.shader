@@ -66,27 +66,30 @@ Shader "URP Shader/SeaOfStar" {
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
 
-                float3 forward = normalize(TransformWorldToObject(_WorldSpaceCameraPos));
+                #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
+                    float3 viewDirection = _WorldSpaceCameraPos - _Position;
+                #else
+                    float3 viewDirection = _WorldSpaceCameraPos;
+                #endif
+
+                float3 forward = normalize(TransformWorldToObject(viewDirection));
                 half isVertical = step(0.999, forward.y);
                 float3 up = isVertical * float3(0, 0, 1) + (1 - isVertical) * float3(0, 1, 0);
                 float3 right = normalize(cross(up, forward));
                 up = normalize(cross(forward, right));
 
+                #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
+                    forward *= _Scale;
+                    right *= _Scale;
+                    up *= _Scale;
+                #endif
+
                 float3 newPos = input.positionOS.x * - right + input.positionOS.y * up + input.positionOS.z * forward;
 
                 #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-                    float scale = _Scale;
-                    UNITY_MATRIX_M[0][0] = scale;
-                    UNITY_MATRIX_M[1][1] = scale;
-                    UNITY_MATRIX_M[2][2] = scale;
+                    newPos += _Position;
                 #endif
-
-                float4 positionWS = mul(UNITY_MATRIX_M, float4(newPos, input.positionOS.w));
-
-                #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-                    positionWS += float4(_Position, 0);
-                #endif
-                float4 positionCS = mul(UNITY_MATRIX_VP, positionWS);
+                float4 positionCS = mul(UNITY_MATRIX_MVP, float4(newPos, input.positionOS.w));
 
                 output.positionCS = positionCS;
                 output.uv = input.texcoord;

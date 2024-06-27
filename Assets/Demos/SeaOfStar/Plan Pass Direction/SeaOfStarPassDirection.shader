@@ -1,4 +1,4 @@
-Shader "URP Shader/SeaOfStar 2" {
+Shader "URP Shader/SeaOfStarPassDirection" {
     Properties {
         [HDR]_BaseColor ("Color", Color) = (1, 1, 1, 1)
         _BlurRange ("Blur Rnage", Range(0, 1)) = 0.3

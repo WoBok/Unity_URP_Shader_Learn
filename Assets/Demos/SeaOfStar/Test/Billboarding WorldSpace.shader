@@ -48,7 +48,7 @@ Shader "URP Shader/Billboarding WorldSpace" {
 
                 float3 positionWS = mul(UNITY_MATRIX_M, input.positionOS);
 
-                float3 forward = normalize(TransformWorldToObject(_WorldSpaceCameraPos - positionWS));
+                float3 forward = normalize(_WorldSpaceCameraPos - positionWS);
                 half isVertical = step(0.999, forward.y);
                 float3 up = isVertical * float3(0, 0, 1) + (1 - isVertical) * float3(0, 1, 0);
                 float3 right = normalize(cross(up, forward));
