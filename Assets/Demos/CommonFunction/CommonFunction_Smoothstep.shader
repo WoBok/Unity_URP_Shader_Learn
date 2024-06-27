@@ -45,8 +45,10 @@ Shader "URP Shader/CommonFunction_Frac" {
 
             half4 Fragment(Varyings input) : SV_Target {
 
-                float2 uv = input.uv * 2 - 1;
-                float d = length(uv);
+                float2 uv = input.uv + _Time.y;
+                uv *= 10;
+                float2 decimal = frac(uv);
+                float d = length(decimal * 2 - 1);
                 half s = smoothstep(0.5, 0.6, d) - smoothstep(0.4, 0.65, d);
                 half4 color = float4(s, s, s, 1);
 
