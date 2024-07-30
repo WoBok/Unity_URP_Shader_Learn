@@ -114,7 +114,6 @@ Shader "URP Shader/NormalWater" {
                 float3 normal2 = SampleNormal(uv2, TEXTURE2D_ARGS(_SecondNormal, sampler_SecondNormal));
                 float3 normal = normal1 + normal2;
                 return NormalStrength(normal, _NormalStrength);
-
             }
 
             void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData) {
@@ -139,7 +138,6 @@ Shader "URP Shader/NormalWater" {
                 surfaceData.occlusion = 1;
                 surfaceData.alpha = albedo.a * _BaseColor.a;
                 surfaceData.normalTS = normalize(WaterNormalTS(uv));
-
             }
 
             half4 Fragment(Varyings input) : SV_Target {
