@@ -1,8 +1,6 @@
 #ifndef WATER_COLOR_INCLUDED
 #define WATER_COLOR_INCLUDED
 
-//#include "WorldSpaceDepth.hlsl"
-
 sampler2D _CameraDepthTexture;
 
 half4 _ShallowCollor, _DeepColor;
@@ -15,10 +13,7 @@ half4 WaterColor(float4 screenPos, float2 uv, float4 positionCS, float3 position
 
     float backgroundDepth = LinearEyeDepth(tex2Dproj(_CameraDepthTexture, screenPos), _ZBufferParams);
     float depthDifference = backgroundDepth - screenPos.z;
-    
-    //float depthDifference = WorldSpaceDepth(positionCS, positionWS);
 
-    //float depth = saturate(depthDifference / _DepthRange);
     float depth = saturate(exp(depthDifference / _DepthRange));
 
     half4 color;

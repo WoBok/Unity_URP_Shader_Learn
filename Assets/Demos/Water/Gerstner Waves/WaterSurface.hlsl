@@ -18,6 +18,7 @@ void InitializeInputData(Varyings input, out InputData inputData) {
         half3x3 tangentToWorld = half3x3(input.tangentWS.xyz, bitangent.xyz, input.normalWS.xyz);
 
         float3 normal = TransformTangentToWorld(normalTS, tangentToWorld);
+
         inputData.normalWS = normalize(normal);
     #else
         inputData.normalWS = normalize(input.normalWS);

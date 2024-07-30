@@ -24,7 +24,7 @@ Varyings Vertex(Attributes input) {
     output.positionWS = positionWS;
 
     real3 tangentWS = real3(TransformObjectToWorldDir(input.tangentOS.xyz));
-    real sign = input.tangentOS.w * (unity_WorldTransformParams.w >= 0.0 ?  1.0 : - 1.0);
+    real sign = input.tangentOS.w * (unity_WorldTransformParams.w >= 0.0 ? 1.0 : - 1.0);
     output.tangentWS = half4(tangentWS.xyz, sign);
 
     output.vertexAlpha = input.color.a;
@@ -45,5 +45,4 @@ Varyings Vertex(Attributes input) {
 half4 Fragment(Varyings input) : SV_Target {
     return Surface(input);
 }
-
 #endif

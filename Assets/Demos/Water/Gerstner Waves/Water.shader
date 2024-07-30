@@ -18,7 +18,6 @@ Shader "URP Shader/Water" {
         _SecondNormalMap ("Second Normal Map", 2D) = "white" { }
         _NormalScale ("Normal Scale", Float) = 0.2
         _NormalSpeed ("Normal Speed", Float) = 1
-        _WaveNormal ("Wave Normal", Vector) = (1, 1, 1, 1)
 
         [Header(Foam)]
         [Space(5)]
@@ -73,9 +72,9 @@ Shader "URP Shader/Water" {
             HLSLPROGRAM
 
             #pragma vertex  TessellationVertexProgram
-            #pragma fragment Fragment
             #pragma hull  HullProgram
             #pragma domain  DomainProgram
+            #pragma fragment Fragment
 
             #pragma shader_feature _TESSELLATION_EDGE_ON
             #pragma shader_feature _NORMALSWITCH_ON
