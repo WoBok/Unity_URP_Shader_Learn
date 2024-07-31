@@ -37,7 +37,7 @@ float3 GetNormal(float3 normalWS, float2 uv) {
     float3 normal1 = SampleNormal(uv1, TEXTURE2D_ARGS(_MainNormalMap, sampler_MainNormalMap));
     float3 normal2 = SampleNormal(uv2, TEXTURE2D_ARGS(_SecondNormalMap, sampler_SecondNormalMap));
     float3 normal = normal1 + normal2;
-    normal += normalWS ;
+    //normal += normalWS ;
     return NormalStrength(normal, _NormalScale);
 }
 #endif

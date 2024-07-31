@@ -52,7 +52,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _FoamMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1500, y: 1500}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainNormalMap:
         m_Texture: {fileID: 2800000, guid: a5ce026d01e26ab45b4c24271d06495d, type: 3}
@@ -119,7 +119,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DepthRange: 0.76
+    - _DepthRange: 1
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -127,15 +127,15 @@ Material:
     - _EnvironmentReflections: 1
     - _FoamDistance: 0
     - _FoamIntensity: 0
-    - _FresnelIntensity: 0.522
-    - _FresnelPower: 93.7
+    - _FresnelIntensity: 0
+    - _FresnelPower: 50
     - _FrontSSSIntensity: 0.2
     - _FrontSubsurfaceDistortion: 0.5
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HeightCorrection: 0
-    - _Metallic: 0
+    - _Metallic: 0.12
     - _NormalScale: 1
     - _NormalSpeed: 2.5
     - _NormalSwitch: 1
@@ -143,7 +143,7 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.67
+    - _Smoothness: 0.7
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _Speed: 1
@@ -152,7 +152,7 @@ Material:
     - _Steepness: 0.61
     - _Surface: 0
     - _TESSELLATION_EDGE: 1
-    - _TessellationEdgeLength: 32.4
+    - _TessellationEdgeLength: 50
     - _TessellationUniform: 30
     - _Tessellation_Edge: 1
     - _TransDepthRange: 6
@@ -168,19 +168,19 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0, g: 0.6862745, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DeepColor: {r: 0, g: 0.02745098, b: 0.23529412, a: 1}
+    - _DeepColor: {r: 0, g: 0.019607844, b: 0.16862746, a: 1}
     - _Direction: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FresnelColor: {r: 0, g: 0.65338635, b: 1, a: 1}
+    - _FresnelColor: {r: 0, g: 0.013902872, b: 0.254717, a: 1}
     - _ShallowCollor: {r: 0.7688679, g: 1, b: 0.98313606, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Wave1: {r: 1, g: 0.4, b: 0, a: -1}
+    - _Wave1: {r: 0.2, g: 0.3, b: 0, a: -1}
     - _Wave10: {r: 0.02, g: 0, b: 0.2, a: 0.4}
     - _Wave11: {r: 0.02, g: 0, b: 0.45, a: 3}
     - _Wave12: {r: 0.17, g: 0, b: 0.4, a: 0.6}
     - _Wave2: {r: 0.5, g: 0.2, b: 0.3, a: 1.17}
-    - _Wave3: {r: 0.8, g: 0.1, b: 0.4, a: 0.74}
+    - _Wave3: {r: 0.8, g: 0.4, b: -0.4, a: 0.74}
     - _Wave4: {r: 0.11, g: 0, b: 0.15, a: 0.14}
     - _Wave5: {r: 0.06, g: 0, b: 0.45, a: 5}
     - _Wave6: {r: 0.07, g: 0, b: 0.2, a: 7}
