@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class RandomPlayAudio : MonoBehaviour
+public class RandomlyPlayAudio : MonoBehaviour
 {
     public AudioClip[] clips;
     AudioSource m_AudioSource;
