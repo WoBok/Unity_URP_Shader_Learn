@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Reflection
   - OutLine
+  - Paper
   layers:
   - Default
   - TransparentFX
