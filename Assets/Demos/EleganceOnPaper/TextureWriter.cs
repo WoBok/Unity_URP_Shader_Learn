@@ -7,7 +7,8 @@ public class TextureWriter : MonoBehaviour
     public Material material;
     public Vector3 currentPosition;
 
-    RenderTexture m_RenderTexture;
+    RenderTexture m_OriginalRenderTexture;
+    RenderTexture m_ResultRenderTexture;
     int kernelHandle;
 
     void Start()
@@ -18,19 +19,23 @@ public class TextureWriter : MonoBehaviour
 
     void InitTexture()
     {
-        m_RenderTexture = new RenderTexture(texture.width, texture.height, 0)
-        {
-            //enableRandomWrite = true
-        };
-        //m_RenderTexture.Create();
-        Graphics.Blit(texture, m_RenderTexture);
-        material.SetTexture("_BaseMap", m_RenderTexture);
+        m_OriginalRenderTexture = new RenderTexture(texture.width, texture.height, 0);
+        m_OriginalRenderTexture.enableRandomWrite = true;
+        m_OriginalRenderTexture.Create();
+        Graphics.Blit(texture, m_OriginalRenderTexture, new Material(Shader.Find("Universal Render Pipeline/Unlit")));
+
+        m_ResultRenderTexture = new RenderTexture(texture.width, texture.height, 0);
+        m_ResultRenderTexture.enableRandomWrite = true;
+        m_ResultRenderTexture.Create();
+
+        material.SetTexture("_BaseMap", m_ResultRenderTexture);
     }
 
     void InitComputeShader()
     {
         kernelHandle = computeShader.FindKernel("Writer");
-        computeShader.SetTexture(kernelHandle, "Result", m_RenderTexture);
+        computeShader.SetTexture(kernelHandle, "tex", m_OriginalRenderTexture);
+        computeShader.SetTexture(kernelHandle, "Result", m_ResultRenderTexture);
     }
 
     void Update()
@@ -38,9 +43,9 @@ public class TextureWriter : MonoBehaviour
         SetPosition();
         computeShader.Dispatch(kernelHandle, texture.width / 8, texture.height / 8, 1);
     }
+
     void SetPosition()
     {
-
         var texPos = Vector2.zero;
 
         texPos.x = (currentPosition.x / transform.localScale.x) * texture.width;
