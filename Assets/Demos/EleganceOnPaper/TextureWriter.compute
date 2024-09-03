@@ -1,14 +1,13 @@
 #pragma kernel Writer
 
+RWTexture2D<float4> tex;
 RWTexture2D<float4> Result;
 int2 currentPosition;
 
 [numthreads(8, 8, 1)]
 void Writer(uint3 id : SV_DispatchThreadID) {
-
     float l = length((int2)id.xy - currentPosition);
     int factor = 1 - step(l, 0.1);
-    float4 color = Result[id.xy];
-    color.a = factor;
+    float4 color = tex[id.x];
     Result[id.xy] = color;
 }
