@@ -1,4 +1,4 @@
-Shader "URP Shader/PBR" {
+Shader "PBR Shader/PBR" {
     Properties {
         _BaseMap ("Base Map", 2D) = "white" { }
         _BaseColor ("Color", Color) = (1, 1, 1, 1)
@@ -89,12 +89,15 @@ Shader "URP Shader/PBR" {
 
                 half4 albedo = tex2D(_BaseMap, input.uv);
                 #ifdef _NORMALSWITCH_ON
-                    half4 normalTS = UnpackNormal(tex2D(_NormalMap, input.uv));
+                    half3 normalTS = UnpackNormal(tex2D(_NormalMap, input.uv));
+                    normalTS.xy *= _NormalScale;
                     half3x3 tangentToWorld = half3x3(input.tangentWS.xyz, input.bitangentWS.xyz, input.normalWS.xyz);
-                    half4 normalWS = mul(normalTS, tangentToWorld);
+                    half3 normalWS = mul(normalTS.xyz, tangentToWorld);
+                #else
+                    half3 normalWS = input.normalWS.xyz;
                 #endif
 
-                half4 diffuse = albedo * (dot(input.normalWS, normalize(_MainLightPosition.xyz)) * 0.5 + 0.5);
+                half4 diffuse = albedo * (dot(normalWS, normalize(_MainLightPosition.xyz)) * 0.5 + 0.5);
 
                 return diffuse * _BaseColor;
             }
