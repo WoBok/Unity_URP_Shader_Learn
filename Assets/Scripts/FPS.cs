@@ -1,4 +1,4 @@
-﻿using Unity.XR.PXR;
+//using Unity.XR.PXR;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +23,7 @@ public class FPS : MonoBehaviour
 
         if (timeLeft <= 0.0)
         {
-            float fps = PXR_Plugin.System.UPxr_GetConfigInt(ConfigType.RenderFPS);
+            float fps = 0;//PXR_Plugin.System.UPxr_GetConfigInt(ConfigType.RenderFPS);
 
             strFps = string.Format("FPS: {0:f0}", fps);
 

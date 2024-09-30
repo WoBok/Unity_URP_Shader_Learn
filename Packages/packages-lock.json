@@ -181,33 +181,6 @@
       },
       "url": "https://packages.unity.cn"
     },
-    "com.unity.xr.management": {
-      "version": "4.4.0",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.subsystems": "1.0.0",
-        "com.unity.modules.vr": "1.0.0",
-        "com.unity.modules.xr": "1.0.0",
-        "com.unity.xr.legacyinputhelpers": "2.1.7"
-      },
-      "url": "https://packages.unity.cn"
-    },
-    "com.unity.xr.picoxr": {
-      "version": "file:E:/SDK/PICO Unity Integration SDK-240",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.unity.xr.management": "4.0.0",
-        "com.unity.xr.interaction.toolkit": "2.0.0"
-      }
-    },
-    "com.wobok.plugins": {
-      "version": "file:E:/SDK/WoBok's Plugins",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
