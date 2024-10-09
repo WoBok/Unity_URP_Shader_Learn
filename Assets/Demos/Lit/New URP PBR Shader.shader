@@ -1,4 +1,3 @@
-
 Shader "URP Shader/New URP PBR Shader" {
     Properties {
         _BaseMap ("Albedo", 2D) = "white" { }
@@ -31,7 +30,7 @@ Shader "URP Shader/New URP PBR Shader" {
             struct Varyings {
                 float2 uv : TEXCOORD0;
                 float3 normalWS : TEXCOORD1;
-                float3 positionWS : TEXCOORD2;
+                float3 viewDirectionWS : TEXCOORD2;
                 float4 positionCS : SV_POSITION;
                 DECLARE_LIGHTMAP_OR_SH(staticLightmapUV, vertexSH, 3);
             };
@@ -49,7 +48,7 @@ Shader "URP Shader/New URP PBR Shader" {
                 
                 output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
-                output.positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                output.viewDirectionWS = normalize(_WorldSpaceCameraPos - TransformObjectToWorld(input.positionOS.xyz));
 
                 output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 
@@ -62,7 +61,7 @@ Shader "URP Shader/New URP PBR Shader" {
             void InitializeInputData(Varyings input, out InputData inputData) {
                 inputData = (InputData)0;
                 inputData.normalWS = normalize(input.normalWS);
-                inputData.viewDirectionWS = normalize(_WorldSpaceCameraPos - input.positionWS);
+                inputData.viewDirectionWS = input.viewDirectionWS;
                 inputData.bakedGI = SAMPLE_GI(input.staticLightmapUV, input.vertexSH, input.normalWS);
             }
 
