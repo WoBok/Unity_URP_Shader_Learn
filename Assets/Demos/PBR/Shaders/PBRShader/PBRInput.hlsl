@@ -75,7 +75,7 @@ half2 SampleMetallicGloss(float2 uv) {
 
 void InitializeLightingData(out LightingData lightingData) {
     _PBRLightDirection = _MainLightPosition.xyz;
-    _PBRLightColor = half3(1, 1, 1);
+    _PBRLightColor = _MainLightColor.rgb;
     _PBRLightIntensity = 1;
 
     lightingData.direction = _PBRLightDirection;

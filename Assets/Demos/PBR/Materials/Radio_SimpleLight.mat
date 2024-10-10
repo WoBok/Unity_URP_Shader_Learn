@@ -26,7 +26,6 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - DIFFUSESWITCH_ON
-  - FRESNELSWITCH_ON
   - NORMALSWITCH_ON
   - SPECULARSWITCH_ON
   m_InvalidKeywords: []
@@ -105,7 +104,7 @@ Material:
     - AlphaClipping: 0
     - DiffuseSwitch: 1
     - FogSwitch: 0
-    - FresnelSwitch: 1
+    - FresnelSwitch: 0
     - HSISwitch: 0
     - NormalSwitch: 1
     - SpecularSwitch: 1

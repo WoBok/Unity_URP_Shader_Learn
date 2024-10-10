@@ -55,14 +55,14 @@ half4 PBRLighting(LightingData lightingData, BRDFData brdfData) {
     half ndoth = saturate(dot(brdfData.normalWS, halfDir));
     half ldoth = saturate(dot(lightingData.direction, halfDir));
 
-    half3 diffuseTerm = DisneyDiffuse(brdfData.roughness, brdfData.diffuseColor, ndotv, ndotl, ldoth);
+    half3 diffuseTerm = DisneyDiffuse(brdfData.roughness, brdfData.diffuseColor, ndotv, ndotl, ldoth) * ndotl;
 
     half roughness = max(brdfData.roughness * brdfData.roughness, 0.002);
     half3 F = Fresnel(brdfData.specularColor, ldoth);
     half G = SmithJointGGX(roughness, ndotl, ndotv);
     half D = GGX(roughness, ndoth);
-    half3 specularTerm = (F * D * G) * PI ;///(4*ndotl*ndotv)
-    specularTerm*=brdfData.specularColor;
+    half3 specularTerm = (F * D * G) *PI;/// (4 * ndotl * ndotv);//
+    specularTerm = max(0, specularTerm * ndotl);
 
     half3 color = diffuseTerm * lightingData.color + specularTerm * lightingData.color;
     return half4(color, 1);
