@@ -13,6 +13,9 @@ Shader "PBR Shader/PBR" {
         _NormalMap ("Normal Map", 2D) = "white" { }
         _NormalScale ("Normal Scale", Float) = 1
         _OcclusionMap ("Occlusion Map", 2D) = "white" { }
+
+        _PBRLightDirection ("PBR Light Direction", Vector) = (-1, -1, -1, 0)
+        _PBRLightColor ("PBR Light Color", Color) = (1, 1, 1, 1)
     }
 
     SubShader {

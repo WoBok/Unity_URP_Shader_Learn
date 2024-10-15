@@ -14,7 +14,8 @@ Varyings Vertex(Attributes input) {
     output.normalWS = normalize(mul(input.normalOS, (float3x3)UNITY_MATRIX_I_M));
     #ifdef _NORMALSWITCH_ON
         output.tangentWS = normalize(mul((float3x3)UNITY_MATRIX_M, input.tangentOS.xyz));
-        output.bitangentWS = cross(output.normalWS, output.tangentWS) * input.tangentOS.w;
+        half sign = unity_WorldTransformParams.w >= 0.0 ? 1.0 : - 1.0;
+        output.bitangentWS = cross(output.normalWS, output.tangentWS) * input.tangentOS.w * sign;
     #endif
 
     output.uv = input.texcoord.xy * _AlbedoMap_ST.xy + _AlbedoMap_ST.zw;

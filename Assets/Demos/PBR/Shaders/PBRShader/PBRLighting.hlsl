@@ -61,7 +61,7 @@ half4 PBRLighting(LightingData lightingData, BRDFData brdfData) {
     half3 F = Fresnel(brdfData.specularColor, ldoth);
     half G = SmithJointGGX(roughness, ndotl, ndotv);
     half D = GGX(roughness, ndoth);
-    half3 specularTerm = (F * D * G) *PI;/// (4 * ndotl * ndotv);//
+    half3 specularTerm = (F * D * G) * PI;/// (4 * ndotl * ndotv);//
     specularTerm = max(0, specularTerm * ndotl);
 
     half3 color = diffuseTerm * lightingData.color + specularTerm * lightingData.color;

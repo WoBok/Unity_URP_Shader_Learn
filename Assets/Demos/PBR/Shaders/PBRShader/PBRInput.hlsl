@@ -55,7 +55,7 @@ half3 SampleNormalWSFrag(Varyings input) {
         half3 normalTS = UnpackNormal(tex2D(_NormalMap, input.uv));
         normalTS.xy *= _NormalScale;
         half3x3 tangentToWorld = half3x3(input.tangentWS.xyz, input.bitangentWS.xyz, input.normalWS.xyz);
-        return mul(normalTS.xyz, tangentToWorld);
+        return normalize(mul(normalTS.xyz, tangentToWorld));
     #else
         return input.normalWS.xyz;
     #endif
@@ -74,8 +74,8 @@ half2 SampleMetallicGloss(float2 uv) {
 }
 
 void InitializeLightingData(out LightingData lightingData) {
-    _PBRLightDirection = _MainLightPosition.xyz;
-    _PBRLightColor = _MainLightColor.rgb;
+    //_PBRLightDirection = _MainLightPosition.xyz;
+    //_PBRLightColor = _MainLightColor.rgb;
     _PBRLightIntensity = 1;
 
     lightingData.direction = _PBRLightDirection;
@@ -83,7 +83,7 @@ void InitializeLightingData(out LightingData lightingData) {
 }
 
 void InitializeBRDFData(Varyings input, out BRDFData brdfData) {
-    half4 albedo = tex2D(_AlbedoMap, input.uv) * _BaseColor;
+    half3 albedo = tex2D(_AlbedoMap, input.uv).rgb * _BaseColor.xyz;
 
     half2 metallicGloss = SampleMetallicGloss(input.uv);
     half oneMinusReflectivity = DIELECTRICF0.a - metallicGloss.r * DIELECTRICF0.a;
@@ -96,5 +96,4 @@ void InitializeBRDFData(Varyings input, out BRDFData brdfData) {
     brdfData.normalWS = SampleNormalWSFrag(input);
     brdfData.viewDirWS = normalize(_WorldSpaceCameraPos - input.positionWS);
 }
-
 #endif
