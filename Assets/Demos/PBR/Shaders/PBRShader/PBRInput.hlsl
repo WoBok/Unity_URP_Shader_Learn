@@ -6,6 +6,7 @@ struct Attributes {
     float3 normalOS : NORMAL;
     float4 tangentOS : TANGENT;
     float2 texcoord : TEXCOORD0;
+    float2 staticLightmapUV : TEXCOORD1;
 };
 
 struct Varyings {
@@ -17,6 +18,7 @@ struct Varyings {
         half3 bitangentWS : TEXCOORD4;
     #endif
     float4 positionCS : SV_POSITION;
+    DECLARE_LIGHTMAP_OR_SH(staticLightmapUV, vertexSH, 5);
 };
 
 sampler2D _AlbedoMap;
@@ -29,7 +31,9 @@ sampler2D _AlbedoMap;
     sampler2D _NormalMap;
 #endif
 
-sampler2D _OcclusionMap;
+#ifdef _OCCLUSIONSWITCH_ON
+    sampler2D _OcclusionMap;
+#endif
 
 CBUFFER_START(UnityPerMaterial)
 half3 _PBRLightDirection;
@@ -45,8 +49,16 @@ float _Metallic;
     float _MetallicScale;
 #endif
 
+#ifdef _OCCLUSIONSWITCH_ON
+    half _OcclusionScale;
+#endif
+
 #ifdef _NORMALSWITCH_ON
     float _NormalScale;
+#endif
+
+#ifdef _ALPHACLIPPING_ON
+    half _AlphaClipThreshold;
 #endif
 CBUFFER_END
 
@@ -73,27 +85,50 @@ half2 SampleMetallicGloss(float2 uv) {
     return metallicGloss;
 }
 
-void InitializeLightingData(out LightingData lightingData) {
+half SampleOcclusion(float2 uv) {
+    #ifdef _OCCLUSIONSWITCH_ON
+        half occlusion = tex2D(_OcclusionMap, uv).g;
+        return 1 - _OcclusionScale + occlusion * _OcclusionScale;
+    #else
+        return 1;
+    #endif
+}
+
+void InitializeLightingData(out PBRLightingData pbrLightingData) {
     _PBRLightDirection = _MainLightPosition.xyz;
     _PBRLightColor = _MainLightColor.rgb;
     _PBRLightIntensity = 1;
 
-    lightingData.direction = _PBRLightDirection;
-    lightingData.color = _PBRLightColor * _PBRLightIntensity;
+    pbrLightingData.direction = _PBRLightDirection;
+    pbrLightingData.color = _PBRLightColor * _PBRLightIntensity;
 }
 
-void InitializeBRDFData(Varyings input, out BRDFData brdfData) {
-    half3 albedo = tex2D(_AlbedoMap, input.uv).rgb * _BaseColor.xyz;
+void InitializeBRDFData(Varyings input, out PBRData pbrData) {
+    //ÐÞ¸ÄÎªInitializeInputData
+    half4 texColor = tex2D(_AlbedoMap, input.uv);
+
+    pbrData.alpha = texColor.a * _BaseColor.a;
+    #ifdef _ALPHACLIPPING_ON
+        clip(pbrData.alpha - _AlphaClipThreshold);
+    #endif
 
     half2 metallicGloss = SampleMetallicGloss(input.uv);
     half oneMinusReflectivity = DIELECTRICF0.a - metallicGloss.r * DIELECTRICF0.a;
 
-    brdfData.diffuseColor = albedo * oneMinusReflectivity;
-    brdfData.specularColor = lerp(DIELECTRICF0.rgb, albedo, metallicGloss.r);
+    pbrData.oneMinusReflectivity = oneMinusReflectivity;
 
-    brdfData.roughness = 1 - metallicGloss.g;
+    half3 albedo = texColor.xyz * _BaseColor.rgb;
+    pbrData.diffuseColor = albedo * oneMinusReflectivity;
+    pbrData.specularColor = lerp(DIELECTRICF0.rgb, albedo, metallicGloss.r);
 
-    brdfData.normalWS = SampleNormalWSFrag(input);
-    brdfData.viewDirWS = normalize(_WorldSpaceCameraPos - input.positionWS);
+    pbrData.roughness = 1 - metallicGloss.g;
+
+    pbrData.positionWS = input.positionWS;
+    pbrData.normalWS = SampleNormalWSFrag(input);
+    pbrData.viewDirWS = normalize(_WorldSpaceCameraPos - input.positionWS);
+
+    pbrData.bakedGI = SAMPLE_GI(input.staticLightmapUV, input.vertexSH, input.normalWS);
+
+    pbrData.occlusion = SampleOcclusion(input.uv);
 }
 #endif

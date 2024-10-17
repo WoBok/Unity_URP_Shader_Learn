@@ -20,17 +20,20 @@ Varyings Vertex(Attributes input) {
 
     output.uv = input.texcoord.xy * _AlbedoMap_ST.xy + _AlbedoMap_ST.zw;
 
+    OUTPUT_LIGHTMAP_UV(input.staticLightmapUV, unity_LightmapST, output.staticLightmapUV);
+    OUTPUT_SH(output.normalWS.xyz, output.vertexSH);
+
     return output;
 }
 
 half4 Fragment(Varyings input) : SV_Target {
-    LightingData lightingData;
-    InitializeLightingData(lightingData);
+    PBRLightingData pbrLightingData;
+    InitializeLightingData(pbrLightingData);
 
-    BRDFData brdfData;
-    InitializeBRDFData(input, brdfData);
+    PBRData pbrData;
+    InitializeBRDFData(input, pbrData);
 
-    return PBRLighting(lightingData, brdfData);
+    return PBRLighting(pbrLightingData, pbrData);
 }
 
 #endif
