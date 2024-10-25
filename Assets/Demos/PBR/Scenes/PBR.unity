@@ -10719,6 +10719,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: apple_vision_pro_ios16
       objectReference: {fileID: 0}
+    - target: {fileID: -5609321221556402741, guid: 5113d5130cd7e864790a090757ad0c15,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5146681718063874739, guid: 5113d5130cd7e864790a090757ad0c15,
         type: 3}
       propertyPath: m_LocalPosition.x
