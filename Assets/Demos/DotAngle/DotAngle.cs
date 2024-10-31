@@ -14,7 +14,7 @@ public class DotAngle : MonoBehaviour
     }
     float Cross(Vector2 v1, Vector2 v2)
     {
-        return v1.x * v2.y + v1.y * v2.x;
+        return v1.x * v2.y - v1.y * v2.x;
     }
     void OnGUI()
     {
@@ -44,7 +44,15 @@ public class DotAngle : MonoBehaviour
         {
             var vec1 = new Vector2(vec1Trans.position.x, vec1Trans.position.z);
             var vec2 = new Vector2(vec2Trans.position.x, vec2Trans.position.z);
+            vec1.Normalize();
+            vec2.Normalize();
             print(Cross(vec1, vec2));
+        }
+        if (GUILayout.Button("Angle"))
+        {
+            var vec1 = vec1Trans.position;
+            var vec2 = vec2Trans.position;
+            print(Vector3.Angle(vec1, vec2));
         }
     }
     void OnDrawGizmos()
