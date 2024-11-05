@@ -1,4 +1,4 @@
-Shader "#PATH#" {
+Shader "URP Shader/ColorMask1" {
     Properties {
         _BaseMap ("Albedo", 2D) = "white" { }
         _BaseColor ("Color", Color) = (1, 1, 1, 1)
@@ -7,11 +7,17 @@ Shader "#PATH#" {
         [Space(5)]
         _Smoothness ("Smoothness", Range(0, 1)) = 0
         _Metallic ("Metallic", Range(0, 1)) = 0
+
+        _NoiseMap ("Noise", 2D) = "white" { }
+
+        _AlphaClipThreshold ("Alpha Clip Threshold", Range(0, 1)) = 0
     }
 
     SubShader {
         Tags { "RenderPipeline" = "UniversalPipeline" }
-
+        ColorMask 0
+        Cull Off
+        ZTest Off
         Pass {
             HLSLPROGRAM
 
@@ -36,11 +42,14 @@ Shader "#PATH#" {
             };
             
             sampler2D _BaseMap;
+            sampler2D _NoiseMap;
             CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST;
+            float4 _NoiseMap_ST;
             half4 _BaseColor;
             float _Smoothness;
             float _Metallic;
+            half _AlphaClipThreshold;
             CBUFFER_END
 
             Varyings Vertex(Attributes input) {
@@ -82,7 +91,14 @@ Shader "#PATH#" {
                 SurfaceData surfaceData;
                 InitializeSurfaceData(input.uv, surfaceData);
 
-                return UniversalFragmentPBR(inputData, surfaceData);
+                half4 color = UniversalFragmentPBR(inputData, surfaceData);
+
+                half noise = tex2D(_NoiseMap, input.uv);
+                color.a *= noise;
+
+                clip(color.a - _AlphaClipThreshold);
+
+                return color;
             }
             ENDHLSL
         }
