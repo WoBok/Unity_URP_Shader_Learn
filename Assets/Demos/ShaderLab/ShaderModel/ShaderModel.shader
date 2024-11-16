@@ -45,9 +45,11 @@ Shader "URP Shader/ShaderModel" {
 
                 output.uv = input.texcoord.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 
-                float4 albedo1 = tex2D(_BaseMap, input.texcoord.xy);
+                //float4 albedo1 = tex2D(_BaseMap, input.texcoord.xy);
 
                 //output.positionCS = output.positionCS + albedo1;
+
+                output.color = half4(1,1,1,1);
 
                 return output;
             }

@@ -1,0 +1,16 @@
+{
+    "name": "com.Wemake.BirdFlocks.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:089fcd7ae4434c14ba6c91a07e9ed4f4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
