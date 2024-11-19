@@ -20,7 +20,7 @@ namespace UnityEngine.Rendering.Universal
 
         public DecalScreenSpaceRenderPass(DecalScreenSpaceSettings settings, DecalDrawScreenSpaceSystem drawSystem, bool decalLayers)
         {
-            renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
+            renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
 
             var scriptableRenderPassInput = ScriptableRenderPassInput.Depth; // Require depth
             ConfigureInput(scriptableRenderPassInput);
