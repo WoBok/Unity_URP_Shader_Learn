@@ -1,4 +1,4 @@
-Shader "HunagSiPu/Outline" {
+Shader "HunagSiPu/Outline_Final" {
     Properties {
         _BaseMap ("Albedo", 2D) = "white" { }
         _BaseColor ("Color", Color) = (1, 1, 1, 1)

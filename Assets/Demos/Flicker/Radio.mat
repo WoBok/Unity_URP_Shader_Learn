@@ -121,6 +121,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
+    - _EDGE_LIGHT_SWITCH: 1
+    - _Edge_Light_Power: 0
     - _EnvironmentReflections: 1
     - _FLICKER_SWITCH: 1
     - _Flicker_Speed: 5
@@ -152,6 +154,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Base_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Edge_Light_Color: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emission_Color: {r: 1.5026009, g: 0.70710635, b: 0, a: 1}
     - _Flicker_Color: {r: 0.084905684, g: 0.01202248, b: 0, a: 0}
