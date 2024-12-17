@@ -32,6 +32,11 @@ public class BatchRenameTool : EditorWindow
         int index = 1;
         for (int i = 0; i < objects.Length; i++)
         {
+            //{
+            //    var material = objects[i] as Material;
+            //    if (material != null)
+            //        material.color = Color.red;
+            //}
             string path = AssetDatabase.GetAssetPath(objects[i]);
             string newFileName = $"{prefix}_{index:00}";
             AssetDatabase.RenameAsset(path, newFileName);
