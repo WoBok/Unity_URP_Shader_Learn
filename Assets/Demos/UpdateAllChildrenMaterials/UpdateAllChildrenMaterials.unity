@@ -282,9 +282,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalarName: _Brightness
-  scalarValue: 26.5
+  scalarValue: 24.6
   colorName: _BaseColor
-  colorValue: {r: 0.2924528, g: 0.08129195, b: 0, a: 1}
+  colorValue: {r: 1, g: 0.28, b: 0, a: 1}
 --- !u!1 &364725831
 GameObject:
   m_ObjectHideFlags: 0

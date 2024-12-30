@@ -30,9 +30,10 @@ public class UpdateAllChildrenMaterials : MonoBehaviour
     void UpdateMaterialProperties()
     {
         var needToUpdate = m_CachedScalarName != scalarName ||
-                                 m_CachedScalarValue != scalarValue ||
-                                 m_CachedColorName != colorName ||
-                                 m_CachedColorValue != colorValue;
+                                         m_CachedScalarValue != scalarValue ||
+                                         m_CachedColorName != colorName ||
+                                         m_CachedColorValue != colorValue;
+
         if (needToUpdate)
         {
             var allMaterials = GetComponentsInChildren<Renderer>().Select(r => r.sharedMaterial);
