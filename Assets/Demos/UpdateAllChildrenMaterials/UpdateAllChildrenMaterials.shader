@@ -3,6 +3,8 @@ Shader "URP Shader/UpdateAllChildrenMaterials" {
         _BaseMap ("Albedo", 2D) = "white" { }
         _BaseColor ("Color", Color) = (1, 1, 1, 1)
         _Brightness ("Brightness", Float) = 1
+        [HDR]_Emission ("Emission", Color) = (0, 0, 0, 0)
+        _EmissionIntensity ("Emission Intensity", Float) = 1
     }
 
     SubShader {
@@ -33,6 +35,8 @@ Shader "URP Shader/UpdateAllChildrenMaterials" {
             float4 _BaseMap_ST;
             half4 _BaseColor;
             half _Brightness;
+            half4 _Emission;
+            half _EmissionIntensity;
             CBUFFER_END
 
             Varyings Vertex(Attributes input) {
@@ -54,7 +58,7 @@ Shader "URP Shader/UpdateAllChildrenMaterials" {
 
                 half4 diffuse = albedo * (dot(input.normalWS, normalize(_MainLightPosition.xyz)) * 0.5 + 0.5);
 
-                return diffuse * _BaseColor * _Brightness;
+                return diffuse * _BaseColor * _Brightness + _Emission * _EmissionIntensity;
             }
             ENDHLSL
         }

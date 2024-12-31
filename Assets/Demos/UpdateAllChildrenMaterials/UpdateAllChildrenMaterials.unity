@@ -238,6 +238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 282188240}
   - component: {fileID: 282188241}
+  - component: {fileID: 282188242}
   m_Layer: 0
   m_Name: GameObjects
   m_TagString: Untagged
@@ -281,10 +282,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9082139c7f916ac49988b2ea35d64b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scalarName: _Brightness
-  scalarValue: 24.6
-  colorName: _BaseColor
-  colorValue: {r: 1, g: 0.28, b: 0, a: 1}
+  needToUpdate: 0
+  scalarValue1:
+    name: _Brightness
+    value: 2.8
+  scalarValue2:
+    name: _EmissionIntensity
+    value: 0.38
+  scalarValue3:
+    name: 
+    value: 0
+  scalarValue4:
+    name: 
+    value: 0
+  scalarValue5:
+    name: 
+    value: 0
+  colorValue1:
+    name: _BaseColor
+    value: {r: 0.08018869, g: 1, b: 0.49139854, a: 0}
+  colorValue2:
+    name: _Emission
+    value: {r: 0.3679245, g: 0.13016197, b: 0.13016197, a: 0}
+  colorValue3:
+    name: 
+    value: {r: 0, g: 0, b: 0, a: 0}
+  colorValue4:
+    name: 
+    value: {r: 0, g: 0, b: 0, a: 0}
+  colorValue5:
+    name: 
+    value: {r: 0, g: 0, b: 0, a: 0}
+--- !u!95 &282188242
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282188239}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c1b227b2988fb994cbfcf28e7a5b35e2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &364725831
 GameObject:
   m_ObjectHideFlags: 0

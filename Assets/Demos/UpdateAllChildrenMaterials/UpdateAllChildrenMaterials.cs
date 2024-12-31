@@ -1,67 +1,77 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class UpdateAllChildrenMaterials : MonoBehaviour
 {
-    public string scalarName = "";
-    public float scalarValue = 1;
-    public string colorName = "";
-    public Color colorValue = Color.white;
-
-    string m_CachedScalarName;
-    float m_CachedScalarValue;
-    string m_CachedColorName;
-    Color m_CachedColorValue;
-
-    void Start()
+    [Serializable]
+    public struct ScalarValue
     {
-        UpdateCache();
+        public string name;
+        public float value;
     }
+    [Serializable]
+    public struct ColorValue
+    {
+        public string name;
+        public Color value;
+    }
+
+    public bool needToUpdate;
+
+    public ScalarValue scalarValue1;
+    public ScalarValue scalarValue2;
+    public ScalarValue scalarValue3;
+    public ScalarValue scalarValue4;
+    public ScalarValue scalarValue5;
+
+    public ColorValue colorValue1;
+    public ColorValue colorValue2;
+    public ColorValue colorValue3;
+    public ColorValue colorValue4;
+    public ColorValue colorValue5;
 
     void Update()
     {
-        UpdateMaterialProperties();
+        if (needToUpdate)
+            UpdateMaterialProperties1();
     }
     void OnValidate()
     {
-        UpdateMaterialProperties();
-    }
-    void UpdateMaterialProperties()
-    {
-        var needToUpdate = m_CachedScalarName != scalarName ||
-                                         m_CachedScalarValue != scalarValue ||
-                                         m_CachedColorName != colorName ||
-                                         m_CachedColorValue != colorValue;
-
         if (needToUpdate)
+            UpdateMaterialProperties1();
+    }
+    void UpdateMaterialProperties1()
+    {
+        var allMaterials = GetComponentsInChildren<Renderer>().Select(r => r.sharedMaterial);
+
+        foreach (var material in allMaterials)
         {
-            var allMaterials = GetComponentsInChildren<Renderer>().Select(r => r.sharedMaterial);
-            if (scalarName != null && scalarName != "")
-            {
-                foreach (var material in allMaterials)
-                {
-                    if (IsShaderProperty(material, scalarName, ShaderPropertyType.Float))
-                        material.SetFloat(scalarName, scalarValue);
-                }
-            }
-            if (colorName != null && colorName != "")
-            {
-                foreach (var material in allMaterials)
-                {
-                    if (IsShaderProperty(material, colorName, ShaderPropertyType.Color))
-                        material.SetColor(colorName, colorValue);
-                }
-            }
-            UpdateCache();
+            UpdateScalarValue(material, scalarValue1.name, scalarValue1.value);
+            UpdateScalarValue(material, scalarValue2.name, scalarValue2.value);
+            UpdateScalarValue(material, scalarValue3.name, scalarValue3.value);
+            UpdateScalarValue(material, scalarValue4.name, scalarValue4.value);
+            UpdateScalarValue(material, scalarValue5.name, scalarValue5.value);
+
+            UpdateColorValue(material, colorValue1.name, colorValue1.value);
+            UpdateColorValue(material, colorValue2.name, colorValue2.value);
+            UpdateColorValue(material, colorValue3.name, colorValue3.value);
+            UpdateColorValue(material, colorValue4.name, colorValue4.value);
+            UpdateColorValue(material, colorValue5.name, colorValue5.value);
         }
     }
-    void UpdateCache()
+    void UpdateScalarValue(Material material, string name, float value)
     {
-        m_CachedScalarName = scalarName;
-        m_CachedColorName = colorName;
-        m_CachedScalarValue = scalarValue;
-        m_CachedColorValue = colorValue;
+        if (string.IsNullOrEmpty(name)) return;
+        if (IsShaderProperty(material, name, ShaderPropertyType.Float))
+            material.SetFloat(name, value);
+    }
+    void UpdateColorValue(Material material, string name, Color value)
+    {
+        if (string.IsNullOrEmpty(name)) return;
+        if (IsShaderProperty(material, name, ShaderPropertyType.Color))
+            material.SetColor(name, value);
     }
     bool IsShaderProperty(Material material, string name, ShaderPropertyType propertyType)
     {
