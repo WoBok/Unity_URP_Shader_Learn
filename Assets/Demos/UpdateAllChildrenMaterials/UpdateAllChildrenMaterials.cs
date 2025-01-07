@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -35,16 +36,29 @@ public class UpdateAllChildrenMaterials : MonoBehaviour
     void Update()
     {
         if (needToUpdate)
-            UpdateMaterialProperties1();
+            UpdateMaterialProperties();
     }
     void OnValidate()
     {
         if (needToUpdate)
-            UpdateMaterialProperties1();
+            UpdateMaterialProperties();
     }
-    void UpdateMaterialProperties1()
+    void UpdateMaterialProperties()
     {
-        var allMaterials = GetComponentsInChildren<Renderer>().Select(r => r.sharedMaterial);
+
+#if UNITY_EDITOR
+        Material[] allMaterials;
+        if (EditorApplication.isPlaying)
+        {
+            allMaterials = GetComponentsInChildren<Renderer>().Select(r => r.material).ToArray();
+        }
+        else
+        {
+            allMaterials = GetComponentsInChildren<Renderer>().Select(r => r.sharedMaterial).ToArray();
+        }
+#else
+        var allMaterials = GetComponentsInChildren<Renderer>().Select(r => r.material);
+#endif
 
         foreach (var material in allMaterials)
         {
