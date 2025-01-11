@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -33,6 +34,16 @@ public class UpdateAllChildrenMaterials : MonoBehaviour
     public ColorValue colorValue4;
     public ColorValue colorValue5;
 
+    public static List<Material> materials = new List<Material>();
+
+    public static void DestroyAllMaterials()
+    {
+        foreach (Material mat in materials)
+        {
+            Destroy(mat);
+        }
+        materials.Clear();
+    }
     void Update()
     {
         if (needToUpdate)
@@ -45,12 +56,12 @@ public class UpdateAllChildrenMaterials : MonoBehaviour
     }
     void UpdateMaterialProperties()
     {
-
 #if UNITY_EDITOR
         Material[] allMaterials;
         if (EditorApplication.isPlaying)
         {
             allMaterials = GetComponentsInChildren<Renderer>().Select(r => r.material).ToArray();
+            materials.AddRange(allMaterials);
         }
         else
         {
@@ -58,6 +69,7 @@ public class UpdateAllChildrenMaterials : MonoBehaviour
         }
 #else
         var allMaterials = GetComponentsInChildren<Renderer>().Select(r => r.material);
+         materials.AddRange(allMaterials);
 #endif
 
         foreach (var material in allMaterials)
