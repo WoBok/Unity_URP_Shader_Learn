@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Demos/UIToolkit/UIToolkit.uss?fileID=7433441132597879392&amp;guid=edfbf9fa99466b84dbfcd15262f7dc78&amp;type=3#UIToolkit" />
+    <ui:VisualElement name="Container" style="-unity-background-scale-mode: stretch-to-fill; background-image: url(&apos;project://database/Assets/Demos/UIToolkit/BG.png?fileID=2800000&amp;guid=b50899238ad11d344b016e8cca64bbf0&amp;type=3#BG&apos;); height: 1080px; width: 1920px;">
+        <ui:Label tabindex="-1" text="Fighting !" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="lable" style="-unity-font-definition: initial; color: rgb(255, 255, 255);" />
+        <ui:Button text="Game Start" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartGame" class="button" />
+        <ui:Button text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Settings" class="button" style="top: 650px;" />
+    </ui:VisualElement>
+</ui:UXML>

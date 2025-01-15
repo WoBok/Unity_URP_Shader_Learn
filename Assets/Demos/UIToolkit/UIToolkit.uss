@@ -1,0 +1,59 @@
+.lable {
+    opacity: 1;
+    display: flex;
+    visibility: visible;
+    overflow: visible;
+    flex-shrink: 1;
+    flex-direction: column;
+    align-self: flex-start;
+    align-items: stretch;
+    justify-content: space-around;
+    -unity-font: url('project://database/Assets/Demos/UIToolkit/LiberationSans.ttf?fileID=12800000&guid=e373e4f17b0a7754191fc251417ebed7&type=3#LiberationSans');
+    -unity-font-style: bold;
+    font-size: 125px;
+    color: rgb(255, 255, 255);
+    margin-left: 100px;
+    margin-top: 80px;
+    -unity-text-outline-width: 7px;
+    letter-spacing: 5px;
+    border-left-color: rgb(0, 150, 255);
+    border-right-color: rgba(255, 0, 0, 0);
+    border-top-color: rgba(255, 0, 0, 0);
+    border-bottom-color: rgba(255, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    -unity-text-outline-color: rgb(255, 42, 42);
+    text-shadow: 10px 10px 0 rgb(0, 0, 0);
+    rotate: 11deg;
+}
+
+.button {
+    background-image: url('project://database/Assets/Demos/UIToolkit/ButtonBG.png?fileID=21300000&guid=7f7a50204490dcf44a3d59e7fb087c15&type=3#ButtonBG');
+    -unity-background-scale-mode: stretch-to-fill;
+    width: 200px;
+    height: 45px;
+    background-color: rgba(255, 255, 255, 0);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    -unity-slice-scale: 0.5px;
+    -unity-slice-left: 0;
+    -unity-font: url('project://database/Assets/Demos/UIToolkit/LiberationSans.ttf?fileID=12800000&guid=e373e4f17b0a7754191fc251417ebed7&type=3#LiberationSans');
+    -unity-font-definition: initial;
+    align-self: center;
+    top: 600px;
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+    font-size: 20px;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+
+.button:hover {
+    scale: 1.2 1.2;
+    transition-duration: 0.1s, 0.1s;
+    transition-property: scale, font-size;
+    transition-timing-function: ease-out, ease-in;
+    font-size: 25px;
+    transition-delay: 0s, 0.05s;
+}
