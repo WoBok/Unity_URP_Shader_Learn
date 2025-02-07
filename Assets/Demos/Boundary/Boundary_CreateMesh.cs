@@ -8,27 +8,31 @@ public class Boundary_CreateMesh : MonoBehaviour
         var pointObjsTrans = pointObjs.transform;
         var pointCount = pointObjsTrans.childCount;
 
-        var vertices = new Vector3[pointCount * 2 + 2];
-        var triangles = new int[pointCount * 6 + 2 * 3];
-        var uv = new Vector2[pointCount * 2];
-
+        //Vertices
+        var vertices = new Vector3[(pointCount + 1) * 2];
         for (int i = 0; i < pointCount; i++)
         {
-            //Vertices
             vertices[i] = pointObjsTrans.GetChild(i).position;
-            vertices[i + pointCount] = vertices[i] + new Vector3(0, 2, 0);
+            vertices[i + pointCount + 1] = vertices[i] + new Vector3(0, 2, 0);
+        }
+        vertices[pointCount] = vertices[0];
+        vertices[pointCount * 2 + 1] = vertices[pointCount + 1];
 
-            //Triangles
+        //Triangles
+        var triangles = new int[(pointCount + 1) * 6];
+        for (int i = 0; i < pointCount; i++)
+        {
             var index = i * 6;
             triangles[index] = i;
-            triangles[index + 1] = i + pointCount;
-            triangles[index + 2] = (i + 1) % pointCount + pointCount;
-            triangles[index + 3] = (i + 1) % pointCount;
+            triangles[index + 1] = i + pointCount + 1;
+            triangles[index + 2] = i + pointCount + 2;
+            triangles[index + 3] = i + 1;
             triangles[index + 4] = i;
-            triangles[index + 5] = (i + 1) % pointCount + pointCount;
+            triangles[index + 5] = i + pointCount + 2;
         }
 
         //UVs
+        var uv = new Vector2[(pointCount + 1) * 2];
         var length = 0.0f;
         for (int i = 0; i < pointCount; i++)
         {
@@ -46,12 +50,12 @@ public class Boundary_CreateMesh : MonoBehaviour
             uvLength += distance;
             var u = uvLength / length;
             uv[i] = new Vector2(u, 0);
-            uv[i + pointCount] = new Vector2(u, 1);
+            uv[i + pointCount + 1] = new Vector2(u, 1);
         }
         uv[0] = new Vector2(0, 0);
-        uv[pointCount] = new Vector2(0, 1);
-        //uv[pointCount - 1] = new Vector2(1, 0);
-        //uv[pointCount * 2 - 1] = new Vector2(1, 1);
+        uv[pointCount + 1] = new Vector2(0, 1);
+        uv[pointCount] = new Vector2(1, 0);
+        uv[pointCount * 2 + 1] = new Vector2(1, 1);
 
         var gameObject = new GameObject("Boundary");
 
@@ -65,7 +69,10 @@ public class Boundary_CreateMesh : MonoBehaviour
 
         MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
 
-        meshRenderer.material = new Material(Shader.Find("Shader Graphs/Boundary"));
-    }
+        var material = new Material(Shader.Find("Shader Graphs/Boundary"));
+        meshRenderer.material = material;
 
+        material.SetFloat("_LineCount", length / 0.2f);
+        material.SetVector("_StartPosition", pointObjsTrans.GetChild(0).position);
+    }
 }
