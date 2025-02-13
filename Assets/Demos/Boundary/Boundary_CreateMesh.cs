@@ -13,7 +13,7 @@ public class Boundary_CreateMesh : MonoBehaviour
         for (int i = 0; i < pointCount; i++)
         {
             vertices[i] = pointObjsTrans.GetChild(i).position;
-            vertices[i + pointCount + 1] = vertices[i] + new Vector3(0, 2, 0);
+            vertices[i + pointCount + 1] = vertices[i] + new Vector3(0, 1, 0);
         }
         vertices[pointCount] = vertices[0];
         vertices[pointCount * 2 + 1] = vertices[pointCount + 1];
@@ -72,7 +72,7 @@ public class Boundary_CreateMesh : MonoBehaviour
         var material = new Material(Shader.Find("Shader Graphs/Boundary"));
         meshRenderer.material = material;
 
-        material.SetFloat("_LineCount", length / 0.2f);
+        material.SetFloat("_LineCount", length / 0.1f);
         material.SetVector("_StartPosition", pointObjsTrans.GetChild(0).position);
     }
 }

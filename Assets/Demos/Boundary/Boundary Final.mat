@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boundary
-  m_Shader: {fileID: -6465566751694194690, guid: 916510d46eadf2d479218ea1c7192a28,
+  m_Name: Boundary Final
+  m_Shader: {fileID: -6465566751694194690, guid: 0253c6b4ba1da8b40975fa3c5d1b70ce,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -86,7 +86,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
@@ -116,7 +115,7 @@ Material:
     - _Progress: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius: 0.2
+    - _Radius: 0.3
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
