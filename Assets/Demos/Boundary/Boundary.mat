@@ -116,7 +116,7 @@ Material:
     - _Progress: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius: 0.2
+    - _Radius: 0.3
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -137,8 +137,8 @@ Material:
     - _DisturbanceTexTilling: {r: 1, g: 1, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 0, g: 232.50494, b: 766.99615, a: 1}
-    - _LineColor1: {r: 0, g: 120.79808, b: 4983.9546, a: 1}
-    - _LineColor2: {r: 0, g: 1122.616, b: 4772.642, a: 1}
+    - _LineColor1: {r: 0, g: 96.376335, b: 3067.9856, a: 1}
+    - _LineColor2: {r: 0, g: 96.37631, b: 3067.985, a: 1}
     - _Position: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _StartPosition: {r: 0, g: 0, b: 0, a: 0}
